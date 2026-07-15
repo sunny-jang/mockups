@@ -1,0 +1,351 @@
+
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>더바른윤곽 UX/UI 개선 제안서</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@600;700&display=swap');
+
+:root{
+  --ink:#17211d; --paper:#f7f4ee; --paper2:#eee9df; --green:#29483c;
+  --green2:#406658; --gold:#b99a64; --line:#d8d1c4; --white:#fff;
+  --coral:#c56f5c; --muted:#6f766f; --shadow:0 24px 70px rgba(24,35,30,.16);
+}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#111;font-family:"Noto Sans KR",sans-serif;color:var(--ink)}
+button{font:inherit}
+.deck{width:100%;height:100%;position:relative}
+.slide{
+  position:absolute;inset:0;display:none;overflow:hidden;
+  background:var(--paper); padding:5.4vh 5.6vw 4.5vh;
+}
+.slide.active{display:block;animation:fade .35s ease}
+@keyframes fade{from{opacity:.25;transform:translateY(8px)}to{opacity:1;transform:none}}
+.slide.dark{background:var(--ink);color:#f7f4ee}
+.slide.green{background:var(--green);color:white}
+.slide.split:before{
+  content:"";position:absolute;right:-10vw;top:-15vh;width:55vw;height:120vh;
+  background:linear-gradient(145deg,#d8c8a8,#b99562);transform:rotate(8deg);opacity:.86
+}
+.kicker{font-size:clamp(12px,1vw,17px);font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+.dark .kicker,.green .kicker{color:#d9bd89}
+h1{font-size:clamp(42px,5vw,84px);line-height:1.03;letter-spacing:-.05em;margin:.5vh 0 2.2vh;font-weight:800}
+h2{font-size:clamp(30px,3.25vw,58px);line-height:1.12;letter-spacing:-.045em;margin:.7vh 0 2vh}
+h3{font-size:clamp(18px,1.45vw,27px);line-height:1.35;margin:0 0 1vh}
+p{margin:0;color:var(--muted);line-height:1.7;font-size:clamp(14px,1.05vw,19px)}
+.dark p,.green p{color:rgba(255,255,255,.72)}
+.lead{font-size:clamp(18px,1.55vw,28px);line-height:1.55;max-width:900px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:2vw}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4vw}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:1vw}
+.card{background:rgba(255,255,255,.83);border:1px solid rgba(74,83,77,.12);border-radius:22px;padding:1.5vw;box-shadow:0 10px 30px rgba(32,45,38,.06)}
+.dark .card,.green .card{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.12)}
+.num{font-family:"Playfair Display",serif;font-size:clamp(34px,3vw,60px);color:var(--gold);line-height:1}
+.reason{margin-top:1vh;padding-top:1vh;border-top:1px solid var(--line);font-size:clamp(12px,.88vw,16px);color:#5b625d}
+.reason:before{content:"근거";display:inline-block;margin-right:.55em;font-size:.75em;font-weight:800;letter-spacing:.08em;color:var(--coral)}
+.dark .reason,.green .reason{border-color:rgba(255,255,255,.16);color:rgba(255,255,255,.72)}
+.tag{display:inline-flex;align-items:center;gap:.4em;padding:.45em .75em;border-radius:999px;background:#e8e0d1;color:#5d4b30;font-size:clamp(11px,.8vw,14px);font-weight:700}
+.icon{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:#e9e1d3;color:var(--green);margin-bottom:1.1vh}
+.icon svg{width:22px;height:22px}
+.browser{background:#fff;border-radius:18px;box-shadow:var(--shadow);overflow:hidden;border:1px solid #ddd7cb}
+.browserbar{height:36px;background:#eeeae2;display:flex;align-items:center;gap:7px;padding:0 14px}
+.dot{width:8px;height:8px;border-radius:50%;background:#c8c1b7}
+.screen{padding:1.3vw;background:#faf8f4}
+.heroMock{height:26vh;border-radius:13px;background:linear-gradient(120deg,#d9d3c8 0 46%,#83988e 46%);position:relative;overflow:hidden}
+.heroMock:after{content:"";position:absolute;right:8%;bottom:-12%;width:28%;aspect-ratio:1;border-radius:50% 50% 44% 48%;background:linear-gradient(160deg,#efe6d8,#c8aa86);box-shadow:-18px -10px 0 rgba(255,255,255,.18)}
+.mockcopy{position:absolute;left:6%;top:16%;width:42%;z-index:2}
+.mockcopy b{font-size:clamp(17px,1.6vw,28px);line-height:1.2;display:block}
+.mockline{height:7px;border-radius:5px;background:rgba(30,45,38,.22);margin-top:10px}
+.mockbtn{display:inline-block;margin-top:14px;padding:8px 15px;border-radius:30px;background:var(--green);color:white;font-size:12px;font-weight:700}
+.badges{display:flex;gap:8px;margin-top:12px}.badges span{background:#fff;padding:5px 8px;border-radius:8px;font-size:10px}
+.flow{display:grid;grid-template-columns:repeat(6,1fr);gap:.8vw;align-items:center;margin-top:4vh}
+.flow .node{position:relative;background:white;border:1px solid var(--line);border-radius:18px;padding:1.3vw;text-align:center;min-height:15vh;display:flex;flex-direction:column;justify-content:center}
+.flow .node:not(:last-child):after{content:"→";position:absolute;right:-1.05vw;top:43%;font-size:1.5vw;color:var(--gold)}
+.flow .node strong{font-size:clamp(15px,1.1vw,20px)}
+.flow .node small{display:block;color:var(--muted);margin-top:.5vh;line-height:1.45}
+.matrix{position:relative;height:54vh;border-left:2px solid #9e9689;border-bottom:2px solid #9e9689;margin:2vh 4vw}
+.matrix:before{content:"사용자 영향도 ↑";position:absolute;left:-4.4vw;top:42%;transform:rotate(-90deg);font-weight:700;color:var(--muted)}
+.matrix:after{content:"구현 난이도 →";position:absolute;left:44%;bottom:-3.2vh;font-weight:700;color:var(--muted)}
+.bubble{position:absolute;padding:.75em 1em;border-radius:999px;color:white;font-weight:700;box-shadow:0 8px 20px rgba(0,0,0,.13);font-size:clamp(11px,.85vw,15px)}
+.b1{left:10%;top:15%;background:var(--green)} .b2{left:35%;top:9%;background:var(--coral)}
+.b3{left:18%;top:43%;background:#6b826f}.b4{left:58%;top:29%;background:#9a8051}
+.b5{left:68%;top:57%;background:#7e776d}.b6{left:38%;top:67%;background:#7b5d56}
+.chartrow{display:grid;grid-template-columns:1fr 2.5fr;gap:1vw;align-items:center;margin:1.1vh 0}
+.bar{height:15px;border-radius:10px;background:#e3ddd2;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--green),var(--gold));border-radius:10px}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:1.4vw}
+.compare .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:1vh}
+.score{font-family:"Playfair Display";font-size:clamp(28px,2.6vw,48px);color:var(--gold)}
+.mockphone{width:34%;height:54vh;margin:auto;border:8px solid #252a27;border-radius:33px;background:#fff;box-shadow:var(--shadow);overflow:hidden;position:relative}
+.phoneTop{height:22px;background:#252a27;width:35%;border-radius:0 0 12px 12px;margin:auto}
+.phoneHero{height:25%;background:linear-gradient(120deg,#ece4d8,#84988c);padding:18px 12px;font-size:11px;font-weight:800}
+.phoneCard{height:13%;margin:9px;border-radius:11px;background:#f2eee7;border:1px solid #e0d8ca}
+.phoneNav{position:absolute;bottom:0;left:0;right:0;height:53px;background:var(--green);display:grid;grid-template-columns:repeat(3,1fr);color:white;font-size:10px;text-align:center;padding-top:9px}
+.stamp{position:absolute;right:5.5vw;top:5vh;width:118px;height:118px;border:1px solid rgba(185,154,100,.55);border-radius:50%;display:grid;place-items:center;text-align:center;color:var(--gold);font-size:12px;font-weight:800;letter-spacing:.12em;transform:rotate(9deg)}
+.source{font-size:11px;color:#858b86;margin-top:1.5vh}
+.dark .source,.green .source{color:rgba(255,255,255,.52)}
+.nav{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:20;display:flex;align-items:center;gap:12px;background:rgba(20,28,24,.92);border-radius:999px;padding:8px 12px;color:#fff;backdrop-filter:blur(12px)}
+.nav button{border:0;background:transparent;color:#fff;cursor:pointer;width:32px;height:32px;border-radius:50%;font-size:18px}
+.nav button:hover{background:rgba(255,255,255,.12)}
+.progress{width:120px;height:3px;background:rgba(255,255,255,.2);border-radius:5px;overflow:hidden}.progress i{display:block;height:100%;background:#d6b77e;width:0}
+.page{font-size:12px;min-width:42px;text-align:center}
+.brand{position:absolute;left:5.6vw;bottom:2vh;font-size:11px;letter-spacing:.12em;font-weight:800;color:#9b978f}
+.dark .brand,.green .brand{color:rgba(255,255,255,.5)}
+.corner{position:absolute;right:0;bottom:0;width:18vw;height:18vw;border-radius:100% 0 0 0;background:rgba(185,154,100,.13)}
+.quote{font-family:"Playfair Display","Noto Sans KR";font-size:clamp(25px,2.7vw,48px);line-height:1.4;max-width:1050px}
+@media(max-width:800px){
+ .slide{padding:5vh 6vw 9vh;overflow:auto}
+ .grid2,.grid3,.grid4,.compare{grid-template-columns:1fr}
+ .flow{grid-template-columns:1fr 1fr}.flow .node:after{display:none}
+ .mockphone{width:70%}.nav{bottom:8px}
+}
+@media print{
+ body{overflow:visible;background:white}.deck{height:auto}.slide{position:relative;display:block!important;width:297mm;height:167mm;page-break-after:always}.nav{display:none}
+}
+</style>
+<script src="./watermark.js" defer></script>
+</head>
+<body>
+<div class="deck">
+
+<section class="slide dark active split">
+  <div class="kicker">UX / UI IMPROVEMENT PROPOSAL · 2026</div>
+  <h1>더바른윤곽<br>디지털 경험 개선 제안</h1>
+  <p class="lead">프리미엄 의료 브랜드의 신뢰는 유지하고,<br>사용자가 상담까지 도달하는 경로는 더 짧고 명확하게.</p>
+  <div style="margin-top:5vh;display:flex;gap:10px"><span class="tag">Benchmark: 원진성형외과 랜딩</span><span class="tag">Focus: Mobile Conversion</span></div>
+  <div class="stamp">THE BARUN<br>UX REVIEW</div>
+  <div class="brand">THE BARUN FACE · UX PROPOSAL</div>
+</section>
+
+<section class="slide">
+  <div class="kicker">01 · Executive Summary</div>
+  <h2>콘텐츠가 부족한 것이 아니라,<br><span style="color:var(--green)">좋은 콘텐츠가 늦게 발견되는 것</span>이 핵심입니다.</h2>
+  <div class="grid3" style="margin-top:4vh">
+    <div class="card"><div class="icon">⌁</div><h3>브랜드 자산은 충분</h3><p>리얼스토리, 전후사진, 의료진, 장비, 철학, 영상까지 신뢰 형성에 필요한 콘텐츠가 이미 존재합니다.</p><div class="reason">메인 페이지에 Story, Pick, Case, 의료진, 진료철학, 장비, 유튜브, 시설 섹션이 모두 확인됩니다.</div></div>
+    <div class="card"><div class="icon">↘</div><h3>초기 탐색 부담</h3><p>상단 메뉴의 진료 카테고리와 하위 항목이 많아 신규 사용자가 어디부터 봐야 할지 판단해야 합니다.</p><div class="reason">양악·윤곽·돌출입·사랑니·임플란트·턱관절·미백 등 다수 메뉴와 세부 항목이 동시에 노출됩니다.</div></div>
+    <div class="card"><div class="icon">↗</div><h3>상담 전환 연결 강화</h3><p>콘텐츠를 본 직후 바로 상담할 수 있도록 CTA를 맥락별로 반복 배치할 필요가 있습니다.</p><div class="reason">상담 채널은 다양하지만 핵심 콘텐츠와 상담 행동 사이의 연결은 랜딩형 사이트보다 상대적으로 약합니다.</div></div>
+  </div>
+  <div class="brand">THE BARUN FACE · UX PROPOSAL</div>
+</section>
+
+<section class="slide green">
+  <div class="kicker">02 · Comparative View</div>
+  <h2>두 사이트는 목적이 다릅니다.</h2>
+  <div class="compare" style="margin-top:3vh">
+    <div class="card">
+      <div class="head"><div><span class="tag">THE BARUN</span><h3 style="margin-top:1vh">브랜드·전문성 중심 홈페이지</h3></div><div class="score">A</div></div>
+      <div class="chartrow"><b>브랜드 감도</b><div class="bar"><i style="width:92%"></i></div></div>
+      <div class="chartrow"><b>콘텐츠 깊이</b><div class="bar"><i style="width:88%"></i></div></div>
+      <div class="chartrow"><b>즉시 전환성</b><div class="bar"><i style="width:58%"></i></div></div>
+      <div class="reason">철학·사례·시설·영상 등 장기 탐색형 콘텐츠 구성이 중심입니다.</div>
+    </div>
+    <div class="card">
+      <div class="head"><div><span class="tag">WONJIN LANDING</span><h3 style="margin-top:1vh">광고 유입·상담 전환 중심 랜딩</h3></div><div class="score">A</div></div>
+      <div class="chartrow"><b>브랜드 감도</b><div class="bar"><i style="width:72%"></i></div></div>
+      <div class="chartrow"><b>콘텐츠 깊이</b><div class="bar"><i style="width:68%"></i></div></div>
+      <div class="chartrow"><b>즉시 전환성</b><div class="bar"><i style="width:95%"></i></div></div>
+      <div class="reason">첫 화면부터 AI 상담, 카카오톡, 빠른 비용 상담, 바로 예약이 동시에 노출됩니다.</div>
+    </div>
+  </div>
+  <p class="source">※ 점수는 공개 페이지 구조를 바탕으로 한 상대적 휴리스틱 평가이며, 실제 성과 수치가 아닙니다.</p>
+  <div class="brand">THE BARUN FACE · UX PROPOSAL</div>
+</section>
+
+<section class="slide">
+  <div class="kicker">03 · User Journey</div>
+  <h2>사용자가 원하는 것은<br>“정보를 많이 보는 것”이 아니라 <span style="color:var(--coral)">확신을 빠르게 얻는 것</span>입니다.</h2>
+  <div class="flow">
+    <div class="node"><strong>유입</strong><small>검색·광고·SNS</small></div>
+    <div class="node"><strong>나와 관련 있나?</strong><small>증상·수술명 확인</small></div>
+    <div class="node"><strong>믿을 수 있나?</strong><small>의료진·안전·사례</small></div>
+    <div class="node"><strong>결과는 어떤가?</strong><small>전후사진·후기</small></div>
+    <div class="node"><strong>부담은 어느 정도?</strong><small>회복·과정·비용</small></div>
+    <div class="node"><strong>상담하기</strong><small>카톡·전화·예약</small></div>
+  </div>
+  <div class="card" style="margin-top:3vh;display:flex;align-items:center;gap:2vw">
+    <div class="num">01</div><div><h3>개선 원칙</h3><p>각 단계에서 다음 질문에 바로 답을 주고, 답을 얻은 지점마다 상담 행동을 제안합니다.</p><div class="reason">현재 사이트는 필요한 답을 대부분 보유하지만, 콘텐츠 순서와 CTA 연결을 통해 결정 흐름을 더 선명하게 만들 수 있습니다.</div></div>
+  </div>
+  <div class="brand">THE BARUN FACE · UX PROPOSAL</div>
+</section>
+
+<section class="slide">
+  <div class="kicker">04 · Hero Redesign</div>
+  <h2>첫 화면은 “감성 이미지”에서<br><span style="color:var(--green)">전문 분야 + 신뢰 + 행동</span>의 조합으로.</h2>
+  <div class="grid2" style="align-items:center">
+    <div class="browser">
+      <div class="browserbar"><i class="dot"></i><i class="dot"></i><i class="dot"></i></div>
+      <div class="screen">
+        <div class="heroMock">
+          <div class="mockcopy">
+            <span class="tag">부산 양악·안면윤곽 전문</span>
+            <b style="margin-top:10px">정확함 위에<br>예측 가능한 아름다움</b>
+            <div class="mockline" style="width:83%"></div><div class="mockline" style="width:62%"></div>
+            <span class="mockbtn">1:1 상담 예약</span>
+            <div class="badges"><span>3D 정밀진단</span><span>대표원장 상담</span><span>수술 후 관리</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="card"><h3>① 전문 분야를 한 문장으로</h3><p>“부산 양악·안면윤곽 전문”처럼 사용자가 검색한 의도와 바로 연결합니다.</p><div class="reason">현재 사이트의 전문 영역은 풍부하지만 상단 메뉴를 탐색하기 전까지 한눈에 요약하기 어렵습니다.</div></div>
+      <div class="card" style="margin-top:1.2vh"><h3>② 대표 행동은 1개, 보조 행동은 2개</h3><p>주 CTA는 상담 예약, 보조 CTA는 카카오톡·전후사진으로 역할을 분리합니다.</p><div class="reason">선택지가 많을수록 사용자가 다음 행동을 미룰 수 있으므로 우선순위를 시각적으로 구분해야 합니다.</div></div>
+      <div class="card" style="margin-top:1.2vh"><h3>③ 신뢰 배지를 첫 화면에</h3><p>3D 정밀진단, 대표원장, 사후관리 등 실제 강점을 짧게 요약합니다.</p><div class="reason">사이트 후반부에 있는 장비·철학·관리 정보를 첫 인상 단계에서 먼저 예고할 수 있습니다.</div></div>
+    </div>
+  </div>
+  <div class="brand">THE BARUN FACE · UX PROPOSAL</div>
+</section>
+
+<section class="slide dark">
+  <div class="kicker">05 · Mobile Conversion</div>
+  <h2>모바일에서는 사용자가<br>언제든 <span style="color:#d9bd89">한 번의 탭으로 상담</span>할 수 있어야 합니다.</h2>
+  <div class="grid2" style="align-items:center">
+    <div class="mockphone">
+      <div class="phoneTop"></div>
+      <div class="phoneHero">양악·안면윤곽<br><span style="font-weight:400">정확한 진단에서 시작합니다</span></div>
+      <div class="phoneCard"></div><div class="phoneCard"></div><div class="phoneCard"></div>
+      <div class="phoneNav"><div>☎<br>전화</div><div>●<br>카카오톡</div><div>✓<br>예약</div></div>
+    </div>
+    <div>
+      <div class="card"><div class="num">3</div><h3>하단 고정 CTA</h3><p>전화·카카오톡·예약의 세 가지 행동만 유지해 선택 부담을 줄입니다.</p><div class="reason">더바른은 채널톡, 카카오톡, 네이버 예약, 톡톡 등 다양한 채널을 제공하므로 모바일에서는 대표 채널을 우선 정리할 필요가 있습니다.</div></div>
+      <div class="card" style="margin-top:1.5vh"><h3>콘텐츠 맥락형 CTA</h3><p>전후사진 뒤에는 “유사 케이스 상담”, 의료진 소개 뒤에는 “대표원장 상담”처럼 문구를 달리합니다.</p><div class="reason">동일한 ‘상담하기’ 반복보다 사용자가 방금 확인한 정보와 이어지는 문구가 행동 이유를 더 명확하게 만듭니다.</div></div>
+    </div>
+  </div>
+  <div class="brand">THE BARUN FACE · UX PROPOSAL</div>
+</section>
+
+<section class="slide">
+  <div class="kicker">06 · Trust Architecture</div>
+  <h2>신뢰 정보는 많을수록 좋은 것이 아니라,<br><span style="color:var(--green)">결정 순서에 맞게 보일 때</span> 강해집니다.</h2>
+  <div class="grid4" style="margin-top:3vh">
+    <div class="card"><div class="num">01</div><h3>의료진</h3><p>대표원장 사진, 전문 분야, 진료 철학을 초기 배치.</p><div class="reason">메인에서 대표원장과 철학이 확인되지만 사례 섹션 이후에 등장합니다.</div></div>
+    <div class="card"><div class="num">02</div><h3>정밀 진단</h3><p>3D CT·구강 스캐너·얼굴 스캐너를 인포그래픽으로 설명.</p><div class="reason">장비명이 텍스트로 제시되어 있어 사용자 효익과 연결해 보여주면 이해가 빨라집니다.</div></div>
+    <div class="card"><div class="num">03</div><h3>실제 사례</h3><p>수술 유형·기간·회복 정보를 카드 안에서 함께 제공.</p><div class="reason">현재 리얼스토리는 수술시간, 마취, 실밥, 일상생활 정보를 갖고 있어 재구성 가치가 높습니다.</div></div>
+    <div class="card"><div class="num">04</div><h3>안전·사후관리</h3><p>수술 전·당일·회복 단계별 케어를 타임라인화.</p><div class="reason">안전장비와 수술 후 관리 메뉴가 분리되어 있어 하나의 안심 흐름으로 묶을 수 있습니다.</div></div>
+  </div>
+  <div class="brand">THE BARUN FACE · UX PROPOSAL</div>
+</section>
+
+<section class="slide">
+  <div class="kicker">07 · Case Content</div>
+  <h2>전후사진은 “많이 보여주기”보다<br><span style="color:var(--coral)">나와 비슷한 사례를 빨리 찾게 하기</span>가 중요합니다.</h2>
+  <div class="grid2">
+    <div class="browser">
+      <div class="browserbar"><i class="dot"></i><i class="dot"></i><i class="dot"></i></div>
+      <div class="screen">
+        <div style="display:flex;gap:7px;margin-bottom:12px"><span class="tag">전체</span><span class="tag">주걱턱</span><span class="tag">비대칭</span><span class="tag">긴얼굴</span></div>
+        <div class="grid2" style="gap:10px">
+          <div class="card" style="padding:10px"><div style="height:15vh;background:linear-gradient(90deg,#ded7cd 50%,#c8b294 50%);border-radius:10px"></div><b>양악·윤곽 복합</b><p style="font-size:11px">12개월 · 20대 · 비대칭</p></div>
+          <div class="card" style="padding:10px"><div style="height:15vh;background:linear-gradient(90deg,#d3cdc5 50%,#aebbb2 50%);border-radius:10px"></div><b>윤곽 3종</b><p style="font-size:11px">6개월 · 30대 · 광대</p></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="card"><h3>증상 기반 필터</h3><p>수술명뿐 아니라 사용자가 실제 검색하는 “주걱턱·안면비대칭·긴얼굴·무턱” 기준을 함께 제공합니다.</p><div class="reason">사이트 메뉴 자체가 증상별 상세 페이지를 보유하고 있어 기존 정보 구조를 사례 탐색에도 재사용할 수 있습니다.</div></div>
+      <div class="card" style="margin-top:1.3vh"><h3>사례 카드의 정보 밀도 조정</h3><p>기간, 연령대, 주요 고민, 수술 유형을 썸네일 단계에서 보여줍니다.</p><div class="reason">현재 리얼스토리에는 연령·지역·수술명·경과 정보가 있으므로 사용자가 사례를 비교하기 쉽게 구조화할 수 있습니다.</div></div>
+      <div class="card" style="margin-top:1.3vh"><h3>의료광고 고지 유지</h3><p>개인차·부작용 가능성 등 현재 고지 문구는 명확하게 유지합니다.</p><div class="reason">현재 전후사진 하단에 환자 동의와 부작용 가능성 안내가 제공되고 있습니다.</div></div>
+    </div>
+  </div>
+  <div class="brand">THE BARUN FACE · UX PROPOSAL</div>
+</section>
+
+<section class="slide">
+  <div class="kicker">08 · Information Architecture</div>
+  <h2>메인 페이지 추천 순서</h2>
+  <div class="flow" style="grid-template-columns:repeat(4,1fr);margin-top:2vh">
+    <div class="node"><span class="num">01</span><strong>Hero</strong><small>전문 분야·핵심 가치·상담</small></div>
+    <div class="node"><span class="num">02</span><strong>대표 케이스</strong><small>나와 비슷한 사례</small></div>
+    <div class="node"><span class="num">03</span><strong>대표원장</strong><small>전문성·철학</small></div>
+    <div class="node"><span class="num">04</span><strong>정밀진단</strong><small>장비·계획·안전</small></div>
+    <div class="node"><span class="num">05</span><strong>리얼스토리</strong><small>회복 과정·후기</small></div>
+    <div class="node"><span class="num">06</span><strong>FAQ</strong><small>통증·회복·준비</small></div>
+    <div class="node"><span class="num">07</span><strong>시설·위치</strong><small>방문 불안 해소</small></div>
+    <div class="node"><span class="num">08</span><strong>최종 상담</strong><small>전화·카톡·예약</small></div>
+  </div>
+  <div class="reason" style="margin-top:3vh">현재 콘텐츠를 삭제하기보다, 사용자의 의사결정 순서에 맞춰 위치를 재배치하는 방식이 브랜드 손실과 개발 부담을 동시에 줄입니다.</div>
+  <div class="brand">THE BARUN FACE · UX PROPOSAL</div>
+</section>
+
+<section class="slide">
+  <div class="kicker">09 · Priority Matrix</div>
+  <h2>효과가 크고 구현이 빠른 항목부터 시작합니다.</h2>
+  <div class="matrix">
+    <span class="bubble b1">모바일 고정 CTA</span>
+    <span class="bubble b2">Hero 메시지 재설계</span>
+    <span class="bubble b3">메인 콘텐츠 재배치</span>
+    <span class="bubble b4">사례 필터·카드화</span>
+    <span class="bubble b5">상담 폼 고도화</span>
+    <span class="bubble b6">FAQ 구조화</span>
+  </div>
+  <div class="reason">우선순위는 예상 사용자 영향도와 개발 범위를 기준으로 한 제안이며, 실제 착수 전 로그·히트맵·상담 유입 데이터를 함께 검토해야 합니다.</div>
+  <div class="brand">THE BARUN FACE · UX PROPOSAL</div>
+</section>
+
+<section class="slide dark">
+  <div class="kicker">10 · Measurement Plan</div>
+  <h2>좋아 보이는 개선이 아니라,<br><span style="color:#d9bd89">측정 가능한 개선</span>으로 검증합니다.</h2>
+  <div class="grid3" style="margin-top:4vh">
+    <div class="card"><div class="num">01</div><h3>행동 지표</h3><p>상담 버튼 클릭률, 전화 클릭, 카카오톡 진입, 예약 폼 시작·완료율.</p><div class="reason">상담 채널이 여러 개이므로 각 채널별 기여도를 분리해야 합니다.</div></div>
+    <div class="card"><div class="num">02</div><h3>탐색 지표</h3><p>Hero 이탈률, 핵심 섹션 도달률, 사례 필터 사용률, 평균 스크롤 깊이.</p><div class="reason">콘텐츠 재배치 효과는 단순 체류시간보다 ‘필요 정보 도달 여부’로 확인하는 편이 적합합니다.</div></div>
+    <div class="card"><div class="num">03</div><h3>검증 방식</h3><p>기존안과 개선안을 A/B 테스트하고 모바일·유입경로별로 결과를 분리합니다.</p><div class="reason">광고 유입과 자연 검색 유입은 의도와 행동 속도가 다르므로 전체 평균만 보면 개선 효과가 왜곡될 수 있습니다.</div></div>
+  </div>
+  <p class="source">※ 본 제안서는 공개 페이지 휴리스틱 분석입니다. 실제 전환율 개선 폭은 데이터 검증 전 확정할 수 없습니다.</p>
+  <div class="brand">THE BARUN FACE · UX PROPOSAL</div>
+</section>
+
+<section class="slide green">
+  <div class="kicker">11 · Conclusion</div>
+  <div style="display:flex;height:75%;align-items:center">
+    <div>
+      <div class="quote">“더 많은 정보를 추가하는 것보다,<br>이미 가진 전문성과 사례를<br><span style="color:#d9bd89">더 빠르게 신뢰하게 만드는 것.</span>”</div>
+      <p class="lead" style="margin-top:4vh">더바른윤곽의 개선 방향은 랜딩페이지를 그대로 복제하는 것이 아니라,<br>브랜드의 깊이는 유지하면서 전환 동선을 정교하게 연결하는 것입니다.</p>
+    </div>
+  </div>
+  <div class="corner"></div>
+  <div class="brand">THE BARUN FACE · UX PROPOSAL</div>
+</section>
+
+<section class="slide">
+  <div class="kicker">Appendix · Review Basis</div>
+  <h2>분석 근거 및 범위</h2>
+  <div class="grid2" style="margin-top:3vh">
+    <div class="card"><h3>더바른윤곽 공개 메인 페이지</h3><p>메뉴 구조, 리얼스토리, 전후사진, 대표원장, 진료철학, 장비, 유튜브, 시설, 상담 채널을 기준으로 검토했습니다.</p><div class="reason">2026년 7월 16일 공개 페이지에서 확인 가능한 내용 기준입니다.</div><p class="source">https://thebarunface.com/html/00_main/</p></div>
+    <div class="card"><h3>원진성형외과 공통 이벤트 랜딩</h3><p>AI 상담, 카카오톡 상담, 빠른 비용 상담, 바로 예약 등 초기 전환 장치와 상담 폼 구조를 비교했습니다.</p><div class="reason">광고 랜딩의 전환 구조를 비교하기 위한 벤치마크이며, 브랜드·진료 범위 차이를 고려했습니다.</div><p class="source">https://k-wonjin.co.kr/landing/common_event</p></div>
+  </div>
+  <div class="card" style="margin-top:2vh"><h3>해석 시 유의사항</h3><p>본 문서의 평가는 공개 화면을 기준으로 한 UX 휴리스틱 분석입니다. 실제 사용자 데이터, 관리자 통계, 광고 캠페인 성과, 기기별 로그는 포함하지 않았으며 최종 설계 전 별도 검증이 필요합니다.</p></div>
+  <div class="brand">THE BARUN FACE · UX PROPOSAL</div>
+</section>
+
+</div>
+
+<div class="nav">
+  <button id="prev" aria-label="이전">‹</button>
+  <div class="progress"><i id="prog"></i></div>
+  <span class="page" id="page">1 / 13</span>
+  <button id="next" aria-label="다음">›</button>
+</div>
+<script>
+const slides=[...document.querySelectorAll('.slide')], page=document.getElementById('page'), prog=document.getElementById('prog');
+let idx=0;
+function show(n){
+  slides[idx].classList.remove('active');
+  idx=(n+slides.length)%slides.length;
+  slides[idx].classList.add('active');
+  page.textContent=(idx+1)+' / '+slides.length;
+  prog.style.width=((idx+1)/slides.length*100)+'%';
+}
+document.getElementById('next').onclick=()=>show(idx+1);
+document.getElementById('prev').onclick=()=>show(idx-1);
+document.addEventListener('keydown',e=>{
+ if(['ArrowRight','PageDown',' '].includes(e.key)) show(idx+1);
+ if(['ArrowLeft','PageUp'].includes(e.key)) show(idx-1);
+ if(e.key==='Home') show(0);
+ if(e.key==='End') show(slides.length-1);
+});
+let sx=0;
+document.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+document.addEventListener('touchend',e=>{let dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>45)show(idx+(dx<0?1:-1))},{passive:true});
+show(0);
+</script>
+</body>
+</html>
