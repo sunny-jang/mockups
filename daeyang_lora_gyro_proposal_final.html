@@ -450,7 +450,7 @@
   @page{size:A4 landscape;margin:0}
   @media print{
     *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important}
-    html,body{width:297mm;height:210mm;margin:0;padding:0;background:#fff}
+    html,body{margin:0;padding:0;background:#fff}
     .deck{width:297mm;box-shadow:none}
     .slide{
       width:297mm !important;
@@ -462,14 +462,47 @@
       page-break-after:always;
       break-after:page;
       box-sizing:border-box;
-      padding:40px 54px 36px;
+      padding:26px 48px 22px;
     }
     .print{display:none}
+    .section-no{margin-top:16px}
+    h1{font-size:30px;margin-top:10px}
+    h2{font-size:23px;margin-top:6px}
+    h3{font-size:15px}
+    .lead{font-size:12px;margin-top:8px;line-height:1.5}
+    .cover-copy{font-size:15px;margin-top:12px;line-height:1.5}
+    .statement{font-size:15px;margin-top:12px;padding:11px 0}
+    .cols3{margin-top:12px;gap:10px}
+    .cols2{margin-top:12px;gap:12px}
+    .block{padding:11px 13px 13px;min-height:0}
+    .block p{font-size:11px;margin-top:4px}
+    ul{margin-top:7px}
+    li{font-size:11px;padding:4px 0 4px 16px}
+    .diagram{margin-top:16px}
+    .node{min-height:70px;padding:10px}
+    .node strong{font-size:13px;margin-bottom:4px}
+    .node span{font-size:10px}
+    .road-row{padding:9px 0;gap:12px}
+    .roadmap{margin-top:16px}
+    .offer{margin-top:16px;gap:18px}
+    .offer-price{padding:18px;min-height:0}
+    .offer-price b{font-size:32px}
+    .offer-price p{font-size:11px}
+    .offer-detail{padding-top:12px}
+    table{margin-top:12px}
+    th,td{padding:7px 9px;font-size:11px}
+    td.price{font-size:15px}
+    .note{margin-top:10px;font-size:10px}
+    .decision{margin-top:12px;padding:14px}
+    .contact{margin-top:16px;padding-top:14px;font-size:11px}
+    .cover-info{bottom:28px}
+    .cover-info strong{font-size:17px}
+    .cover-info span{font-size:10px}
+    .risk-callout{margin-top:14px;padding:14px 16px;font-size:12px}
   }
 </style>
 </head>
 <body>
-<div class="print">인쇄 → PDF 저장</div>
 <main class="deck">
 
 <section class="slide dark">
