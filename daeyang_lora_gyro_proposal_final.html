@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>대양전자 LoRa 자이로 센서 단말기 개발·양산 제안서</title>
+<style>
+  :root{
+    --navy:#0b2341;
+    --navy2:#173b63;
+    --blue:#1f66b1;
+    --light:#f4f7fa;
+    --line:#d8e0e8;
+    --text:#1d2a38;
+    --muted:#667483;
+    --white:#ffffff;
+    --red:#a64242;
+    --green:#2d7657;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:#dfe5eb;
+    font-family:"Pretendard","Noto Sans KR","Apple SD Gothic Neo",Arial,sans-serif;
+    color:var(--text);
+    letter-spacing:-.025em;
+  }
+  .deck{
+    width:min(1280px,100%);
+    margin:0 auto;
+    background:#fff;
+    box-shadow:0 16px 45px rgba(16,35,58,.16);
+  }
+  .slide{
+    position:relative;
+    min-height:720px;
+    padding:54px 66px 48px;
+    background:#fff;
+    border-bottom:1px solid var(--line);
+    overflow:hidden;
+    page-break-after:always;
+  }
+  .slide.dark{
+    color:#fff;
+    background:
+      linear-gradient(rgba(8,28,53,.86),rgba(8,28,53,.92)),
+      linear-gradient(135deg,#123963,#0a203b);
+  }
+  .slide.dark:after{
+    content:"";
+    position:absolute;
+    width:560px;height:560px;
+    right:-250px;top:-220px;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,.12);
+    box-shadow:0 0 0 48px rgba(255,255,255,.025),0 0 0 96px rgba(255,255,255,.018);
+  }
+  .head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    position:relative;
+    z-index:2;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-size:18px;
+    font-weight:800;
+    color:var(--navy);
+  }
+  .dark .brand{color:#fff}
+  .logo{
+    width:42px;height:42px;
+    display:grid;place-items:center;
+    border-radius:6px;
+    background:var(--navy);
+    color:#fff;
+    font-weight:900;
+    letter-spacing:-.05em;
+  }
+  .dark .logo{
+    background:#fff;
+    color:var(--navy);
+  }
+  .docmeta{
+    font-size:12px;
+    color:var(--muted);
+    letter-spacing:.06em;
+  }
+  .dark .docmeta{color:rgba(255,255,255,.6)}
+  .section-no{
+    margin-top:58px;
+    font-size:12px;
+    font-weight:800;
+    color:var(--blue);
+    letter-spacing:.12em;
+  }
+  .dark .section-no{color:#8dc2f0}
+  h1,h2,h3,p{margin:0}
+  h1{
+    position:relative;
+    z-index:2;
+    max-width:930px;
+    margin-top:18px;
+    font-size:42px;
+    line-height:1.18;
+    letter-spacing:-.06em;
+  }
+  h2{
+    margin-top:12px;
+    max-width:940px;
+    color:var(--navy);
+    font-size:39px;
+    line-height:1.28;
+    letter-spacing:-.05em;
+  }
+  .dark h2{color:#fff}
+  h3{
+    color:var(--navy);
+    font-size:21px;
+    line-height:1.35;
+  }
+  .dark h3{color:#fff}
+  .lead{
+    margin-top:22px;
+    max-width:900px;
+    font-size:18px;
+    line-height:1.75;
+    color:#46586b;
+  }
+  .dark .lead{color:rgba(255,255,255,.74)}
+  .cover-copy{
+    position:relative;
+    z-index:2;
+    max-width:840px;
+    margin-top:25px;
+    font-size:21px;
+    line-height:1.7;
+    color:rgba(255,255,255,.76);
+  }
+  .cover-info{
+    position:absolute;
+    left:66px;right:66px;bottom:72px;
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:0;
+    z-index:2;
+    border-top:1px solid rgba(255,255,255,.22);
+  }
+  .cover-info div{
+    padding:24px 24px 0 0;
+  }
+  .cover-info div+div{
+    padding-left:28px;
+    border-left:1px solid rgba(255,255,255,.17);
+  }
+  .cover-info strong{
+    display:block;
+    font-size:26px;
+    margin-bottom:6px;
+  }
+  .cover-info span{
+    font-size:13px;
+    line-height:1.5;
+    color:rgba(255,255,255,.62);
+  }
+  .statement{
+    margin-top:34px;
+    border-top:2px solid var(--navy);
+    border-bottom:1px solid var(--line);
+    padding:25px 0;
+    color:var(--navy);
+    font-size:25px;
+    line-height:1.55;
+    font-weight:800;
+  }
+  .cols2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:24px;
+    margin-top:34px;
+  }
+  .cols3{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+    margin-top:34px;
+  }
+  .block{
+    border-top:3px solid var(--navy);
+    background:var(--light);
+    padding:24px 24px 26px;
+    min-height:180px;
+  }
+  .block .label{
+    font-size:12px;
+    font-weight:800;
+    color:var(--blue);
+    margin-bottom:13px;
+    letter-spacing:.06em;
+  }
+  .block p{
+    margin-top:10px;
+    color:var(--muted);
+    line-height:1.62;
+    font-size:15px;
+  }
+  .plain{
+    padding:0 4px 0 0;
+  }
+  .plain+ .plain{
+    border-left:1px solid var(--line);
+    padding-left:28px;
+  }
+  ul{
+    margin:16px 0 0;
+    padding:0;
+    list-style:none;
+  }
+  li{
+    position:relative;
+    padding:9px 0 9px 21px;
+    border-bottom:1px solid #e2e8ee;
+    color:#445365;
+    line-height:1.45;
+    font-size:15px;
+  }
+  li:before{
+    content:"";
+    position:absolute;
+    left:0;top:16px;
+    width:6px;height:6px;
+    border-radius:50%;
+    background:var(--blue);
+  }
+  .danger li:before{background:var(--red)}
+  .compare{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    margin-top:34px;
+    border:1px solid var(--line);
+  }
+  .compare>div{
+    padding:28px;
+    min-height:380px;
+  }
+  .compare>div+div{border-left:1px solid var(--line)}
+  .compare .weak{background:#fbf7f7}
+  .compare .strong{background:#f5f8fb}
+  .compare .tag{
+    display:inline-block;
+    margin-bottom:16px;
+    padding:6px 9px;
+    border-radius:4px;
+    font-size:11px;
+    font-weight:800;
+    color:#fff;
+  }
+  .weak .tag{background:var(--red)}
+  .strong .tag{background:var(--navy)}
+  .diagram{
+    display:grid;
+    grid-template-columns:1fr 48px 1fr 48px 1fr 48px 1fr;
+    align-items:center;
+    margin-top:38px;
+  }
+  .node{
+    min-height:132px;
+    border:1px solid var(--line);
+    border-top:3px solid var(--navy);
+    background:#fff;
+    padding:22px;
+    text-align:center;
+  }
+  .node strong{
+    display:block;
+    color:var(--navy);
+    font-size:18px;
+    margin-bottom:9px;
+  }
+  .node span{
+    color:var(--muted);
+    font-size:13px;
+    line-height:1.5;
+  }
+  .arrow{text-align:center;color:var(--blue);font-weight:900}
+  table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:30px;
+    border-top:2px solid var(--navy);
+    border-bottom:1px solid var(--navy);
+  }
+  th,td{
+    padding:16px 17px;
+    text-align:left;
+    border-bottom:1px solid var(--line);
+    font-size:15px;
+    vertical-align:middle;
+  }
+  th{
+    background:#eef3f7;
+    color:var(--navy);
+    font-weight:800;
+  }
+  tr:last-child td{border-bottom:none}
+  td.price{
+    color:var(--navy);
+    font-size:21px;
+    font-weight:900;
+    white-space:nowrap;
+  }
+  .note{
+    margin-top:20px;
+    color:var(--muted);
+    font-size:13px;
+    line-height:1.6;
+  }
+  .risk-callout{
+    margin-top:30px;
+    padding:24px 26px;
+    background:#f7f3ee;
+    border-left:4px solid #9a6b38;
+    color:#5d4a36;
+    font-size:16px;
+    line-height:1.65;
+  }
+  .roadmap{
+    margin-top:38px;
+    border-top:2px solid var(--navy);
+  }
+  .road-row{
+    display:grid;
+    grid-template-columns:120px 190px 1fr;
+    gap:18px;
+    padding:18px 0;
+    border-bottom:1px solid var(--line);
+    align-items:start;
+  }
+  .road-row .week{
+    font-weight:900;
+    color:var(--blue);
+  }
+  .road-row strong{
+    color:var(--navy);
+  }
+  .road-row span{
+    color:var(--muted);
+    line-height:1.5;
+    font-size:14px;
+  }
+  .offer{
+    display:grid;
+    grid-template-columns:.9fr 1.1fr;
+    gap:30px;
+    margin-top:38px;
+  }
+  .offer-price{
+    background:var(--navy);
+    color:#fff;
+    padding:32px;
+    min-height:330px;
+  }
+  .offer-price small{
+    display:block;
+    color:rgba(255,255,255,.58);
+    font-size:12px;
+    letter-spacing:.08em;
+    margin-bottom:18px;
+  }
+  .offer-price b{
+    display:block;
+    font-size:47px;
+    line-height:1.1;
+    margin-bottom:15px;
+  }
+  .offer-price p{
+    color:rgba(255,255,255,.7);
+    font-size:14px;
+    line-height:1.6;
+  }
+  .offer-detail{
+    border-top:2px solid var(--navy);
+    padding-top:22px;
+  }
+  .offer-detail li{font-size:16px}
+  .decision{
+    margin-top:30px;
+    padding:27px;
+    background:var(--light);
+    border:1px solid var(--line);
+  }
+  .decision strong{
+    display:block;
+    color:var(--navy);
+    font-size:22px;
+    margin-bottom:10px;
+  }
+  .decision p{
+    color:#526173;
+    font-size:16px;
+    line-height:1.65;
+  }
+  .contact{
+    margin-top:38px;
+    border-top:1px solid rgba(255,255,255,.24);
+    padding-top:24px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+    color:rgba(255,255,255,.68);
+    font-size:14px;
+    line-height:1.7;
+    position:relative;
+    z-index:2;
+  }
+  .footer{
+    position:absolute;
+    left:66px;right:66px;bottom:24px;
+    display:flex;
+    justify-content:space-between;
+    color:#8d99a8;
+    font-size:11px;
+  }
+  .dark .footer{color:rgba(255,255,255,.42)}
+  .print{
+    position:fixed;
+    right:18px;bottom:18px;
+    z-index:99;
+    background:var(--navy);
+    color:#fff;
+    padding:10px 14px;
+    border-radius:4px;
+    font-size:12px;
+    box-shadow:0 8px 20px rgba(0,0,0,.2);
+  }
+  @media(max-width:900px){
+    .slide{padding:36px 24px;min-height:auto}
+    h1{font-size:40px}
+    h2{font-size:30px}
+    .cover-info,.cols2,.cols3,.compare,.offer,.diagram{grid-template-columns:1fr;position:relative;left:auto;right:auto;bottom:auto}
+    .cover-info div+div,.plain+.plain,.compare>div+div{border-left:none;padding-left:0}
+    .arrow{transform:rotate(90deg);padding:8px}
+    .road-row{grid-template-columns:80px 1fr}
+    .road-row span{grid-column:2}
+    .footer{display:none}
+  }
+  @page{size:A4 landscape;margin:0}
+  @media print{
+    *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important}
+    html,body{width:297mm;height:210mm;margin:0;padding:0;background:#fff}
+    .deck{width:297mm;box-shadow:none}
+    .slide{
+      width:297mm !important;
+      height:210mm !important;
+      min-height:0 !important;
+      max-height:210mm !important;
+      overflow:hidden;
+      border:0 !important;
+      page-break-after:always;
+      break-after:page;
+      box-sizing:border-box;
+      padding:40px 54px 36px;
+    }
+    .print{display:none}
+  }
+</style>
+</head>
+<body>
+<div class="print">인쇄 → PDF 저장</div>
+<main class="deck">
+
+<section class="slide dark">
+  <div class="head">
+    <div class="brand"><div class="logo">DY</div>대양전자 <span style="font-weight:500;opacity:.7">DAEYANG Electronics</span></div>
+    <div class="docmeta">DEVELOPMENT & MASS PRODUCTION PROPOSAL</div>
+  </div>
+  <div class="section-no">LoRa GYRO SENSOR DEVICE</div>
+  <h1>LoRa 기반 자이로 센서 단말기<br>개발 및 양산 제안</h1>
+  <p class="cover-copy">
+    시제품 구현에 그치지 않고, 양산 이후에도 안정적으로 사용할 수 있는 제품을 목표로
+    하드웨어·펌웨어·생산 검증을 함께 수행합니다.
+  </p>
+  <p style="position:relative;z-index:2;margin-top:14px;font-size:18px;color:rgba(255,255,255,.8);">대양전자 홈페이지 : <a href="https://daeyang-elec.com/" target="_blank" style="color:rgba(255,255,255,.8);text-decoration:underline;">https://daeyang-elec.com/</a></p>
+  <div class="cover-info">
+    <div><strong>1994년 설립</strong><span>30년 이상 축적된 MCU·임베디드 개발 경험</span></div>
+    <div><strong>HW + FW</strong><span>회로·PCB·펌웨어를 포함한 일괄 개발</span></div>
+    <div><strong>시제품 20대</strong><span>초기 검증 및 양산 전환을 위한 실물 제작</span></div>
+  </div>
+  <div class="footer"><span>대양전자 제안서</span><span>01</span></div>
+</section>
+
+<section class="slide">
+  <div class="head">
+    <div class="brand"><div class="logo">DY</div>대양전자</div>
+    <div class="docmeta">01. 제안 배경</div>
+  </div>
+  <div class="section-no">PROJECT VIEW</div>
+  <h2>’시제품 동작’ 아닌 ‘양산 후 안정’ 기준</h2>
+  <p class="lead">
+    LoRa 통신과 자이로 센서가 적용된 단말기는 통신 거리, 센서 데이터 편차,
+    전원 안정성, 펌웨어 예외 처리 등 여러 요소가 동시에 맞아야 합니다.
+    초기 단계에서 검증이 부족하면 양산 이후 현장에서 원인을 찾기 어렵고,
+    이미 생산된 제품을 회수하거나 수정하는 비용이 발생할 수 있습니다.
+  </p>
+  <div class="statement">
+    초기 개발비의 차이보다, 양산 이후 발생할 수 있는 불량과 재작업 비용이 사업 전체에 더 큰 영향을 줍니다.
+  </div>
+  <div class="cols3">
+    <div class="block"><div class="label">통신 안정성</div><h3>현장 조건에 따른 RF 성능</h3><p>거리, 장애물, 안테나 배치, 송신 주기 등을 실제 사용 조건에 맞춰 검토합니다.</p></div>
+    <div class="block"><div class="label">센서 신뢰성</div><h3>자이로 데이터의 일관성</h3><p>노이즈, 드리프트, 오검출 가능성을 고려해 데이터 처리 로직을 설계합니다.</p></div>
+    <div class="block"><div class="label">양산 품질</div><h3>제품 간 편차 관리</h3><p>검사 항목과 기준을 정리해 시제품 이후 양산 품질의 편차를 줄입니다.</p></div>
+  </div>
+  <div class="footer"><span>Project View</span><span>02</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="head">
+    <div class="brand"><div class="logo">DY</div>대양전자</div>
+    <div class="docmeta">03. 대양전자 역량</div>
+  </div>
+  <div class="section-no">COMPANY CAPABILITY</div>
+  <h2>30년 개발 경험 · 무선 · 센서 · MCU · 임베디드</h2>
+  <p class="lead">
+    대양전자는 MCU 및 임베디드 소프트웨어·하드웨어 개발을 기반으로
+    무선통신 기기, 무선 화재감지 시스템, 수위센서 및 각종 컨트롤러 보드 등
+    다양한 전자제품을 개발해 왔습니다.
+  </p>
+  <div class="cols3">
+    <div class="block"><div class="label">무선통신</div><h3>VHF/UHF 및 RF 기반 제품</h3><p>무전기와 무선 화재감지 시스템 개발 경험을 바탕으로 통신 안정성을 검토합니다.</p></div>
+    <div class="block"><div class="label">센서·계측</div><h3>센서 데이터와 제어 시스템</h3><p>수위센서, 계측, 컨트롤러 제품 경험을 통해 신뢰성 있는 센서 처리 구조를 설계합니다.</p></div>
+    <div class="block"><div class="label">임베디드</div><h3>회로·PCB·펌웨어 통합 개발</h3><p>MCU 펌웨어부터 회로와 PCB까지 한 업체가 일관되게 관리합니다.</p></div>
+  </div>
+  <div class="cols2">
+    <div class="plain">
+      <h3>본 프로젝트에 적용되는 기술</h3>
+      <ul>
+        <li>LoRa 송수신 및 통신 예외 처리</li>
+        <li>자이로 센서 데이터 취득과 필터링</li>
+        <li>MCU 저전력 제어 및 상태 관리</li>
+        <li>PCB 설계와 안테나·전원 조건 검토</li>
+      </ul>
+    </div>
+    <div class="plain">
+      <h3>대양전자와 진행할 때의 장점</h3>
+      <ul>
+        <li>외부 개발자 조합이 아닌 단일 책임 체계</li>
+        <li>개발 단계부터 양산성과 생산 단가 동시 검토</li>
+        <li>부품 단종 및 대체 부품 대응 가능</li>
+        <li>납품 이후 발생하는 기술 문제의 원인 분석 가능</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer"><span>Company Capability</span><span>03</span></div>
+</section>
+
+<section class="slide">
+  <div class="head">
+    <div class="brand"><div class="logo">DY</div>대양전자</div>
+    <div class="docmeta">04. 개발 범위</div>
+  </div>
+  <div class="section-no">SCOPE OF WORK</div>
+  <h2>설계 · 시제품 20대 · 양산 준비, 일괄 수행</h2>
+  <div class="diagram">
+    <div class="node"><strong>자이로 센서</strong><span>움직임·각속도 데이터 수집</span></div>
+    <div class="arrow">→</div>
+    <div class="node"><strong>MCU / 펌웨어</strong><span>데이터 처리·이벤트 판단·저전력 제어</span></div>
+    <div class="arrow">→</div>
+    <div class="node"><strong>LoRa 통신</strong><span>장거리 데이터 송수신 및 오류 처리</span></div>
+    <div class="arrow">→</div>
+    <div class="node"><strong>수신 시스템 연계</strong><span>게이트웨이 또는 후속 시스템 확장</span></div>
+  </div>
+  <div class="cols2">
+    <div class="plain">
+      <h3>개발 포함 항목</h3>
+      <ul>
+        <li>MCU, LoRa 모듈, 자이로 센서 및 주요 부품 선정</li>
+        <li>회로 설계, PCB 설계, 전원부 및 보호회로 구성</li>
+        <li>센서 데이터 처리 및 LoRa 송수신 펌웨어 개발</li>
+        <li>시제품 20대 부품 조달, 생산 및 기본 기능 검사</li>
+        <li>양산용 BOM 정리 및 수량별 단가 산정</li>
+      </ul>
+    </div>
+    <div class="plain">
+      <h3>별도 협의 항목</h3>
+      <ul>
+        <li>KC, 전파, EMC 등 인증 및 시험기관 비용</li>
+        <li>금형 및 양산용 사출 케이스 개발</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer"><span>Scope of Work</span><span>04</span></div>
+</section>
+
+<section class="slide">
+  <div class="head">
+    <div class="brand"><div class="logo">DY</div>대양전자</div>
+    <div class="docmeta">05. 생산 단가 시뮬레이션</div>
+  </div>
+  <div class="section-no">MASS PRODUCTION COST</div>
+  <h2>경쟁력 있는 단가 · 품질 · 책임 모두</h2>
+  <p class="lead">
+    동일한 BOM과 생산 조건이 확정되는 경우, 대양전자 역시 경쟁사와 유사한 수준의
+    생산 단가를 목표로 부품 구매와 생산 공정을 구성할 수 있습니다.
+    저희의 예상 BOM 및 예상 단가는 아래와 같습니다.
+  </p>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:175px">항목</th>
+        <th style="text-align:right">1대 (예상)</th>
+        <th style="text-align:right">1,000대 (예상)</th>
+        <th style="text-align:right">3,000대 (예상)</th>
+        <th style="text-align:right">10,000대 (예상)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Wio-E5 모듈</strong></td><td style="text-align:right">13,416원</td><td style="text-align:right">11,500원</td><td style="text-align:right">10,200원</td><td style="text-align:right">9,000원</td></tr>
+      <tr><td><strong>MPU6050</strong></td><td style="text-align:right">1,500원</td><td style="text-align:right">1,200원</td><td style="text-align:right">1,000원</td><td style="text-align:right">800원</td></tr>
+      <tr><td><strong>Li-ion 5,000mAh</strong></td><td style="text-align:right">7,000원</td><td style="text-align:right">6,200원</td><td style="text-align:right">5,700원</td><td style="text-align:right">5,200원</td></tr>
+      <tr><td><strong>PCB</strong></td><td style="text-align:right">6,000원</td><td style="text-align:right">2,200원</td><td style="text-align:right">1,900원</td><td style="text-align:right">1,600원</td></tr>
+      <tr><td><strong>920MHz 안테나</strong></td><td style="text-align:right">6,000원</td><td style="text-align:right">6,000원</td><td style="text-align:right">5,000원</td><td style="text-align:right">4,000원</td></tr>
+      <tr><td><strong>전원부</strong></td><td style="text-align:right">1,200원</td><td style="text-align:right">1,000원</td><td style="text-align:right">900원</td><td style="text-align:right">800원</td></tr>
+      <tr><td><strong>수동소자/커넥터</strong></td><td style="text-align:right">3,000원</td><td style="text-align:right">2,200원</td><td style="text-align:right">1,900원</td><td style="text-align:right">1,600원</td></tr>
+      <tr><td><strong>케이스</strong></td><td style="text-align:right">4,000원</td><td style="text-align:right">2,700원</td><td style="text-align:right">2,300원</td><td style="text-align:right">2,000원</td></tr>
+      <tr><td><strong>SMT</strong></td><td style="text-align:right">10,000원</td><td style="text-align:right">2,700원</td><td style="text-align:right">2,400원</td><td style="text-align:right">2,100원</td></tr>
+      <tr><td style="color:var(--navy);font-weight:900">예상단가 합계</td><td class="price" style="text-align:right">52,116원</td><td class="price" style="text-align:right">35,700원</td><td class="price" style="text-align:right">31,300원</td><td class="price" style="text-align:right">27,100원</td></tr>
+    </tbody>
+  </table>
+  <div class="note">
+    ※ 상기 단가는 사업성 검토를 위한 예상치이며, 최종 BOM, 배터리·케이스·안테나 사양,
+    검사 및 포장 조건, 환율과 부품 수급 상황에 따라 조정됩니다.
+  </div>
+  <div class="decision">
+    <strong>대양전자의 가격 제안 원칙</strong>
+    <p>낮은 단가만 제시한 뒤 개발 완료 후 비용을 추가하는 방식이 아니라, 사양과 생산 조건을 명확히 한 뒤 실제 양산 가능한 기준으로 견적을 제시합니다.</p>
+  </div>
+  <div class="footer"><span>Mass Production Cost</span><span>05</span></div>
+</section>
+
+<section class="slide">
+  <div class="head">
+    <div class="brand"><div class="logo">DY</div>대양전자</div>
+    <div class="docmeta">06. 개발 제안 금액</div>
+  </div>
+  <div class="section-no">COMMERCIAL PROPOSAL</div>
+  <h2>개발비 · 완성도 · 양산 이후 비용, 함께 판단하십시오</h2>
+  <div class="offer">
+    <div class="offer-price">
+      <small>개발 및 시제품 제작 제안금액</small>
+      <b>12,000,000원</b>
+      <p>부가가치세 별도<br>시제품 20대 부품비 및 제작비 포함</p>
+    </div>
+    <div class="offer-detail">
+      <h3>제안금액 포함 범위</h3>
+      <ul>
+        <li>LoRa 자이로 센서 단말기 하드웨어 설계</li>
+        <li>PCB 설계 및 펌웨어 개발</li>
+        <li>시제품 20대 부품비, 조립 및 기본 검사</li>
+        <li>개발 단계의 오류 수정 및 개선 반영</li>
+        <li>양산용 BOM 및 수량별 생산 단가 검토</li>
+      </ul>
+    </div>
+  </div>
+  <div class="statement">
+    대양전자는 단순히 개발 결과물을 납품하는 업체가 아니라, 생산 이후의 문제까지 함께 검토할 수 있는 전자제품 개발 파트너입니다.
+  </div>
+  <div class="footer"><span>Commercial Proposal</span><span>06</span></div>
+</section>
+
+<section class="slide">
+  <div class="head">
+    <div class="brand"><div class="logo">DY</div>대양전자</div>
+    <div class="docmeta">07. 예상 일정</div>
+  </div>
+  <div class="section-no">PROJECT SCHEDULE</div>
+  <h2>사양 확정 후 10~12주, 시제품 20대 납품</h2>
+  <div class="roadmap">
+    <div class="road-row"><div class="week">1~2주</div><strong>사양 확정</strong><span>사용 환경, 통신 거리, 센서 동작 조건, 전원 및 외형 조건 정의</span></div>
+    <div class="road-row"><div class="week">3~8주</div><strong>회로·PCB·펌웨어 개발</strong><span>주요 부품 선정, 회로 및 PCB 설계, 센서·LoRa 기능 구현</span></div>
+    <div class="road-row"><div class="week">9~10주</div><strong>1차 시제품 검증</strong><span>PCB 제작·조립, 통신 및 센서 테스트, 발견 이슈 수정</span></div>
+    <div class="road-row"><div class="week">11주</div><strong>시제품 20대 생산</strong><span>개선사항 반영, 제품 생산, 기본 기능 검사 및 불량 선별</span></div>
+    <div class="road-row"><div class="week">12주</div><strong>승인 및 양산 협의</strong><span>시제품 검수, BOM 정리, 생산 수량과 양산 조건 확정</span></div>
+  </div>
+  <div class="note">※ 주요 부품 납기, PCB 제작 일정, 케이스 사양 및 요구사항 확정 시점에 따라 전체 일정은 조정될 수 있습니다.</div>
+  <div class="footer"><span>Project Schedule</span><span>07</span></div>
+</section>
+
+<section class="slide dark">
+  <div class="head">
+    <div class="brand"><div class="logo">DY</div>대양전자 <span style="font-weight:500;opacity:.7">DAEYANG Electronics</span></div>
+    <div class="docmeta">FINAL PROPOSAL</div>
+  </div>
+  <div class="section-no">RECOMMENDATION</div>
+  <h2>가격 · 품질 · 책임, 세 가지 모두</h2>
+  <p class="lead">
+    대양전자는 1994년부터 축적한 MCU·임베디드·무선통신·센서 제품 개발 경험을 바탕으로,
+    본 프로젝트를 단순 시제품이 아닌 실제 사업에 사용할 수 있는 제품으로 완성하겠습니다.
+  </p>
+  <div class="statement" style="color:#fff;border-top-color:#fff;border-bottom-color:rgba(255,255,255,.24)">
+    제품은 생산 이후 수정하기 어렵습니다. 처음 설계할 때 제대로 검토하는 것이 가장 현실적인 비용 절감입니다.
+  </div>
+
+  <div style="margin-top:34px;padding:28px 32px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);position:relative;z-index:2">
+    <div style="font-size:13px;font-weight:700;letter-spacing:.12em;color:rgba(255,255,255,.6);margin-bottom:10px;">FINAL CONCLUSION</div>
+    <h3 style="font-size:28px;margin-bottom:18px;color:#fff;">본 프로젝트는 개발비만으로 판단하기보다<br>양산 후 책임까지 포함해 판단해야 합니다.</h3>
+
+    <div style="font-size:20px;font-weight:700;margin-bottom:14px;color:#fff;">대양전자 제안의 결론</div>
+
+    <p style="font-size:17px;line-height:1.9;color:rgba(255,255,255,.82);margin-bottom:18px;">
+      대양전자는 경쟁 가능한 양산 단가를 기반으로,
+      무선통신·센서·MCU·하드웨어 개발 경험을 결합하여
+      실제 현장에서 안정적으로 사용할 수 있는
+      <strong style="color:#fff;">LoRa 자이로 센서 단말기</strong>를 개발하겠습니다.
+    </p>
+
+    <p style="font-size:17px;line-height:1.9;color:rgba(255,255,255,.82);">
+      초기 비용 절감보다 중요한 것은 생산 이후 발생할 수 있는 문제를 사전에 줄이는 것입니다.
+      대양전자는 1994년부터 축적한 개발 경험과 책임 있는 생산 대응으로
+      본 프로젝트의 안정적인 파트너가 되겠습니다.
+    </p>
+  </div>
+
+  <div class="contact">
+    <div>
+      <strong style="color:#fff">대양전자</strong><br>
+      인천광역시 동구 방축로37번길 30<br>
+      인천산업유통센터 8동 314호
+    </div>
+    <div>
+      Tel. 010-3717-2207<br>
+      Email. dye2000g@gmail.com<br>
+      daeyang-elec.com
+    </div>
+  </div>
+  <div class="footer"><span>DAEYANG Electronics</span><span>08</span></div>
+</section>
+
+</main>
+</body>
+</html>
