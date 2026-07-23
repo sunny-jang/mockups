@@ -136,6 +136,10 @@
       background:#fbf6e8; font-size:20px; font-weight:900;
     }
     .total-row td:last-child { color:var(--gold-deep); font-size:26px; }
+    .discount-row td { background:#f0f7ff; color:#2d6fc4; font-weight:700; }
+    .discount-row td:last-child { text-align:right; }
+    .subtotal-row td { background:#f6f4ef; font-weight:700; color:#555; }
+    .subtotal-row td:last-child { text-align:right; }
     .note { margin:12px 0 0; color:var(--muted); font-size:13px; }
     .timeline {
       display:grid; grid-template-columns:repeat(4,1fr); gap:12px;
@@ -314,10 +318,14 @@
             <thead><tr><th>항목</th><th>내용</th><th>금액</th></tr></thead>
             <tbody>
               <tr><td>메인 페이지</td><td>신규 메인 화면 및 공통 레이아웃 제작</td><td>200,000원</td></tr>
-              <tr><td>서브페이지 패키지</td><td>보험별 서브페이지 8P + 공통 템플릿 적용</td><td>100,000원</td></tr>
-              <tr><td>반응형·공통 기능</td><td>태블릿/모바일, FAQ, 팝업, 슬라이더, 상담폼 UI</td><td>포함</td></tr>
+              <tr><td>서브페이지 5P (동일 템플릿)</td><td>태아·어린이·암·종합·간병 — 3P당 80,000원 × 2</td><td>160,000원</td></tr>
+              <tr><td>서브페이지 3P (신규 레이아웃)</td><td>운전자·펫·화재 — 1P당 50,000원 × 3</td><td>150,000원</td></tr>
+              <tr><td>개인정보 동의 팝업</td><td>팝업 1개</td><td>20,000원</td></tr>
+              <tr><td>반응형·공통 기능</td><td>태블릿/모바일, FAQ, 슬라이더, 상담폼 UI</td><td>포함</td></tr>
               <tr><td>기본 SEO 설정</td><td>메타태그, OG, 시멘틱 마크업, 이미지 alt</td><td>포함</td></tr>
-              <tr class="total-row"><td colspan="2">총 제작비</td><td>300,000원</td></tr>
+              <tr class="subtotal-row"><td colspan="2">정가 합계</td><td>530,000원</td></tr>
+              <tr class="discount-row"><td colspan="2">할인 적용 (신규 클라이언트 프로모션)</td><td>−230,000원</td></tr>
+              <tr class="total-row"><td colspan="2">최종 제작비</td><td>300,000원</td></tr>
             </tbody>
           </table>
         </div>
