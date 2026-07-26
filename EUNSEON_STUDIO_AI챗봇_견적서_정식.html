@@ -1,0 +1,612 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>EUNSEON STUDIO AI 챗봇 개발 견적서</title>
+<meta name="description" content="교육용 룰 베이스형 및 AI RAG 챗봇 개발 비교 견적서" />
+<style>
+:root{--ink:#171717;--muted:#6d6d6d;--line:#dedbd4;--paper:#fff;--soft:#f6f4ef;--gold:#c99a1a;--gold-deep:#9f7411}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#ece9e2;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Noto Sans KR","Apple SD Gothic Neo",Arial,sans-serif;line-height:1.65;word-break:keep-all}
+.toolbar{position:sticky;top:0;z-index:10;display:flex;justify-content:flex-end;gap:10px;padding:12px 18px;background:rgba(20,20,20,.92);backdrop-filter:blur(10px)}
+.toolbar button{border:1px solid rgba(255,255,255,.25);background:#fff;color:#111;padding:10px 16px;border-radius:999px;font-weight:700;cursor:pointer}
+.toolbar .secondary{background:transparent;color:#fff}
+.page{width:min(1120px,calc(100% - 32px));margin:28px auto 60px;background:var(--paper);box-shadow:0 28px 80px rgba(0,0,0,.12);border-radius:24px;overflow:hidden}
+.hero{position:relative;min-height:420px;padding:64px 72px;display:grid;grid-template-columns:1.2fr .8fr;align-items:center;background:radial-gradient(circle at 83% 20%,rgba(201,154,26,.18),transparent 28%),linear-gradient(135deg,#111 0%,#1c1c1c 70%,#232323 100%);color:#fff}
+.hero:after{content:"";position:absolute;inset:auto -90px -110px auto;width:320px;height:320px;border:1px solid rgba(255,255,255,.08);border-radius:50%}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:13px;letter-spacing:.15em;text-transform:uppercase;color:#e2bd53;font-weight:800}
+.eyebrow:before{content:"";width:34px;height:1px;background:#e2bd53}
+h1{margin:18px 0 16px;font-size:clamp(38px,6vw,74px);line-height:1.08;letter-spacing:-.04em}
+.hero p{margin:0;color:#d7d7d7;font-size:18px}
+.logo-wrap{justify-self:end;align-self:start;width:auto;display:block;padding:18px 0 0 28px;text-align:right;background:transparent;box-shadow:none;border-radius:0}
+.brand-logo{display:flex;flex-direction:column;align-items:center;gap:0}
+.brand-wordmark{font-weight:950;letter-spacing:.18em;font-size:21px;line-height:1.15;color:#fff}
+.brand-wordmark small{display:block;margin-top:9px;font-size:9px;letter-spacing:.26em;color:#e2bd53;font-weight:800}
+.meta-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border-bottom:1px solid var(--line)}
+.meta-item{background:#fff;padding:22px 26px}
+.meta-item span{display:block;color:var(--muted);font-size:12px;font-weight:700;letter-spacing:.08em}
+.meta-item strong{display:block;margin-top:4px;font-size:16px}
+main{padding:54px 72px 72px}
+section{margin-top:52px}
+section:first-child{margin-top:0}
+.section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:22px}
+.section-head h2{margin:0;font-size:28px;letter-spacing:-.03em}
+.section-no{color:var(--gold);font-size:13px;font-weight:900;letter-spacing:.18em}
+.lead{font-size:17px;color:#444;background:var(--soft);border-left:4px solid var(--gold);padding:18px 20px;border-radius:0 14px 14px 0}
+.scope-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.card{border:1px solid var(--line);border-radius:18px;padding:22px;background:#fff}
+.card h3{margin:0 0 8px;font-size:17px}
+.card p{margin:0;color:var(--muted);font-size:14px}
+.card ul{margin:10px 0 0;padding-left:20px}
+.card li{margin:5px 0;color:#4e4e4e}
+.price{font-size:30px;font-weight:900;color:var(--gold-deep);margin:8px 0}
+.badge{display:inline-block;padding:4px 9px;border-radius:999px;background:#171717;color:#fff;font-size:11px;font-weight:800;letter-spacing:.08em}
+.quote-box{border:1px solid var(--line);border-radius:20px;overflow:hidden}
+table{width:100%;border-collapse:collapse}
+th,td{padding:18px 20px;text-align:left;border-bottom:1px solid var(--line)}
+th{background:#171717;color:#fff;font-size:14px}
+td:last-child,th:last-child{text-align:right}
+tr:last-child td{border-bottom:0}
+.total-row td{background:#fbf6e8;font-size:20px;font-weight:900}
+.total-row td:last-child{color:var(--gold-deep);font-size:26px}
+.subtotal-row td{background:#f6f4ef;font-weight:700;color:#555}
+.subtotal-row td:last-child{text-align:right}
+.group-head td{background:#f0f0f0;font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.08em;padding:10px 20px}
+.table-blue th{background:#1e4fc2}
+.addon-card{border:2px dashed #1e4fc2;border-radius:18px;padding:22px 26px;background:#f5f8ff;margin-top:14px}
+.addon-card h3{margin:8px 0 4px;font-size:17px}
+.addon-card p{margin:0;color:var(--muted);font-size:14px}
+.addon-card ul{margin:10px 0 0;padding-left:20px}
+.addon-card li{margin:5px 0;color:#4e4e4e}
+.sim-features{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.sim-feature-card{background:#fff;border:1px solid #c5d8ff;border-radius:14px;padding:18px 20px}
+.sim-feature-no{font-size:11px;font-weight:900;letter-spacing:.12em;color:#1e4fc2;margin-bottom:6px}
+.sim-feature-card h4{margin:0 0 8px;font-size:15px;font-weight:800;color:var(--ink)}
+.sim-feature-card p{margin:0;font-size:13px;color:#555;line-height:1.6}
+.badge-blue{background:#1e4fc2}
+.price-blue{font-size:26px;font-weight:900;color:#1e4fc2;margin:8px 0}
+.addon-note{font-size:13px;color:#1e4fc2;font-weight:700;margin-top:10px!important}
+.addon-section-head{display:flex;justify-content:space-between;align-items:center;margin:28px 0 14px}
+.addon-section-head h3{margin:0;font-size:20px;letter-spacing:-.02em}
+.total-row-combined td{background:#1e4fc2;color:#fff;font-size:20px;font-weight:900}
+.total-row-combined td:last-child{text-align:right;font-size:24px}
+.discount-row td{background:#e8f0fe;color:#1e4fc2;font-weight:700}
+.discount-row td:last-child{text-align:right}
+.addon-price-grid{display:flex;gap:20px;margin-top:14px;flex-wrap:wrap}
+.addon-price-item{flex:1;min-width:140px}
+.addon-price-item .label{font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.06em;display:block;margin-bottom:4px}
+.addon-price-item .amount{font-size:22px;font-weight:900;color:#1e4fc2}
+.addon-price-item .sub{font-size:12px;color:#1e4fc2;font-weight:700;margin-top:2px}
+.addon-price-divider{width:1px;background:var(--line);align-self:stretch}
+.price-compare{margin-top:16px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.price-compare-header{display:grid;grid-template-columns:1.2fr 1fr 1fr;background:#f0f0f0;padding:10px 16px;font-size:11px;font-weight:800;color:var(--muted);letter-spacing:.08em}
+.price-compare-row{display:grid;grid-template-columns:1.2fr 1fr 1fr;padding:14px 16px;border-top:1px solid var(--line);align-items:center;transition:background .15s}
+.price-compare-row:hover{background:#f9f9f9}
+.pc-option{font-weight:800;font-size:14px;color:var(--ink)}
+.pc-option small{display:block;font-weight:400;font-size:12px;color:var(--muted);margin-top:2px}
+.pc-base{font-weight:700;font-size:15px;color:#555}
+.pc-total{font-weight:900;font-size:16px;color:#1e4fc2}
+.pc-sub{font-size:11px;color:#1e4fc2;font-weight:600;margin-top:3px}
+.quote-2col{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+.quote-4col{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;align-items:start}
+@media(max-width:520px){.quote-4col{grid-template-columns:1fr}}
+.q-card{border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.06)}
+.q-card-head{padding:24px 26px;background:#171717;color:#fff}
+.q-card-head.blue{background:#163399}
+.q-card-option{font-size:12px;font-weight:800;letter-spacing:.12em;color:rgba(255,255,255,.5);text-transform:uppercase;margin-bottom:14px}
+.q-card-prices{display:flex;gap:10px}
+.q-card-base,.q-card-addon{flex:1;background:rgba(255,255,255,.09);border-radius:10px;padding:12px 14px}
+.q-card-addon{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.22)}
+.q-card-base span,.q-card-addon span{display:block;font-size:10px;font-weight:800;letter-spacing:.1em;color:rgba(255,255,255,.45);margin-bottom:5px;text-transform:uppercase}
+.q-card-base strong,.q-card-addon strong{font-size:18px;font-weight:900}
+.q-table{width:100%;border-collapse:collapse}
+.q-table td{padding:12px 20px;font-size:13px;text-align:left;border-bottom:1px solid var(--line)}
+.q-table td:last-child{text-align:right;font-weight:700;white-space:nowrap}
+.q-table tr:last-child td{border-bottom:none}
+.q-grp td{background:#f0f0f0;font-size:11px;font-weight:800;color:var(--muted);letter-spacing:.08em;padding:8px 20px}
+.q-sub td{background:#f6f4ef;font-weight:700;color:#555;font-size:13px}
+.q-sub td:last-child{text-align:right}
+.q-addon-head td{background:#dce8ff;color:#163399;font-size:12px;font-weight:800;letter-spacing:.08em;padding:10px 20px}
+.q-disc td{color:#1e4fc2;font-weight:700;background:#eef3ff;font-size:13px}
+.q-disc td:last-child{text-align:right}
+.q-total td{background:#fbf6e8;font-size:15px;font-weight:900}
+.q-total td:last-child{color:var(--gold-deep);text-align:right}
+.q-total-b td{background:#fbf6e8;font-size:15px;font-weight:900}
+.q-total-b td:last-child{text-align:right;color:var(--gold-deep)}
+@media(max-width:800px){.quote-2col{grid-template-columns:1fr}}
+.example-q{margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+.example-q-label{font-size:15px;font-weight:800;letter-spacing:.04em;color:var(--ink);text-transform:none;display:block;margin-bottom:10px}
+.example-q-list{display:flex;flex-wrap:wrap;gap:6px}
+.example-q-list span{background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px;font-size:12px;color:#444}
+.note{margin:12px 0 0;color:var(--muted);font-size:13px}
+.timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.step{position:relative;padding:20px;border-radius:16px;background:var(--soft);min-height:150px}
+.step b{color:var(--gold-deep);font-size:13px}
+.step h3{margin:8px 0 6px;font-size:17px}
+.step p{margin:0;color:var(--muted);font-size:14px}
+.terms{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.terms ul{margin:10px 0 0;padding-left:20px}
+.terms li{margin:5px 0;color:#4e4e4e}
+.callout{margin-top:52px;padding:26px 28px;border-radius:20px;background:#171717;color:#fff;display:flex;justify-content:space-between;gap:20px;align-items:center}
+.callout strong{font-size:19px}
+.callout span{color:#cfcfcf;font-size:14px}
+.biz-card{margin:0 72px 52px;border:1px solid var(--line);border-radius:20px;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;background:#fff;box-shadow:0 4px 24px rgba(0,0,0,.06)}
+.biz-left{padding:36px 40px;border-right:1px solid var(--line)}
+.biz-name{font-size:36px;font-weight:900;letter-spacing:.12em;color:#111;line-height:1.1;margin:0 0 4px}
+.biz-name-en{font-size:12px;font-weight:700;letter-spacing:.22em;color:#c0533a;text-transform:uppercase;margin:0 0 28px}
+.biz-contacts{display:flex;flex-direction:column;gap:7px}
+.biz-contacts p{margin:0;font-size:13px;color:#444;display:flex;gap:8px}
+.biz-contacts .label{font-weight:800;color:#111;min-width:22px;letter-spacing:.06em}
+.biz-contacts a{color:#2d6fc4;text-decoration:none}
+.biz-right{padding:36px 40px;display:flex;flex-direction:column;justify-content:space-between}
+.biz-studio{text-align:right}
+.biz-studio-name{font-size:22px;font-weight:900;letter-spacing:.18em;color:#111;text-transform:uppercase}
+.biz-studio-role{font-size:13px;letter-spacing:.22em;color:#888;text-transform:uppercase;margin-top:4px}
+.biz-tagline{text-align:right}
+.biz-tagline strong{display:block;font-size:13px;letter-spacing:.1em;color:#c0533a;font-weight:800}
+.biz-tagline span{font-size:11px;letter-spacing:.15em;color:#888;text-transform:uppercase}
+footer{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:28px 72px;background:#f7f6f2;border-top:1px solid var(--line);color:#666;font-size:13px}
+.signature{color:#111;font-weight:900;letter-spacing:.06em}
+
+/* 미리보기 섹션 */
+.preview-tabs{display:flex;gap:8px;margin-bottom:18px}
+.preview-tab{padding:10px 22px;border-radius:999px;border:1px solid var(--line);background:#fff;font-weight:700;cursor:pointer;font-size:14px;transition:all .18s}
+.preview-tab:hover{border-color:#aaa}
+.preview-tab.active{background:#171717;color:#fff;border-color:#171717}
+.preview-wrap{border:1px solid var(--line);border-radius:18px;overflow:hidden;display:none;box-shadow:0 8px 32px rgba(0,0,0,.07)}
+.preview-wrap.active{display:block}
+.preview-wrap iframe{width:100%;height:700px;border:none;display:block}
+.preview-label{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;background:var(--soft);border-bottom:1px solid var(--line)}
+.preview-label span{font-size:13px;font-weight:700;color:var(--muted)}
+.preview-label a{font-size:12px;color:#2d6fc4;text-decoration:none;font-weight:700;letter-spacing:.04em}
+
+@media(max-width:800px){.hero{grid-template-columns:1fr;padding:44px 28px;min-height:auto}.logo-wrap{justify-self:start;margin-top:28px;padding:0;text-align:left}.meta-grid{grid-template-columns:1fr 1fr}main{padding:38px 24px 52px}.scope-grid,.terms{grid-template-columns:1fr}.timeline{grid-template-columns:1fr 1fr}.biz-card{margin:0 24px 40px;grid-template-columns:1fr}.biz-left{border-right:none;border-bottom:1px solid var(--line)}.biz-right{align-items:flex-start}.biz-studio,.biz-tagline{text-align:left}footer{padding:24px;flex-direction:column;align-items:flex-start}.preview-wrap iframe{height:500px}}
+@media(max-width:520px){.page{width:100%;margin:0;border-radius:0}.toolbar{position:relative}.meta-grid,.timeline{grid-template-columns:1fr}th,td{padding:14px 12px;font-size:13px}.section-head{align-items:flex-start;flex-direction:column-reverse;gap:4px}.callout{flex-direction:column;align-items:flex-start}.biz-card{margin:0 0 32px;border-radius:0}.preview-wrap iframe{height:400px}}
+
+@media print{
+  .toolbar{display:none!important}
+  body{background:#fff}
+  .page{width:100%;margin:0;box-shadow:none;border-radius:0;overflow:visible}
+  .preview-wrap{display:none!important}
+  .preview-tabs{display:none!important}
+  .preview-print-note{display:block!important}
+}
+.preview-print-note{display:none;padding:14px 20px;border:1px dashed var(--line);border-radius:14px;color:var(--muted);font-size:13px}
+</style>
+</head>
+<body>
+<div class="toolbar">
+  <button class="secondary" onclick="window.scrollTo({top:0,behavior:'smooth'})">맨 위로</button>
+  <button onclick="window.print()">PDF로 저장 / 인쇄</button>
+</div>
+
+<article class="page">
+<header class="hero">
+  <div>
+    <div class="eyebrow">AI Chatbot Development Quotation</div>
+    <h1>교육용 챗봇<br>개발 견적서</h1>
+    <p>룰 베이스형 챗봇 및 AI RAG 챗봇 구축 비교 견적</p>
+  </div>
+
+  <div class="logo-wrap">
+    <div class="brand-logo">
+      <div class="brand-wordmark">
+        EUNSEON<br>STUDIO
+        <small>AI PRODUCT · WEB DEVELOPMENT</small>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="meta-grid">
+  <div class="meta-item"><span>발행일</span><strong>2026. 07. 26.</strong></div>
+  <div class="meta-item"><span>공급자</span><strong>장은선</strong></div>
+  <div class="meta-item"><span>수신</span><strong>김민지 고객님</strong></div>
+  <div class="meta-item"><span>유효기간</span><strong>발행일로부터 14일</strong></div>
+</div>
+
+<main>
+<section>
+  <div class="section-head">
+    <h2>프로젝트 개요</h2>
+    <span class="section-no">01 / OVERVIEW</span>
+  </div>
+  <div class="lead">
+    교육용 자료를 사용자가 질문하고 답변받을 수 있는 웹 기반 챗봇으로 구현합니다.
+    현재 자료의 정리 수준과 원하는 답변 방식에 따라, 정해진 질문·답변을 연결하는
+    룰 베이스형과 문서를 검색해 자연어로 답변하는 AI RAG형 중 선택할 수 있습니다.
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <h2>제안 옵션</h2>
+    <span class="section-no">02 / OPTIONS</span>
+  </div>
+
+  <div class="scope-grid">
+    <div class="card">
+      <span class="badge">OPTION A · 기본형</span>
+      <h3>룰 베이스형 챗봇</h3>
+      <div class="price">3,000,000원</div>
+      <p>미리 정의한 질문 또는 메뉴에 따라 정해진 답변을 보여주는 방식입니다.</p>
+      <ul>
+        <li>질문–답변 시나리오 및 분기 구조 구현</li>
+        <li>버튼·키워드 기반 대화 흐름</li>
+        <li>기본 반응형 채팅 화면 포함</li>
+        <li>제공 문구와 자료 기준 데이터 반영</li>
+        <li>간단한 수정이 가능한 구조로 납품</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <span class="badge">OPTION B · AI형</span>
+      <h3>AI RAG 챗봇</h3>
+      <div class="price">7,000,000원</div>
+      <p>교육 자료를 검색한 뒤 AI가 질문 의도를 이해하고 자연어로 답변하는 방식입니다.</p>
+      <ul>
+        <li>RAG 구조 및 AI API 개발: 5,000,000원</li>
+        <li>응답형 채팅 UI 개발: 2,000,000원</li>
+        <li>문서 검색·근거 기반 답변 처리</li>
+        <li>대화 맥락을 반영한 후속 질문 대응</li>
+        <li>오류·예외 응답 및 기본 테스트 포함</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="addon-card">
+    <span class="badge badge-blue">ADD-ON</span>
+    <h3>상황 시뮬레이션 기능</h3>
+    <p>A·B 어떤 옵션에도 추가 가능한 교육용 시뮬레이션 모듈입니다.</p>
+    <ul>
+      <li><strong>역할극·대화 시나리오 연습</strong> — 특정 상황과 역할을 부여받아 AI와 실전 대화를 연습하는 모드 <span style="font-weight:800;color:var(--gold-deep)">(1,400,000원)</span></li>
+      <li><strong>모의 상황 대응 훈련</strong> — 상황을 제시한 뒤 학습자가 답변·행동을 선택하는 분기형 훈련 모드 <span style="font-weight:800;color:var(--gold-deep)">(1,100,000원)</span></li>
+    </ul>
+    <div class="sim-features">
+      <div class="sim-feature-card">
+        <div class="sim-feature-no">01</div>
+        <h4>역할극·대화 시나리오 연습</h4>
+        <p>특정 직업 상황과 역할을 제시하면 학습자가 AI와 실제 대화를 주고받으며 연습합니다. 대화가 자연스럽게 이어지고, 상황에 맞는 표현과 대응 방식을 반복적으로 익힐 수 있습니다.</p>
+      </div>
+      <div class="sim-feature-card">
+        <div class="sim-feature-no">02</div>
+        <h4>모의 상황 대응 훈련</h4>
+        <p>주어진 상황 설명을 읽은 뒤 학습자가 적절한 답변이나 행동을 선택하는 분기형 훈련입니다. 선택에 따라 다른 결과와 피드백이 제공되어 판단력과 대처 능력을 기를 수 있습니다.</p>
+      </div>
+    </div>
+
+    <div class="price-compare">
+      <div class="price-compare-header">
+        <div>옵션</div>
+        <div>기본 금액</div>
+        <div>AI 시뮬레이션 추가 시</div>
+      </div>
+      <div class="price-compare-row">
+        <div class="pc-option">OPTION A<small>룰 베이스형</small></div>
+        <div class="pc-base">3,000,000원</div>
+        <div>
+          <div class="pc-total">5,500,000원</div>
+          <div class="pc-sub">+ 2,500,000원</div>
+        </div>
+      </div>
+      <div class="price-compare-row">
+        <div class="pc-option">OPTION B<small>AI RAG형</small></div>
+        <div class="pc-base">7,000,000원</div>
+        <div>
+          <div class="pc-total">8,500,000원</div>
+          <div class="pc-sub">+ 1,500,000원</div>
+          <div class="pc-sub" style="color:#c0533a;margin-top:3px">패키지 할인 적용 (정가 2,500,000원)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <h2>화면 미리보기</h2>
+    <span class="section-no">03 / PREVIEW</span>
+  </div>
+
+  <p class="note" style="margin:0 0 16px">※ 위 화면은 실제 납품 UI의 목업(시안)이며, 프로젝트 진행 시 고객 요구사항에 맞게 조정됩니다.</p>
+
+  <div class="preview-tabs">
+    <button class="preview-tab" onclick="showPreview('a', this)">OPTION A · 룰 베이스형</button>
+    <button class="preview-tab active" onclick="showPreview('b', this)">OPTION B · AI RAG형</button>
+  </div>
+
+  <div id="preview-a" class="preview-wrap">
+    <div class="preview-label">
+      <span>OPTION A · 룰 베이스형 챗봇 화면</span>
+      <a href="./example_chat.html" target="_blank">새 탭에서 열기 →</a>
+    </div>
+    <iframe src="./example_chat.html" title="OPTION A 룰 베이스형 챗봇 화면" loading="lazy"></iframe>
+  </div>
+
+  <div id="preview-b" class="preview-wrap active">
+    <div class="preview-label">
+      <span>OPTION B · AI RAG형 챗봇 화면</span>
+      <a href="./example_ai_chat.html" target="_blank">새 탭에서 열기 →</a>
+    </div>
+    <iframe src="./example_ai_chat.html" title="OPTION B AI RAG형 챗봇 화면" loading="lazy"></iframe>
+  </div>
+
+  <p class="preview-print-note">※ 화면 미리보기는 인쇄본에 포함되지 않습니다. example_chat.html(A형), example_ai_chat.html(B형) 파일을 별도로 확인해 주세요.</p>
+
+  <div class="example-q" style="margin-top:18px;padding-top:18px;border-top:1px solid var(--line)">
+    <span class="example-q-label">현재 테스트 해볼 수 있는 예시 질문 <span style="font-weight:400;text-transform:none;letter-spacing:0">(가상으로 작동하는 것처럼 구현된 목업입니다.)</span></span>
+    <div class="example-q-list">
+      <span>"카페에서 음료를 잘못 만들었어요"</span>
+      <span>"손님이 오래 기다렸다며 화를 내요"</span>
+      <span>"직장 동료가 불쾌한 성적 농담을 했어요"</span>
+      <span>"동료와 무슨 대화를 해야 할지 모르겠어요"</span>
+      <span>"내가 뭘 잘못한 거예요?"</span>
+      <span>"뭐라고 말하면 돼요?"</span>
+      <span>"관리자에게 알려야 하나요?"</span>
+      <span>"다음부터는 어떻게 해야 해요?"</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <h2>두 방식의 차이</h2>
+    <span class="section-no">04 / COMPARISON</span>
+  </div>
+
+  <div class="quote-box">
+    <table>
+      <thead>
+        <tr>
+          <th>구분</th>
+          <th>룰 베이스형</th>
+          <th>AI RAG형</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>답변 방식</td>
+          <td>정해둔 질문과 답변을 1:1 또는 분기형으로 연결</td>
+          <td>자유로운 질문을 이해하고 관련 자료를 검색해 답변</td>
+        </tr>
+        <tr>
+          <td>적합한 경우</td>
+          <td>질문 범위가 명확하고 자주 바뀌지 않는 안내·FAQ</td>
+          <td>교육 자료가 많고 질문 표현과 방식이 다양한 경우</td>
+        </tr>
+        <tr>
+          <td>장점</td>
+          <td>비용이 낮고 답변을 완전히 통제하기 쉬움</td>
+          <td>자연스러운 대화, 자료 확장성, 다양한 질문 대응</td>
+        </tr>
+        <tr>
+          <td>한계</td>
+          <td>등록하지 않은 표현이나 새로운 질문 대응이 어려움</td>
+          <td>API 사용료가 발생하며 자료 품질과 운영 기준에 따라 품질 변동</td>
+        </tr>
+        <tr>
+          <td>운영</td>
+          <td>질문·답변 추가 시 시나리오 직접 수정</td>
+          <td>교육 문서 추가·정리 및 답변 품질 지속 점검</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <h2>구성원 소개</h2>
+    <span class="section-no">07 / TEAM</span>
+  </div>
+
+  <div class="terms">
+    <div class="card">
+      <span class="badge">AI · RAG 전문성</span>
+      <h3>장은선 · AI/Product Developer</h3>
+      <ul>
+        <li>AI 석사학위 보유</li>
+        <li>9년차 개발 경력</li>
+        <li>한양대학교 AI RAG 리랭커 개발 연구로 학술대회 우수상 수상</li>
+        <li>검찰청 수사 질의응답 AI 챗봇 프로젝트 진행 중</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <span class="badge">WHY EUNSEON STUDIO</span>
+      <h3>단순 제작사가 아닌 AI 개발 파트너</h3>
+      <ul>
+        <li>검색·응답 구조와 AI 품질까지 함께 설계</li>
+        <li>RAG 및 리랭커 경험 기반의 검색 정확도와 근거성 고려</li>
+        <li>공공·수사 분야 프로젝트 경험 기반 보안·예외 처리 이해</li>
+        <li>기획, 백엔드, AI API, 반응형 UI를 일관된 구조로 개발</li>
+        <li>자료 확장과 기능 고도화를 고려한 구조 제안</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <h2>예상 진행 일정</h2>
+    <span class="section-no">08 / SCHEDULE</span>
+  </div>
+
+  <div class="timeline">
+    <div class="step">
+      <b>STEP 01</b>
+      <h3>자료 확인</h3>
+      <p>교육 자료와 주요 질문 유형 정리</p>
+    </div>
+
+    <div class="step">
+      <b>STEP 02</b>
+      <h3>구조 설계</h3>
+      <p>대화 흐름 또는 RAG 검색 구조 설계</p>
+    </div>
+
+    <div class="step">
+      <b>STEP 03</b>
+      <h3>개발</h3>
+      <p>챗봇 기능과 채팅 UI 구현</p>
+    </div>
+
+    <div class="step">
+      <b>STEP 04</b>
+      <h3>검수·납품</h3>
+      <p>테스트, 수정, 최종 배포 또는 소스 전달</p>
+    </div>
+  </div>
+
+  <p class="note">
+    예상 기간: 룰 베이스형 약 2~3주 / AI RAG형 약 4~6주.
+    자료 전달 상태와 피드백 일정, 연동 범위에 따라 달라질 수 있습니다.
+  </p>
+</section>
+
+<section>
+  <div class="section-head">
+    <h2>포함 및 제외 범위</h2>
+    <span class="section-no">09 / SCOPE</span>
+  </div>
+
+  <div class="terms">
+    <div class="card">
+      <p style="font-size:12px;font-weight:800;letter-spacing:.08em;color:#2a7a4b;text-transform:uppercase;margin-bottom:10px">✓ 포함 범위</p>
+      <ul>
+        <li>웹 기반 챗봇 UI 개발 (PC·모바일 반응형)</li>
+        <li>직업훈련 현장 문제상황 대응 매뉴얼 스크립트 제공 (외 내용 협의 후 추가 가능)<br>
+          <span style="font-size:12px;color:#888;line-height:1.8">
+            — 서비스 실수 발생 시 고객 응대 방법<br>
+            — 고객 불만·지연 상황의 감정 대응 스크립트<br>
+            — 직장 내 성희롱 등 부적절 상황 대처법<br>
+            — 동료·고객과의 스몰토크·대화 시작 방법
+          </span>
+        </li>
+        <li>OPTION B: GPT 기반 RAG 엔진 구축 및 교육 자료 벡터 DB 구성</li>
+        <li>ADD-ON: 상황 시뮬레이션·역할극 모듈 (선택 시)</li>
+        <li>기본 오류·예외 메시지 처리</li>
+        <li>납품 전 기능 테스트 및 QA</li>
+        <li>납품 후 14일 하자보수</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <p style="font-size:12px;font-weight:800;letter-spacing:.08em;color:#c0533a;text-transform:uppercase;margin-bottom:10px">✕ 제외 · 별도 견적</p>
+      <ul>
+        <li>회원가입·로그인·관리자 대시보드</li>
+        <li>카카오톡·슬랙 등 외부 메신저 채널 연동</li>
+        <li>원시 데이터 정제·입력 대행 (교육 자료 50건 초과 시)</li>
+        <li>음성 인식(STT)·음성 답변(TTS)·다국어 지원</li>
+        <li>서버 운영비·AI API 사용료 (월 이용료 별도)</li>
+        <li>기존 LMS·HR 시스템과의 외부 API 연동</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <h2>진행 조건</h2>
+    <span class="section-no">10 / TERMS</span>
+  </div>
+
+  <div class="terms">
+    <div class="card">
+      <p style="font-size:12px;font-weight:800;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;margin-bottom:10px">결제 조건</p>
+      <ul>
+        <li>계약 및 <strong>선금 50%</strong> 입금 확인 후 작업을 시작합니다.</li>
+        <li>중간 개발본 확인 및 피드백 수렴 후 <strong>잔금 50%</strong>를 지급합니다.</li>
+        <li>최종 잔금 확인 후 전체 소스 또는 합의된 형태로 납품합니다.</li>
+        <li>세부 기능·일정·결제 조건은 창업지원금 집행 기준에 맞춰 협의 가능합니다.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <p style="font-size:12px;font-weight:800;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;margin-bottom:10px">수정 정책</p>
+      <ul>
+        <li>납품 전까지 합의된 범위 내 수정은 <strong>횟수 제한 없이</strong> 진행합니다.</li>
+        <li>최종 납품 후 <strong>14일 이내</strong> 발견된 버그는 무상으로 수정합니다.</li>
+        <li>확정된 기획 범위를 벗어난 기능 추가·변경은 <strong>별도 견적</strong>이 적용됩니다.</li>
+        <li>납품 후 FAQ·시나리오 등 콘텐츠 수정은 유지보수 계약 또는 별도 협의합니다.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px;border-left:4px solid #c0533a">
+    <p style="font-size:12px;font-weight:800;letter-spacing:.08em;color:#c0533a;text-transform:uppercase;margin-bottom:10px">계약 취소 조건</p>
+    <ul style="margin:0;padding-left:20px">
+      <li><strong>작업 시작 전 취소</strong> — 선금 전액 환불 (계좌이체 수수료 실비 공제)</li>
+      <li><strong>작업 시작 후 취소</strong> — 아래 진행률 기준에 따라 정산 후 잔여 선금 환불
+        <div style="margin-top:10px;border:1px solid #f0d8d0;border-radius:10px;overflow:hidden;font-size:13px">
+          <div style="display:grid;grid-template-columns:2fr 1fr;background:#fdf2ef;padding:7px 14px;font-weight:700;color:#c0533a;border-bottom:1px solid #f0d8d0">
+            <span>진행 단계</span><span style="text-align:right">진행률</span>
+          </div>
+          <div style="display:grid;grid-template-columns:2fr 1fr;padding:7px 14px;border-bottom:1px solid #f5ece9;color:#555">
+            <span>기획·설계·자료 수집 완료</span><span style="text-align:right;font-weight:600">20%</span>
+          </div>
+          <div style="display:grid;grid-template-columns:2fr 1fr;padding:7px 14px;border-bottom:1px solid #f5ece9;color:#555">
+            <span>데이터 정제 및 개발 환경 구성 완료</span><span style="text-align:right;font-weight:600">40%</span>
+          </div>
+          <div style="display:grid;grid-template-columns:2fr 1fr;padding:7px 14px;border-bottom:1px solid #f5ece9;color:#555">
+            <span>핵심 기능 구현 완료</span><span style="text-align:right;font-weight:600">70%</span>
+          </div>
+          <div style="display:grid;grid-template-columns:2fr 1fr;padding:7px 14px;color:#555">
+            <span>테스트·수정 완료 (납품 직전)</span><span style="text-align:right;font-weight:600">90%</span>
+          </div>
+        </div>
+      </li>
+      <li><strong>개발 완료 후 취소</strong> — 환불 불가, 완료분 소스 파일 일체 제공</li>
+      <li>계약 변경·범위 조정은 양측 이메일 또는 카카오톡 합의 후 효력이 발생합니다.</li>
+    </ul>
+  </div>
+
+  <div class="callout" style="margin-top:16px">
+    <strong>교육 콘텐츠에 맞는 챗봇 구조를 함께 설계합니다.</strong>
+    <span>기능·자료·연동 범위 변경 시 견적이 재산정될 수 있습니다.</span>
+  </div>
+</section>
+</main>
+
+<div class="biz-card">
+  <div class="biz-left">
+    <p class="biz-name">장 은 선</p>
+    <p class="biz-name-en">Eunseon Jang</p>
+
+    <div class="biz-contacts">
+      <p><span class="label">M_</span>010.3541.9798</p>
+      <p><span class="label">E_</span><a href="mailto:esunbest@gmail.com">esunbest@gmail.com</a></p>
+      <p><span class="label">W_</span><a href="https://www.eunseon.com">www.eunseon.com</a></p>
+      <p><span class="label">A_</span>서울특별시 뚝섬로 3길 16</p>
+    </div>
+  </div>
+
+  <div class="biz-right">
+    <div class="biz-studio">
+      <div class="biz-studio-name">EUNSEON STUDIO</div>
+      <div class="biz-studio-role">Web Development & AI Product</div>
+    </div>
+
+    <div class="biz-tagline">
+      <strong>AI DEVELOPMENT PARTNER</strong>
+      <span>Planning · Backend · RAG · Responsive UI</span>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span>본 견적서는 전달된 요구사항 기준이며, 기능·자료·연동 범위 변경 시 재산정될 수 있습니다.</span>
+  <span class="signature">EUNSEON STUDIO</span>
+</footer>
+</article>
+
+<script>
+function showPreview(type, btn) {
+  document.querySelectorAll('.preview-tab').forEach(function(t) { t.classList.remove('active'); });
+  document.querySelectorAll('.preview-wrap').forEach(function(f) { f.classList.remove('active'); });
+  btn.classList.add('active');
+  document.getElementById('preview-' + type).classList.add('active');
+}
+</script>
+</body>
+</html>
