@@ -1,27 +1,725 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Ideal AI · The Mom Test</title>
-<style>
-*{box-sizing:border-box}body{margin:0;background:#f6f5fa;color:#23202c;font-family:system-ui,-apple-system,sans-serif}header{background:#1e172b;color:#fff;padding:24px max(24px,calc((100vw - 1100px)/2));font-weight:800;font-size:22px}header small{color:#ad95d3;font-size:12px;float:right}main{max-width:1100px;margin:40px auto;padding:0 22px}h1{font-size:32px;margin-bottom:6px}p{color:#777383}.note{background:#fff9e8;padding:14px;border-radius:10px;font-size:13px;color:#755e22}.tools{display:flex;gap:10px;flex-wrap:wrap;margin:25px 0}button,.file{border:1px solid #dedbe7;background:white;border-radius:10px;padding:12px 17px;cursor:pointer;font:inherit;font-weight:650}.primary{background:#7146c7;color:white;border-color:#7146c7}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.stat,.panel{background:white;border:1px solid #eae8f0;border-radius:15px;padding:23px}.stat span{font-size:13px;color:#85818d}.stat b{display:block;font-size:31px;margin-top:12px}.panel{margin-top:22px}.search{display:flex;gap:12px}input,select,textarea{font:inherit;width:100%;padding:12px;border:1px solid #dedbe7;border-radius:9px;background:white}textarea{min-height:95px}.search select{max-width:175px}.item{padding:19px 2px;border-bottom:1px solid #eeebf2;display:flex;justify-content:space-between;align-items:center;cursor:pointer;gap:12px}.item small{display:block;color:#898591;margin-top:6px}.pill{font-size:12px;background:#f0eafb;color:#6641b4;border-radius:50px;padding:7px 11px}.empty{text-align:center;color:#8c8795;padding:60px}.overlay{position:fixed;inset:0;background:#160d21a8;display:none;overflow:auto;padding:25px 12px;z-index:20}.overlay.open{display:block}.dialog{max-width:760px;margin:auto;background:white;padding:28px;border-radius:18px}.dialog-head{display:flex;align-items:center;justify-content:space-between}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px}label.field{font-size:13px;font-weight:700}label.field input,label.field textarea,label.field select{margin-top:7px;font-weight:400}.wide{grid-column:1/-1}.tip{background:#f4f0ff;color:#62458f;padding:14px;border-radius:10px;font-size:13px}.actions{display:flex;gap:10px;justify-content:flex-end;margin-top:22px}@media(max-width:650px){.stats{grid-template-columns:1fr 1fr}.grid{grid-template-columns:1fr}.search{flex-direction:column}.search select{max-width:none}header small{float:none;display:block;margin-top:8px}}
-</style></head><body>
-<header>ideal AI <small>THE MOM TEST · CUSTOMER DISCOVERY</small></header><main><div style="color:#754fc1;font-size:12px;font-weight:800">CUSTOMER INTERVIEW WORKSPACE</div><h1>고객 인터뷰 관리</h1><p>고객의 실제 경험과 행동을 기록하고 다음 영업 활동으로 연결하세요.</p>
-<div class="note">독립형 실행 목업입니다. 기록은 이 브라우저에만 저장됩니다. 서버 동기화가 없으므로 민감한 개인정보를 입력하지 말고 JSON으로 백업하세요.</div>
-<div class="tools"><button id="new" class="primary">+ 새 인터뷰</button><button id="export">JSON 내보내기</button><label class="file">JSON 가져오기<input type="file" id="import" accept=".json,application/json" hidden></label></div>
-<div class="stats"><div class="stat"><span>전체 상담</span><b id="total">0</b></div><div class="stat"><span>인터뷰 완료</span><b id="done">0</b></div><div class="stat"><span>제안 / 계약</span><b id="deals">0</b></div><div class="stat"><span>후속 일정</span><b id="follow">0</b></div></div>
-<div class="panel"><div class="search"><input id="search" placeholder="고객사, 담당자, 상담 내용 검색"><select id="filter"><option>전체</option><option>신규 문의</option><option>인터뷰 예정</option><option>인터뷰 완료</option><option>제안</option><option>계약</option><option>보류</option></select></div><div id="list"></div></div></main>
-<div id="overlay" class="overlay"><div class="dialog"><div class="dialog-head"><h2 id="heading">새 고객 인터뷰</h2><button id="close">✕</button></div><div class="tip">The Mom Test: “구매하실 건가요?”보다 “마지막으로 이 문제를 겪었을 때 어떻게 해결하셨나요?”를 물어보세요.</div><form id="form"><div id="fields" class="grid"></div><div class="actions"><button id="remove" type="button" style="margin-right:auto;display:none">삭제</button><button id="cancel" type="button">취소</button><button class="primary" type="submit">저장</button></div></form></div></div>
-<script>
-(()=>{const KEY="ideal-mom-test-mockup-v1",statuses=["신규 문의","인터뷰 예정","인터뷰 완료","제안","계약","보류"];
-const defs=[["company","고객사 / 조직"],["contact","담당자"],["email","이메일"],["phone","연락처"],["date","상담일","date"],["status","진행 상태","select"],["followUp","후속 연락일","date"],["currentWorkflow","현재 업무 흐름","textarea"],["painPoints","겪고 있는 문제","textarea"],["concreteExamples","실제 사례와 발생 빈도","textarea"],["existingSolutions","지금까지 시도한 해결 방법","textarea"],["purchaseProcess","과거 구매·도입 경험","textarea"],["decisionMaker","의사결정 참여자"],["budgetEvidence","비용·시간 지출의 실제 근거","textarea"],["nextAction","다음 행동","textarea"],["notes","자유 메모","textarea"]];
-const $=id=>document.getElementById(id);let items=[],editing=null;try{const x=JSON.parse(localStorage.getItem(KEY)||"[]");if(Array.isArray(x))items=x}catch{}
-const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const save=()=>localStorage.setItem(KEY,JSON.stringify(items));
-function render(){const q=$("search").value.toLowerCase(),f=$("filter").value;$("total").textContent=items.length;$("done").textContent=items.filter(x=>x.status==="인터뷰 완료").length;$("deals").textContent=items.filter(x=>["제안","계약"].includes(x.status)).length;$("follow").textContent=items.filter(x=>x.followUp&&x.followUp>=new Date().toISOString().slice(0,10)).length;
-const filtered=items.filter(x=>(f==="전체"||x.status===f)&&[x.company,x.contact,x.painPoints,x.notes].some(v=>String(v||"").toLowerCase().includes(q)));$("list").innerHTML=filtered.length?filtered.map(x=>'<div class="item" data-id="'+esc(x.id)+'"><div><b>'+esc(x.company)+'</b><small>'+esc(x.contact)+' · 상담 '+esc(x.date||"미정")+' · 후속 '+esc(x.followUp||"미정")+'</small></div><span class="pill">'+esc(x.status)+'</span></div>').join(""):'<div class="empty">인터뷰 내역이 없습니다. 새 인터뷰를 등록해 보세요.</div>';$("list").querySelectorAll("[data-id]").forEach(el=>el.onclick=()=>open(items.find(x=>x.id===el.dataset.id)))}
-function open(x){editing=x?.id||null;$("heading").textContent=editing?"인터뷰 수정":"새 고객 인터뷰";$("remove").style.display=editing?"block":"none";$("fields").innerHTML=defs.map(([key,label,type])=>'<label class="field '+(type==="textarea"?"wide":"")+'">'+esc(label)+(type==="textarea"?'<textarea name="'+key+'"></textarea>':type==="select"?'<select name="'+key+'">'+statuses.map(s=>'<option>'+s+'</option>').join("")+'</select>':'<input name="'+key+'" type="'+(type||"text")+'">')+'</label>').join("");defs.forEach(([key])=>{$("form").elements.namedItem(key).value=x?.[key]||(key==="date"?new Date().toISOString().slice(0,10):key==="status"?"신규 문의":"")});$("overlay").classList.add("open")}
-function close(){$("overlay").classList.remove("open");editing=null}
-$("new").onclick=()=>open();$("close").onclick=close;$("cancel").onclick=close;$("overlay").onclick=e=>{if(e.target===$("overlay"))close()};$("search").oninput=render;$("filter").onchange=render;
-$("form").onsubmit=e=>{e.preventDefault();const data=Object.fromEntries(new FormData($("form")));if(!String(data.company||"").trim()){alert("고객사 이름을 입력하세요.");return}const prev=items.find(x=>x.id===editing),now=new Date().toISOString();const item={...prev,...data,id:editing||crypto.randomUUID(),createdAt:prev?.createdAt||now,updatedAt:now};items=editing?items.map(x=>x.id===editing?item:x):[item,...items];try{save();close();render()}catch{alert("저장할 수 없습니다. JSON으로 백업하세요.")}};
-$("remove").onclick=()=>{if(confirm("삭제할까요?")){items=items.filter(x=>x.id!==editing);save();close();render()}};
-$("export").onclick=()=>{const url=URL.createObjectURL(new Blob([JSON.stringify({interviews:items},null,2)],{type:"application/json"}));const a=document.createElement("a");a.href=url;a.download="mom-test-interviews.json";a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)};
-$("import").onchange=async e=>{const file=e.target.files?.[0];if(!file)return;try{const obj=JSON.parse(await file.text()),rows=Array.isArray(obj)?obj:obj.interviews;if(!Array.isArray(rows)||rows.length>1000||rows.some(x=>!x||typeof x!=="object"||Array.isArray(x)))throw Error("유효한 인터뷰 배열(최대 1000건)이 필요합니다.");if(!confirm(rows.length+"건을 가져올까요? 같은 ID는 덮어씁니다."))return;const map=new Map(items.map(x=>[x.id,x]));rows.forEach(x=>{const id=String(x.id||crypto.randomUUID());map.set(id,{...x,id})});items=[...map.values()];save();render();alert("가져오기 완료")}catch(err){alert("가져오기 실패: "+err.message)}finally{e.target.value=""}};
-render()})();
-</script><script src="./watermark.js" defer></script></body></html>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Mom Test · 고객 인터뷰 상담지</title>
+  <style>
+    :root{
+      --bg:#f7f8fb;
+      --card:#ffffff;
+      --text:#17181c;
+      --muted:#6b7280;
+      --line:#e6e8ee;
+      --primary:#6d5dfc;
+      --primary-soft:#f0edff;
+      --green:#0f9f6e;
+      --green-soft:#eafaf4;
+      --red:#d84a4a;
+      --red-soft:#fff0f0;
+      --shadow:0 10px 30px rgba(20,24,40,.06);
+      --radius:18px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Apple SD Gothic Neo","Noto Sans KR","Segoe UI",sans-serif;
+      color:var(--text);
+      background:var(--bg);
+      line-height:1.6;
+    }
+
+    .wrap{
+      width:min(1180px, calc(100% - 32px));
+      margin:0 auto;
+      padding:34px 0 80px;
+    }
+
+    .hero{
+      background:linear-gradient(135deg,#161826,#272449);
+      color:#fff;
+      border-radius:26px;
+      padding:34px 34px 30px;
+      box-shadow:var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
+    .hero:after{
+      content:"";
+      position:absolute;
+      width:330px;height:330px;
+      right:-100px;top:-130px;
+      background:radial-gradient(circle,rgba(109,93,252,.45),transparent 70%);
+      border-radius:50%;
+      pointer-events:none;
+    }
+    .eyebrow{
+      font-size:13px;
+      font-weight:800;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:#b9b3ff;
+      margin-bottom:8px;
+    }
+    h1{
+      margin:0 0 8px;
+      font-size:clamp(30px,5vw,48px);
+      line-height:1.15;
+    }
+    .hero p{
+      margin:0;
+      color:#d8d9e3;
+      max-width:780px;
+      font-size:15px;
+    }
+
+    .toolbar{
+      margin-top:20px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      position:relative;
+      z-index:2;
+    }
+    button{
+      border:0;
+      border-radius:12px;
+      padding:11px 15px;
+      font-size:14px;
+      font-weight:800;
+      cursor:pointer;
+      transition:.18s ease;
+    }
+    .btn-primary{background:#fff;color:#17181c}
+    .btn-secondary{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.16)}
+    .btn-danger{background:#ff6b6b;color:#fff}
+    button:hover{transform:translateY(-1px)}
+
+    .status{
+      margin-top:12px;
+      color:#b7bac9;
+      font-size:12px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:340px minmax(0,1fr);
+      gap:20px;
+      margin-top:20px;
+      align-items:start;
+    }
+
+    .side{
+      position:sticky;
+      top:16px;
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+    }
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:22px;
+    }
+
+    .card h2{
+      margin:0 0 14px;
+      font-size:19px;
+    }
+    .card h3{
+      margin:20px 0 8px;
+      font-size:15px;
+    }
+
+    .principles{
+      margin:0;
+      padding-left:18px;
+      color:#32353d;
+      font-size:14px;
+    }
+    .principles li{margin:7px 0}
+
+    .quote{
+      background:var(--primary-soft);
+      border:1px solid #ded9ff;
+      color:#4038a7;
+      padding:14px 15px;
+      border-radius:14px;
+      font-weight:700;
+      font-size:14px;
+      margin-top:14px;
+    }
+
+    .signal{
+      border-radius:14px;
+      padding:14px;
+      margin-top:10px;
+      font-size:13px;
+    }
+    .signal.good{
+      background:var(--green-soft);
+      color:#12684f;
+      border:1px solid #cbf0e3;
+    }
+    .signal.bad{
+      background:var(--red-soft);
+      color:#9f3434;
+      border:1px solid #ffd6d6;
+    }
+    .signal ul{margin:8px 0 0;padding-left:18px}
+
+    .section{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:24px;
+      margin-bottom:18px;
+    }
+    .section-title{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-bottom:4px;
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:30px;height:30px;
+      border-radius:9px;
+      background:var(--primary-soft);
+      color:var(--primary);
+      font-size:13px;
+      font-weight:900;
+      flex:0 0 auto;
+    }
+    .section h2{
+      margin:0;
+      font-size:21px;
+    }
+    .desc{
+      margin:4px 0 18px 40px;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .questions{
+      background:#fafaff;
+      border:1px solid #eceafe;
+      border-radius:14px;
+      padding:14px 16px;
+      margin-bottom:16px;
+    }
+    .questions b{
+      display:block;
+      margin-bottom:6px;
+      color:#4c43b9;
+      font-size:13px;
+    }
+    .questions ul{
+      margin:0;
+      padding-left:18px;
+      color:#4d515b;
+      font-size:13px;
+    }
+    .questions li{margin:4px 0}
+
+    .fields{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:14px;
+    }
+    .field.full{grid-column:1/-1}
+
+    label{
+      display:block;
+      font-size:12px;
+      font-weight:800;
+      color:#4a4f5a;
+      margin-bottom:6px;
+    }
+    input, textarea, select{
+      width:100%;
+      border:1px solid #dfe2ea;
+      background:#fff;
+      border-radius:12px;
+      padding:12px 13px;
+      font:inherit;
+      color:var(--text);
+      outline:none;
+      transition:.15s ease;
+    }
+    input:focus, textarea:focus, select:focus{
+      border-color:#9d92ff;
+      box-shadow:0 0 0 4px rgba(109,93,252,.08);
+    }
+    textarea{
+      min-height:110px;
+      resize:vertical;
+    }
+    .small textarea{min-height:82px}
+
+    .rating{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .rating label{
+      margin:0;
+      cursor:pointer;
+    }
+    .rating input{display:none}
+    .rating span{
+      display:inline-block;
+      border:1px solid #dddfea;
+      padding:8px 12px;
+      border-radius:999px;
+      background:#fff;
+      font-size:13px;
+      font-weight:800;
+      color:#5d616b;
+    }
+    .rating input:checked + span{
+      border-color:#8174ff;
+      background:var(--primary-soft);
+      color:#5145cc;
+    }
+
+    .three-checks{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:10px;
+    }
+    .check-card{
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:14px;
+      background:#fcfcfd;
+    }
+    .check-card strong{
+      display:block;
+      margin-bottom:8px;
+      font-size:13px;
+    }
+    .check-card select{
+      padding:9px 10px;
+      font-size:13px;
+    }
+
+    .footer-note{
+      margin-top:18px;
+      color:#8a8f9b;
+      font-size:12px;
+      text-align:center;
+    }
+
+    .toast{
+      position:fixed;
+      right:20px;
+      bottom:20px;
+      background:#17181c;
+      color:#fff;
+      padding:11px 14px;
+      border-radius:12px;
+      box-shadow:0 12px 30px rgba(0,0,0,.2);
+      opacity:0;
+      transform:translateY(10px);
+      pointer-events:none;
+      transition:.2s ease;
+      font-size:13px;
+      z-index:99;
+    }
+    .toast.show{
+      opacity:1;
+      transform:translateY(0);
+    }
+
+    @media (max-width:900px){
+      .grid{grid-template-columns:1fr}
+      .side{position:static}
+      .fields{grid-template-columns:1fr}
+      .field.full{grid-column:auto}
+      .three-checks{grid-template-columns:1fr}
+      .hero{padding:26px 22px}
+      .wrap{width:min(100% - 20px,1180px);padding-top:10px}
+    }
+
+    @media print{
+      body{background:#fff}
+      .hero{background:#fff;color:#000;border:1px solid #ddd;box-shadow:none}
+      .hero p,.eyebrow,.status{color:#555}
+      .toolbar{display:none}
+      .grid{grid-template-columns:1fr}
+      .side{position:static}
+      .card,.section{box-shadow:none}
+      .footer-note,.toast{display:none}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <div class="eyebrow">Customer Discovery Worksheet</div>
+      <h1>The Mom Test</h1>
+      <p>칭찬과 가정을 피하고, 고객이 실제로 겪은 문제·행동·비용·의사결정 구조를 기록하는 실전 인터뷰 상담지입니다.</p>
+
+      <div class="toolbar">
+        <button class="btn-primary" onclick="saveNow()">저장</button>
+        <button class="btn-secondary" onclick="exportTxt()">TXT 내보내기</button>
+        <button class="btn-secondary" onclick="exportJson()">JSON 내보내기</button>
+        <button class="btn-secondary" onclick="window.print()">인쇄 / PDF</button>
+        <button class="btn-danger" onclick="resetForm()">초기화</button>
+      </div>
+      <div class="status" id="saveStatus">자동 저장 대기 중</div>
+    </section>
+
+    <div class="grid">
+      <aside class="side">
+        <div class="card">
+          <h2>인터뷰 원칙</h2>
+          <ul class="principles">
+            <li>“제 아이디어 어때요?”라고 묻지 않는다.</li>
+            <li>미래의 의향보다 <b>과거의 실제 행동</b>을 묻는다.</li>
+            <li>칭찬보다 구체적인 사실을 수집한다.</li>
+            <li>문제의 빈도, 시간, 비용, 현재 해결법을 확인한다.</li>
+            <li>좋은 반응보다 다음 행동이 있는지를 본다.</li>
+          </ul>
+          <div class="quote">
+            “이런 서비스 있으면 쓰실 것 같아요?” 대신<br>
+            “최근에 이 문제를 어떻게 해결하셨어요?”
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>시그널 체크</h2>
+          <div class="signal good">
+            <b>🟢 강한 신호</b>
+            <ul>
+              <li>구체적인 최근 사례가 있음</li>
+              <li>현재 수작업/우회 방법을 쓰고 있음</li>
+              <li>이미 시간이나 돈을 쓰고 있음</li>
+              <li>담당자 소개 또는 다음 미팅 제안</li>
+              <li>자료·API·업무 프로세스 공유 의향</li>
+            </ul>
+          </div>
+          <div class="signal bad">
+            <b>🔴 약한 신호</b>
+            <ul>
+              <li>“좋은 아이디어네요”</li>
+              <li>“있으면 쓸 것 같아요”</li>
+              <li>“가격만 괜찮으면요”</li>
+              <li>최근 실제 사례는 없음</li>
+            </ul>
+          </div>
+        </div>
+      </aside>
+
+      <main>
+        <section class="section">
+          <div class="section-title"><span class="badge">01</span><h2>고객 기본 정보</h2></div>
+          <p class="desc">누구에게서 나온 답변인지 맥락을 남깁니다.</p>
+          <div class="fields">
+            <div class="field"><label>회사명 / 고객명</label><input data-key="company" placeholder="예: ABC 주식회사"></div>
+            <div class="field"><label>업종</label><input data-key="industry" placeholder="예: 제조업 / 이커머스"></div>
+            <div class="field"><label>직원 수</label><input data-key="employees" placeholder="예: 35명"></div>
+            <div class="field"><label>인터뷰 대상자 / 직책</label><input data-key="interviewee" placeholder="예: 운영팀장 김OO"></div>
+            <div class="field full"><label>담당 업무</label><textarea data-key="role" placeholder="이 사람이 실제로 맡고 있는 업무를 적어주세요."></textarea></div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-title"><span class="badge">02</span><h2>현재 업무 흐름</h2></div>
+          <p class="desc">‘어떻게 하고 있는지’를 가능한 실제 순서대로 듣습니다.</p>
+          <div class="questions">
+            <b>질문 예시</b>
+            <ul>
+              <li>요즘 이 업무는 어떻게 처리하고 계세요?</li>
+              <li>처음부터 끝까지 실제 업무 흐름을 설명해주실 수 있을까요?</li>
+              <li>이 업무는 보통 누가 담당하나요?</li>
+              <li>한 달에 몇 번 정도 발생하나요?</li>
+              <li>한 번 처리하는 데 얼마나 걸리나요?</li>
+            </ul>
+          </div>
+          <div class="fields">
+            <div class="field full"><label>현재 처리 방식 / 업무 흐름</label><textarea data-key="workflow" placeholder="예: 고객 문의 접수 → 담당자 확인 → 엑셀 조회 → 카톡 전달 → 답변"></textarea></div>
+            <div class="field"><label>사용 중인 프로그램 / 도구</label><input data-key="tools" placeholder="예: Excel, Slack, ERP, 카카오톡"></div>
+            <div class="field"><label>담당 인원</label><input data-key="people" placeholder="예: 3명"></div>
+            <div class="field"><label>발생 빈도</label><input data-key="frequency" placeholder="예: 하루 20~30건"></div>
+            <div class="field"><label>평균 소요 시간</label><input data-key="timeSpent" placeholder="예: 건당 10분 / 월 80시간"></div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-title"><span class="badge">03</span><h2>Pain Point</h2></div>
+          <p class="desc">추상적인 불편이 아니라 최근의 구체적 사건을 확보합니다.</p>
+          <div class="questions">
+            <b>질문 예시</b>
+            <ul>
+              <li>이 과정에서 제일 귀찮거나 시간이 많이 드는 부분이 뭐예요?</li>
+              <li>최근에 이 문제 때문에 불편했던 일이 있었나요?</li>
+              <li>가장 최근 사례 하나만 구체적으로 말씀해주실 수 있을까요?</li>
+              <li>그때 어떻게 해결하셨어요?</li>
+              <li>그냥 넘어간 적도 있나요?</li>
+            </ul>
+          </div>
+          <div class="fields">
+            <div class="field full"><label>가장 큰 문제</label><textarea data-key="painMain"></textarea></div>
+            <div class="field full"><label>최근 실제 사례</label><textarea data-key="painRecent" placeholder="언제, 어떤 일이 있었고, 누가 어떻게 대응했는지"></textarea></div>
+            <div class="field"><label>문제 발생 빈도</label><input data-key="painFrequency"></div>
+            <div class="field"><label>현재 해결 방법</label><input data-key="workaround"></div>
+            <div class="field full"><label>문제로 발생하는 시간 / 비용 / 손실</label><textarea data-key="painCost" placeholder="예: 담당자 2명 × 월 40시간, 외주비 월 200만원, 오류 발생 시 재작업 3시간"></textarea></div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-title"><span class="badge">04</span><h2>기존 해결 방법</h2></div>
+          <p class="desc">이미 시도한 행동은 문제의 강도를 보여줍니다.</p>
+          <div class="questions">
+            <b>질문 예시</b>
+            <ul>
+              <li>지금 어떤 프로그램이나 서비스를 사용하고 계세요?</li>
+              <li>엑셀이나 수작업으로 처리하는 부분이 있나요?</li>
+              <li>다른 솔루션을 찾아본 적이 있나요?</li>
+              <li>실제로 돈을 내고 사용해본 것도 있나요?</li>
+              <li>사용하다가 그만둔 서비스가 있다면 왜 그만두셨어요?</li>
+            </ul>
+          </div>
+          <div class="fields">
+            <div class="field full"><label>기존 솔루션 / 대체 방법</label><textarea data-key="existingSolution"></textarea></div>
+            <div class="field full"><label>찾아봤거나 도입했던 서비스</label><textarea data-key="triedSolutions"></textarea></div>
+            <div class="field full"><label>만족하지 못한 이유 / 중단 이유</label><textarea data-key="solutionIssues"></textarea></div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-title"><span class="badge">05</span><h2>구매 가능성 / 의사결정</h2></div>
+          <p class="desc">“살 것 같다”가 아니라 실제 예산·권한·절차를 확인합니다.</p>
+          <div class="questions">
+            <b>질문 예시</b>
+            <ul>
+              <li>이 문제를 해결하기 위해 지금까지 비용을 써본 적이 있나요?</li>
+              <li>보통 이런 프로그램을 도입할 때 누가 결정하나요?</li>
+              <li>예산은 어느 팀에서 나오나요?</li>
+              <li>최근 비슷한 솔루션을 구매한 적이 있나요?</li>
+              <li>도입하려면 내부적으로 어떤 절차를 거쳐야 하나요?</li>
+            </ul>
+          </div>
+          <div class="fields">
+            <div class="field"><label>기존 지출 / 예산</label><input data-key="budget" placeholder="예: 월 300만원 / 아직 없음"></div>
+            <div class="field"><label>최종 의사결정자</label><input data-key="decisionMaker"></div>
+            <div class="field"><label>예산 담당 부서</label><input data-key="budgetOwner"></div>
+            <div class="field"><label>도입 예상 시점</label><input data-key="timeline" placeholder="예: 올해 4분기"></div>
+            <div class="field full"><label>도입 절차</label><textarea data-key="buyingProcess"></textarea></div>
+            <div class="field full"><label>예상 장애물</label><textarea data-key="blockers" placeholder="예: 보안 검토, 기존 ERP 연동, 대표 승인"></textarea></div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-title"><span class="badge">06</span><h2>인터뷰 결과</h2></div>
+          <p class="desc">상담 직후 판단을 기록해 다음 인터뷰와 비교합니다.</p>
+          <div class="fields">
+            <div class="field full">
+              <label>문제 강도</label>
+              <div class="rating">
+                <label><input type="radio" name="rating" data-key="rating" value="1"><span>⭐️ 1</span></label>
+                <label><input type="radio" name="rating" data-key="rating" value="2"><span>⭐️⭐️ 2</span></label>
+                <label><input type="radio" name="rating" data-key="rating" value="3"><span>⭐️⭐️⭐️ 3</span></label>
+                <label><input type="radio" name="rating" data-key="rating" value="4"><span>⭐️⭐️⭐️⭐️ 4</span></label>
+                <label><input type="radio" name="rating" data-key="rating" value="5"><span>⭐️⭐️⭐️⭐️⭐️ 5</span></label>
+              </div>
+            </div>
+
+            <div class="field"><label>실제 지불 가능성</label>
+              <select data-key="paymentSignal">
+                <option value="">선택</option>
+                <option>낮음</option>
+                <option>보통</option>
+                <option>높음</option>
+                <option>이미 예산 있음</option>
+              </select>
+            </div>
+            <div class="field"><label>후속 미팅</label><input data-key="followup" placeholder="예: 9/5 14:00"></div>
+            <div class="field full"><label>소개받을 사람 / 연결 가능한 담당자</label><textarea data-key="referral"></textarea></div>
+            <div class="field full"><label>다음 액션</label><textarea data-key="nextAction" placeholder="예: 샘플 데이터 수령 → PoC 범위 정의 → 견적 제안"></textarea></div>
+          </div>
+
+          <h3 style="margin-top:24px">상담 끝나고 딱 3개만 판단</h3>
+          <div class="three-checks">
+            <div class="check-card">
+              <strong>① 실제로 이 문제를 겪고 있는가?</strong>
+              <select data-key="checkPain"><option value="">선택</option><option>YES</option><option>NO</option><option>불확실</option></select>
+            </div>
+            <div class="check-card">
+              <strong>② 지금 시간이나 돈을 쓰고 있는가?</strong>
+              <select data-key="checkSpend"><option value="">선택</option><option>YES</option><option>NO</option><option>불확실</option></select>
+            </div>
+            <div class="check-card">
+              <strong>③ 내가 없어도 해결하려고 행동하고 있는가?</strong>
+              <select data-key="checkAction"><option value="">선택</option><option>YES</option><option>NO</option><option>불확실</option></select>
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-title"><span class="badge">07</span><h2>자유 메모</h2></div>
+          <p class="desc">말투, 반복 표현, 인상적인 문장, 아이디어를 기록합니다.</p>
+          <textarea data-key="notes" style="min-height:220px" placeholder="고객이 실제로 사용한 표현을 그대로 적어두면 카피와 문제 정의에 도움이 됩니다."></textarea>
+        </section>
+
+        <div class="footer-note">
+          입력 내용은 이 브라우저의 localStorage에 자동 저장됩니다.
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">저장되었습니다.</div>
+
+  <script>
+    const STORAGE_KEY = 'the-mom-test-interview-v1';
+    let timer;
+
+    function allFields() {
+      return [...document.querySelectorAll('[data-key]')];
+    }
+
+    function collectData() {
+      const data = {};
+      allFields().forEach(el => {
+        const key = el.dataset.key;
+        if (el.type === 'radio') {
+          if (el.checked) data[key] = el.value;
+          else if (!(key in data)) data[key] = '';
+        } else {
+          data[key] = el.value;
+        }
+      });
+      data._savedAt = new Date().toISOString();
+      return data;
+    }
+
+    function applyData(data) {
+      allFields().forEach(el => {
+        const key = el.dataset.key;
+        if (!(key in data)) return;
+        if (el.type === 'radio') el.checked = el.value === data[key];
+        else el.value = data[key] ?? '';
+      });
+    }
+
+    function save(showToast=false) {
+      const data = collectData();
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      const now = new Date();
+      document.getElementById('saveStatus').textContent =
+        `마지막 저장: ${now.toLocaleString('ko-KR')}`;
+      if (showToast) toast('저장되었습니다.');
+    }
+
+    function saveNow() { save(true); }
+
+    function scheduleSave() {
+      clearTimeout(timer);
+      document.getElementById('saveStatus').textContent = '입력 중… 자동 저장 예정';
+      timer = setTimeout(() => save(false), 500);
+    }
+
+    function resetForm() {
+      if (!confirm('입력한 내용을 모두 초기화할까요? 이 작업은 되돌릴 수 없습니다.')) return;
+      localStorage.removeItem(STORAGE_KEY);
+      allFields().forEach(el => {
+        if (el.type === 'radio') el.checked = false;
+        else el.value = '';
+      });
+      document.getElementById('saveStatus').textContent = '초기화되었습니다.';
+      toast('초기화되었습니다.');
+    }
+
+    function labelFor(key) {
+      const map = {
+        company:'회사명 / 고객명', industry:'업종', employees:'직원 수',
+        interviewee:'인터뷰 대상자 / 직책', role:'담당 업무',
+        workflow:'현재 처리 방식 / 업무 흐름', tools:'사용 중인 프로그램 / 도구',
+        people:'담당 인원', frequency:'발생 빈도', timeSpent:'평균 소요 시간',
+        painMain:'가장 큰 문제', painRecent:'최근 실제 사례',
+        painFrequency:'문제 발생 빈도', workaround:'현재 해결 방법', painCost:'시간 / 비용 / 손실',
+        existingSolution:'기존 솔루션 / 대체 방법', triedSolutions:'찾아봤거나 도입했던 서비스',
+        solutionIssues:'만족하지 못한 이유 / 중단 이유', budget:'기존 지출 / 예산',
+        decisionMaker:'최종 의사결정자', budgetOwner:'예산 담당 부서', timeline:'도입 예상 시점',
+        buyingProcess:'도입 절차', blockers:'예상 장애물', rating:'문제 강도',
+        paymentSignal:'실제 지불 가능성', followup:'후속 미팅', referral:'소개받을 사람',
+        nextAction:'다음 액션', checkPain:'실제 문제 경험', checkSpend:'현재 시간/비용 지출',
+        checkAction:'자발적 해결 행동', notes:'자유 메모'
+      };
+      return map[key] || key;
+    }
+
+    function exportTxt() {
+      const data = collectData();
+      let out = 'THE MOM TEST · 고객 인터뷰 기록\\n';
+      out += '====================================\\n\\n';
+      Object.entries(data).forEach(([k,v]) => {
+        if (k === '_savedAt') return;
+        out += `[${labelFor(k)}]\\n${v || '-'}\\n\\n`;
+      });
+      downloadBlob(out, `the-mom-test-${dateStamp()}.txt`, 'text/plain;charset=utf-8');
+      toast('TXT로 내보냈습니다.');
+    }
+
+    function exportJson() {
+      const data = collectData();
+      downloadBlob(JSON.stringify(data,null,2), `the-mom-test-${dateStamp()}.json`, 'application/json;charset=utf-8');
+      toast('JSON으로 내보냈습니다.');
+    }
+
+    function downloadBlob(content, filename, type) {
+      const blob = new Blob([content], {type});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(a.href);
+    }
+
+    function dateStamp() {
+      const d = new Date();
+      const p = n => String(n).padStart(2,'0');
+      return `${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())}-${p(d.getHours())}${p(d.getMinutes())}`;
+    }
+
+    function toast(msg) {
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.classList.add('show');
+      setTimeout(() => el.classList.remove('show'), 1800);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        try {
+          const data = JSON.parse(saved);
+          applyData(data);
+          if (data._savedAt) {
+            const dt = new Date(data._savedAt);
+            document.getElementById('saveStatus').textContent =
+              `불러옴 · 마지막 저장: ${dt.toLocaleString('ko-KR')}`;
+          }
+        } catch(e) {}
+      }
+      allFields().forEach(el => {
+        el.addEventListener('input', scheduleSave);
+        el.addEventListener('change', scheduleSave);
+      });
+    });
+  </script>
+</body>
+</html>
