@@ -1,4 +1,7 @@
 (function () {
+  // 표시 문구: <script src="./watermark.js" data-text="..."> 로 바꿀 수 있고, 없으면 IDEAL AI
+  var me = document.currentScript;
+  var TEXT = (me && me.dataset && me.dataset.text) || 'IDEAL AI';
   function inject() {
     if (document.getElementById('__es_watermark__')) return;
     var wrap = document.createElement('div');
@@ -13,7 +16,7 @@
       s.style.cssText =
         'position:absolute;top:' + top + ';left:50%;' +
         'transform:translate(-50%,-50%) rotate(-45deg)';
-      s.textContent = 'EUNSEON STUDIO';
+      s.textContent = TEXT;
       wrap.appendChild(s);
     });
     document.body.appendChild(wrap);
