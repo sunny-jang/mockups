@@ -1,0 +1,583 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Ideal AI 상담 챗봇 상품 설명서</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
+<style>
+  /* 레이아웃: 문서형 한 단 + 넓은 화면에서 왼쪽 목차 고정. 기능마다 "설명 / 화면" 두 칸. 브랜드는 Ideal AI 보라를 포인트로만 쓴다. */
+  :root {
+    --bg: #ffffff;
+    --paper: #f6f5fb;
+    --ink: #1a1040;
+    --muted: #5f587f;
+    --line: #e4e1f2;
+    --accent: #5b3fe6;
+    --accent-soft: #eeeafd;
+    --frame: #efedf8;
+    --ok: #0f7a52;
+    --ok-soft: #e3f4ec;
+    --soon: #8a5300;
+    --soon-soft: #fdf0dc;
+    --font: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #120e22; --paper: #1a1530; --ink: #efecfb; --muted: #aaa3c8; --line: #2d2748;
+      --accent: #a796ff; --accent-soft: #2a2350; --frame: #221c3c; --ok: #6fd3a6; --ok-soft: #173a2c;
+      --soon: #f3c27a; --soon-soft: #3b2c14; color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #120e22; --paper: #1a1530; --ink: #efecfb; --muted: #aaa3c8; --line: #2d2748;
+    --accent: #a796ff; --accent-soft: #2a2350; --frame: #221c3c; --ok: #6fd3a6; --ok-soft: #173a2c;
+    --soon: #f3c27a; --soon-soft: #3b2c14; color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--font); font-size: 16px; line-height: 1.72; -webkit-font-smoothing: antialiased; }
+  /* 한국어는 어절 단위로 줄을 바꾼다. 긴 주소·영문은 넘칠 때만 끊는다. */
+  body { word-break: keep-all; overflow-wrap: break-word; }
+  .addr, code { overflow-wrap: anywhere; }
+  h1, h2, h3 { margin: 0; letter-spacing: -0.025em; text-wrap: balance; }
+  p { margin: 0; }
+  a { color: var(--accent); }
+  .page { max-width: 1180px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 40px 72px; display: grid; grid-template-columns: 190px minmax(0, 1fr); gap: 56px; }
+  nav.toc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 24px); align-self: start; display: grid; gap: 4px; font-size: 14px; }
+  nav.toc img { width: 104px; margin-bottom: 18px; }
+  nav.toc a { color: var(--muted); text-decoration: none; padding: 4px 0 4px 12px; border-left: 2px solid var(--line); }
+  nav.toc a:hover, nav.toc a:focus-visible { color: var(--ink); border-left-color: var(--accent); outline: none; }
+  main { min-width: 0; display: grid; gap: 88px; }
+
+  .hero { display: grid; gap: 22px; }
+  .hero .kicker { font-family: var(--mono); font-size: 13px; color: var(--accent); letter-spacing: 0.02em; }
+  .hero h1 { font-size: clamp(30px, 4.2vw, 46px); line-height: 1.25; font-weight: 700; max-width: 22ch; }
+  .hero .lead { font-size: 18px; color: var(--muted); max-width: 60ch; }
+  .facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--line); margin: 6px 0 0; }
+  .facts div { padding: 14px 18px 0 0; display: grid; gap: 2px; min-width: 0; }
+  .facts div + div { padding-left: 18px; border-left: 1px solid var(--line); }
+  .facts dt { font-size: 13px; color: var(--muted); }
+  .facts dd { margin: 0; font-weight: 600; font-size: 15.5px; }
+
+  figure { margin: 0; display: grid; gap: 10px; min-width: 0; }
+  .shot { background: var(--frame); border-radius: 16px; padding: 14px; }
+  .shot img { display: block; width: 100%; height: auto; border-radius: 9px; box-shadow: 0 1px 2px rgba(26, 16, 64, 0.08), 0 18px 40px -24px rgba(26, 16, 64, 0.35); }
+  figcaption { font-size: 13.5px; color: var(--muted); }
+
+  .sec { display: grid; gap: 28px; scroll-margin-top: 24px; }
+  .sec-head { display: grid; gap: 10px; max-width: 70ch; }
+  .sec-head .label { font-size: 14px; font-weight: 600; color: var(--accent); }
+  .sec-head h2 { font-size: clamp(24px, 2.7vw, 31px); line-height: 1.35; font-weight: 700; }
+  .sec-head p { color: var(--muted); font-size: 16.5px; }
+
+  .why { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border-top: 2px solid var(--ink); }
+  .why div { padding: 18px 22px 0 0; display: grid; gap: 6px; align-content: start; min-width: 0; }
+  .why div + div { padding-left: 22px; border-left: 1px solid var(--line); }
+  .why h3 { font-size: 18px; }
+  .why p { color: var(--muted); font-size: 15px; }
+
+  .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 14px; }
+  table { width: 100%; border-collapse: collapse; font-size: 14.5px; min-width: 640px; }
+  th, td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-size: 13px; font-weight: 600; color: var(--muted); background: var(--paper); }
+  tr:last-child td { border-bottom: 0; }
+  td:first-child { font-weight: 600; white-space: nowrap; }
+  .pill { display: inline-block; font-size: 12.5px; font-weight: 600; padding: 2px 9px; border-radius: 999px; white-space: nowrap; }
+  .pill.ok { background: var(--ok-soft); color: var(--ok); }
+  .pill.soon { background: var(--soon-soft); color: var(--soon); }
+
+  .feature { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.25fr); gap: 36px; align-items: start; padding-top: 28px; border-top: 1px solid var(--line); }
+  .feature.flip > .copy { order: 2; }
+  .copy { display: grid; gap: 14px; min-width: 0; }
+  .copy h3 { font-size: 21px; line-height: 1.4; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+  .copy p { color: var(--muted); }
+  .copy ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; font-size: 15px; }
+  .copy li { padding-left: 18px; position: relative; }
+  .copy li::before { content: ""; position: absolute; left: 2px; top: 0.72em; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+  .copy .for-agency { font-size: 14.5px; background: var(--paper); border-radius: 10px; padding: 12px 14px; color: var(--ink); }
+  .copy .for-agency b { color: var(--accent); font-weight: 600; margin-right: 6px; }
+
+  .invite { display: grid; gap: 20px; padding-top: 28px; border-top: 1px solid var(--line); }
+  .invite .copy { max-width: 70ch; }
+  .invite-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 20px; counter-reset: iv; }
+  .invite-steps li { counter-increment: iv; display: grid; gap: 8px; min-width: 0; }
+  .invite-steps li::before { content: counter(iv) "단계"; font-family: var(--mono); font-size: 13px; color: var(--accent); }
+  .invite-steps figcaption b { color: var(--ink); font-weight: 600; }
+  .trio { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .duo { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: start; }
+  .narrow img { max-width: 420px; margin: 0 auto; }
+
+  .plans { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+  .plan { border: 1px solid var(--line); border-radius: 16px; padding: 22px; display: grid; gap: 8px; align-content: start; min-width: 0; }
+  .plan.pick { border: 2px solid var(--accent); }
+  .plan .name { font-weight: 700; font-size: 17px; }
+  .plan .price { font-size: 26px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+  .plan .price small { font-size: 14px; font-weight: 500; color: var(--muted); }
+  .plan ul { margin: 8px 0 0; padding: 12px 0 0; border-top: 1px solid var(--line); list-style: none; display: grid; gap: 6px; font-size: 14.5px; }
+  .note { font-size: 14px; color: var(--muted); }
+  .pitch { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; counter-reset: pt; border-top: 2px solid var(--ink); }
+  .pitch li { counter-increment: pt; display: grid; grid-template-columns: 44px minmax(0, 1fr); column-gap: 12px; row-gap: 10px; padding: 22px 0; border-bottom: 1px solid var(--line); }
+  .pitch li::before { content: counter(pt); grid-row: span 6; font-family: var(--mono); font-size: 15px; color: var(--accent); padding-top: 2px; }
+  .pitch h3 { font-size: 19px; line-height: 1.45; }
+  .pitch p { color: var(--muted); max-width: 70ch; }
+  .pitch .say { color: var(--ink); background: var(--accent-soft); border-radius: 10px; padding: 10px 14px; font-weight: 500; }
+  .roi { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border: 1px solid var(--line); border-radius: 12px; margin: 0; overflow: hidden; }
+  .roi div { padding: 12px 14px; display: grid; gap: 2px; min-width: 0; }
+  .roi div + div { border-left: 1px solid var(--line); }
+  .roi div:nth-child(3) { background: var(--accent-soft); }
+  .roi dt { font-size: 13px; color: var(--muted); }
+  .roi dd { margin: 0; font-weight: 700; font-size: 17px; font-variant-numeric: tabular-nums; }
+  .roi small { font-size: 12px; font-weight: 500; color: var(--muted); }
+  .pkgs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: stretch; }
+  .pkg { border: 1px solid var(--line); border-radius: 18px; padding: 26px; display: grid; gap: 16px; align-content: start; min-width: 0; }
+  .pkg.pick { border: 2px solid var(--accent); }
+  .pkg-head { display: grid; gap: 6px; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
+  .pkg h3 { font-size: 19px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+  .pkg .price { font-size: 30px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+  .pkg .price small { display: block; font-size: 14px; font-weight: 500; color: var(--muted); letter-spacing: 0; }
+  .pkg ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; font-size: 15px; }
+  .pkg li { padding-left: 22px; position: relative; }
+  .pkg li::before { content: "✓"; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+  .pkg li b { font-weight: 600; }
+  .terms { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; margin: 0; border-top: 1px solid var(--line); }
+  .terms div { padding: 14px 18px 0 0; display: grid; gap: 2px; min-width: 0; }
+  .terms div + div { padding-left: 18px; border-left: 1px solid var(--line); }
+  .terms dt { font-size: 13px; color: var(--muted); }
+  .terms dd { margin: 0; font-weight: 600; font-size: 15px; }
+
+  .trust { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 40px; margin: 0; }
+  .trust div { padding: 16px 0; border-top: 1px solid var(--line); display: grid; gap: 4px; }
+  .trust dt { font-weight: 600; }
+  .trust dd { margin: 0; color: var(--muted); font-size: 15px; }
+
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); counter-reset: s; border-top: 2px solid var(--ink); }
+  .steps li { counter-increment: s; padding: 16px 18px 0 0; display: grid; gap: 4px; align-content: start; }
+  .steps li + li { padding-left: 18px; border-left: 1px solid var(--line); }
+  .steps li::before { content: counter(s); font-family: var(--mono); color: var(--accent); font-size: 14px; }
+  .steps p { color: var(--muted); font-size: 15px; }
+
+  .contact { background: var(--paper); border-radius: 18px; padding: 28px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; }
+  .contact h2 { font-size: 22px; }
+  .contact .addr { font-family: var(--mono); font-size: 15px; user-select: all; }
+
+  @media (max-width: 980px) {
+    .page { grid-template-columns: 1fr; gap: 0; }
+    nav.toc { position: static; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); margin-bottom: 36px; }
+    nav.toc img { grid-column: 1 / -1; }
+    .feature, .feature.flip { grid-template-columns: 1fr; }
+    .feature.flip > .copy { order: 0; }
+    .plans { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 640px) {
+    .facts, .why, .trio, .duo, .trust, .plans, .steps, .invite-steps, .pkgs, .terms, .roi { grid-template-columns: 1fr; }
+    .roi div + div { border-left: 0; border-top: 1px solid var(--line); }
+    .pitch li { grid-template-columns: 28px minmax(0, 1fr); }
+    .facts div + div, .why div + div, .steps li + li, .terms div + div { padding-left: 0; border-left: 0; border-top: 1px solid var(--line); }
+    main { gap: 64px; }
+  }
+
+  /* 파트를 모두 펼친 문서형 배치. 각 파트 머리에 라벨 · 제목 · 핵심 한 줄이 보인다. */
+  main { gap: 0; }
+  .hero { margin-bottom: 40px; }
+  section.sec { display: block; border-top: 1px solid var(--line); scroll-margin-top: 16px; }
+  section.sec:last-of-type { border-bottom: 1px solid var(--line); }
+  .sec-summary { display: grid; padding: 32px 6px 18px; }
+  .sum-text { display: grid; gap: 4px; min-width: 0; }
+  .sum-text .label { font-size: 13.5px; font-weight: 600; color: var(--accent); }
+  .sum-title { font-size: clamp(22px, 2.4vw, 28px); font-weight: 700; line-height: 1.4; letter-spacing: -0.02em; text-wrap: balance; }
+  .key { font-size: 15.5px; font-weight: 600; color: var(--ink); background: var(--accent-soft); border-radius: 8px; padding: 6px 10px; justify-self: start; margin-top: 6px; }
+  .sec-body { display: grid; gap: 28px; padding: 4px 6px 56px; }
+  .sec-body > .intro { color: var(--muted); font-size: 16.5px; max-width: 70ch; }
+  .contact { margin-top: 48px; }
+  /* 인쇄·PDF 저장 시에도 파트가 중간에서 잘리지 않게 */
+  @media print {
+    nav.toc { display: none; }
+    .page { grid-template-columns: 1fr; padding: 0; }
+    figure, .feature, .pkg, .plan, .pitch li, .invite-steps li { break-inside: avoid; }
+  }
+</style>
+
+<div class="page">
+  <nav class="toc" aria-label="목차">
+    <img src="img/logo.png" alt="Ideal AI">
+    <a href="#why">에이전시가 얻는 것</a>
+    <a href="#pitch">고객사 설명 포인트</a>
+    <a href="#overview">기능 한눈에 보기</a>
+    <a href="#workspace">에이전시 워크스페이스</a>
+    <a href="#knowledge">지식 채우기</a>
+    <a href="#proactive">먼저 말 거는 챗봇</a>
+    <a href="#handoff">상담원 연결</a>
+    <a href="#desk">고객사 상담함</a>
+    <a href="#invite">직원 초대 화면</a>
+    <a href="#analytics">운영 분석</a>
+    <a href="#db">DB 연동</a>
+    <a href="#trust">보안</a>
+    <a href="#plans">요금제</a>
+    <a href="#process">도입 절차</a>
+  </nav>
+
+  <main>
+    <header class="hero">
+      <p class="kicker">파트너 에이전시용 상품 설명서 · 2026년 10월 기준</p>
+      <h1>고객사 홈페이지에 AI 상담 창구를 붙이고, 에이전시 한 계정에서 운영합니다</h1>
+      <p class="lead">Ideal AI 상담 챗봇은 고객사의 문서와 홈페이지로 답하는 챗봇, 사람 상담원 연결, 견적⁠·⁠상담 신청 접수를 하나로 묶은 서비스입니다. 에이전시는 고객사마다 챗봇을 만들어 주고, 고객사는 자기 전용 상담함에서 일합니다.</p>
+      <dl class="facts">
+        <div><dt>설치</dt><dd>코드 한 줄 또는 npm</dd></div>
+        <div><dt>지식 입력</dt><dd>문서⁠·⁠Q&amp;A⁠·⁠홈페이지 전체</dd></div>
+        <div><dt>상담원 연결</dt><dd>고객사 상담함⁠·⁠Telegram</dd></div>
+        <div><dt>운영 단위</dt><dd>에이전시 1 · 고객사 여러 곳</dd></div>
+      </dl>
+      <figure>
+        <div class="shot"><img src="img/agency-home.jpg" alt="에이전시 업무 홈. 대기 중인 상담 2건, 진행 중 1건, 운영 챗봇 3개와 고객사별 대기 상담 목록"></div>
+        <figcaption>에이전시 업무 홈. 고객사 세 곳의 대기 상담과 챗봇을 한 화면에서 봅니다. (데모 데이터)</figcaption>
+      </figure>
+    </header>
+
+    <section class="sec" id="why" aria-labelledby="why-h">
+      <header class="sec-summary"><span class="sum-text"><span class="label">에이전시가 얻는 것</span><span class="sum-title" id="why-h">홈페이지 제작에 붙여 파는 상담 챗봇 패키지</span><span class="key">설치비 한 번 ⁠·⁠ 개발 없이 세팅 ⁠·⁠ 고객사가 직접 운영</span></span></header>
+      <div class="sec-body">
+      <p class="intro">고객사 한 곳당 설치비만 받는 패키지입니다. 첫 도입 1년은 운영비가 없어, 고객사에게 부담 없이 제안할 수 있습니다.</p>
+      <div class="why">
+        <div><h3>개발 없이 세팅</h3><p>고객사 홈페이지 주소를 넣으면 사이트맵을 따라 페이지 전체가 챗봇 지식이 됩니다. 설치는 코드 한 줄입니다.</p></div>
+        <div><h3>고객사에 넘겨주기 쉬움</h3><p>고객사 직원은 전용 상담함에 로그인해 상담⁠·⁠문의를 직접 처리합니다. 에이전시가 매번 대신 답할 필요가 없습니다.</p></div>
+        <div><h3>도입 전에 보여주기</h3><p>고객사 홈페이지 위에 실제 챗봇을 띄운 데모 링크를 만들어 미팅 자리에서 바로 보여줍니다.</p></div>
+      </div>
+    </div>
+    </section>
+
+    <section class="sec" id="pitch" aria-labelledby="pitch-h">
+      <header class="sec-summary"><span class="sum-text"><span class="label">고객사 설명 포인트</span><span class="sum-title" id="pitch-h">고객사에게는 이렇게 설명하세요</span><span class="key">견적 즉시 응대 ⁠·⁠ 퇴근 후 응대 ⁠·⁠ 전화 부담 해소 ⁠·⁠ 문의 통계 ⁠·⁠ 설치비 2개월 회수</span></span></header>
+      <div class="sec-body">
+      <p class="intro">고객사가 매일 겪는 문의 응대의 불편에서 시작하면 설명이 쉽습니다. 아래 다섯 가지는 지금 제품에서 바로 보여줄 수 있는 내용입니다.</p>
+      <ol class="pitch">
+        <li>
+          <h3>견적 문의가 폼으로만 쌓이고 바로 답하지 못하는 문제</h3>
+          <p>혼자 또는 적은 인원이 운영하는 곳은 견적 폼만 계속 쌓이고, 답이 늦어지는 사이 고객이 다른 곳에 문의합니다. 챗봇이 먼저 가격⁠·⁠일정⁠·⁠조건을 안내하고, 사람이 필요한 순간 같은 대화창에서 상담원에게 바로 연결합니다. 견적⁠·⁠상담 신청은 접수번호와 함께 상담함에 정리됩니다.</p>
+          <p class="say">“폼만 받아 두는 대신, 고객이 궁금한 걸 그 자리에서 답하고 필요하면 바로 사람이 이어받아요.”</p>
+        </li>
+        <li>
+          <h3>퇴근한 뒤에 들어오는 문의를 놓치는 문제</h3>
+          <p>상담 운영 시간이 끝나면 상담원 연결 버튼은 숨기고, 그 시간에도 AI 챗봇이 등록된 자료로 답합니다. 답하지 못한 문의는 견적⁠·⁠상담 신청으로 받아 두었다가 다음 날 처리합니다. 밤과 주말에 떠나는 고객을 붙잡습니다.</p>
+          <p class="say">“밤 11시에 들어온 문의도 그 자리에서 답하고, 연락처까지 받아 둡니다.”</p>
+        </li>
+        <li>
+          <h3>전화는 부담스러운 고객</h3>
+          <p>간단한 것 하나 물어보려고 전화하기 부담스러운 고객이 많습니다. 홈페이지 오른쪽 아래 채팅으로 운영 시간⁠·⁠가격⁠·⁠위치⁠·⁠예약 방법 같은 정보를 바로 얻습니다. 방문자가 머뭇거리면 챗봇이 읽고 있는 내용에 맞춰 먼저 말을 겁니다.</p>
+          <p class="say">“전화하기 망설이던 고객이 채팅으로 먼저 물어보고, 그다음에 예약합니다.”</p>
+        </li>
+        <li>
+          <h3>고객이 무엇을 묻는지 숫자로 보기</h3>
+          <p>챗봇에 들어온 질문을 가격⁠·⁠예약⁠·⁠배송 같은 문의 유형으로 자동 분류하고, 답하지 못한 질문을 따로 모읍니다. 어떤 정보를 홈페이지에 더 보여줘야 하는지, 어떤 문의가 늘고 있는지 매달 확인합니다.</p>
+          <p class="say">“고객 문의가 어떤 내용인지 처음으로 숫자로 보시게 됩니다.”</p>
+        </li>
+        <li>
+          <h3>인건비와 비교</h3>
+          <p>인건비와 비교하면 설치비가 작다는 것을 바로 보여줄 수 있습니다. 아래는 계산 예시이고, 실제 비율은 고객사 문의 내용에 따라 다릅니다.</p>
+          <dl class="roi">
+            <div><dt>인건비</dt><dd>연 2,000만원 <small>(가정)</small></dd></div>
+            <div><dt>챗봇이 맡는 간단 문의</dt><dd>30% <small>(가정)</small></dd></div>
+            <div><dt>챗봇이 대신하는 업무</dt><dd>연 600만원 상당</dd></div>
+            <div><dt>챗봇 설치비</dt><dd>590,000원 <small>1회</small></dd></div>
+          </dl>
+          <p>이 가정이면 챗봇이 한 달에 50만원 상당의 업무를 맡아, 설치비는 2개월 안에 회수됩니다. 첫 도입 1년 동안은 운영비가 없습니다. AI 사용료는 고객사 AI 키로 쓴 만큼만 따로 나갑니다.</p>
+          <p class="say">“상담 직원 한 명을 더 뽑는 대신, 설치비 한 번으로 24시간 응대 창구를 하나 더 둡니다.”</p>
+        </li>
+      </ol>
+    </div>
+    </section>
+
+    <section class="sec" id="overview" aria-labelledby="overview-h">
+      <header class="sec-summary"><span class="sum-text"><span class="label">기능 한눈에 보기</span><span class="sum-title" id="overview-h">누가 무엇을 쓰는지</span><span class="key">9가지 기능 중 8가지는 지금 제공 중, DB 연동은 Beta 출시 예정</span></span></header>
+      <div class="sec-body">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>기능</th><th>고객사가 얻는 것</th><th>에이전시가 하는 일</th><th>상태</th></tr></thead>
+          <tbody>
+            <tr><td>AI 상담 챗봇</td><td>문서⁠·⁠홈페이지 내용으로 24시간 답변</td><td>챗봇 생성, 지식 등록, 설치 코드 전달</td><td><span class="pill ok">제공 중</span></td></tr>
+            <tr><td>Q&amp;A 챗봇</td><td>정해진 답을 그대로, 즉시 안내</td><td>엑셀로 질문⁠·⁠답변 일괄 등록</td><td><span class="pill ok">제공 중</span></td></tr>
+            <tr><td>Q&amp;A + AI 결합</td><td>질문 목록으로 바로 답하고, 없는 질문은 AI가 문서로 답변</td><td>Q&amp;A 등록, 지식 문서 연결</td><td><span class="pill ok">제공 중</span></td></tr>
+            <tr><td>먼저 말 걸기</td><td>머뭇거리는 방문자에게 내용에 맞는 질문</td><td>문구⁠·⁠대기 시간⁠·⁠제외 경로 설정</td><td><span class="pill ok">제공 중</span></td></tr>
+            <tr><td>상담원 연결</td><td>같은 대화창에서 사람 상담으로 전환</td><td>운영 시간⁠·⁠채널 설정</td><td><span class="pill ok">제공 중</span></td></tr>
+            <tr><td>고객사 상담함</td><td>직원별 계정, 상담⁠·⁠문의 직접 처리</td><td>고객사 관리자 초대</td><td><span class="pill ok">제공 중</span></td></tr>
+            <tr><td>견적⁠·⁠상담 신청</td><td>대화 중 신청 접수와 처리 상태 관리</td><td>없음 (고객사가 처리)</td><td><span class="pill ok">제공 중</span></td></tr>
+            <tr><td>데모 링크</td><td>도입 전 자기 홈페이지 위에서 체험</td><td>링크 생성⁠·⁠공유⁠·⁠해제</td><td><span class="pill ok">제공 중</span></td></tr>
+            <tr><td>DB 연동</td><td>상품 조건 검색⁠·⁠추천, 재고 같은 지금 값 조회</td><td>DB 연결과 고객사별 맞춤 설정</td><td><span class="pill soon">Beta 출시 예정</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    </section>
+
+    <section class="sec" id="workspace" aria-labelledby="workspace-h">
+      <header class="sec-summary"><span class="sum-text"><span class="label">에이전시 워크스페이스</span><span class="sum-title" id="workspace-h">고객사 여러 곳을 한 계정에서</span><span class="key">고객사 여러 곳의 챗봇⁠·⁠지식⁠·⁠상담을 한 계정에서 관리</span></span></header>
+      <div class="sec-body">
+      <div class="feature">
+        <div class="copy">
+          <h3>고객사별로 챗봇⁠·⁠지식⁠·⁠상담을 나눠 관리</h3>
+          <p>고객사를 추가하고 홈페이지 주소를 등록하면, 그 고객사의 챗봇과 담당자, 상담이 한 묶음으로 관리됩니다.</p>
+          <ul>
+            <li>업무 홈에서 고객사 전체의 대기⁠·⁠진행 상담을 오래 기다린 순으로 봅니다.</li>
+            <li>고객사마다 챗봇 수와 담당자 수, 홈페이지 주소를 확인합니다.</li>
+            <li>"고객사 상담함 열기"로 고객사가 보는 화면을 그대로 확인합니다.</li>
+          </ul>
+          <p class="for-agency"><b>에이전시 입장</b>고객사 대화 원문은 에이전시 분석 화면에 섞이지 않아, 고객사에 개인정보 걱정 없이 운영을 맡길 수 있습니다.</p>
+        </div>
+        <figure>
+          <div class="shot"><img src="img/agency-customers.jpg" alt="고객사 관리 화면. 달빛 카페, 하늘 치과, 초록 가구 카드에 챗봇 수, 담당자 수, 홈페이지 주소"></div>
+          <figcaption>고객사 관리. 카드마다 챗봇⁠·⁠담당자 수와 상담함 바로가기가 있습니다.</figcaption>
+        </figure>
+      </div>
+    </div>
+    </section>
+
+    <section class="sec" id="knowledge" aria-labelledby="knowledge-h">
+      <header class="sec-summary"><span class="sum-text"><span class="label">지식 채우기</span><span class="sum-title" id="knowledge-h">고객사 자료가 그대로 챗봇의 답이 됩니다</span><span class="key">홈페이지 주소만 넣으면 최대 300페이지가 챗봇 지식으로</span></span></header>
+      <div class="sec-body">
+      <div class="feature">
+        <div class="copy">
+          <h3>문서, Q&amp;A, 홈페이지 전체</h3>
+          <ul>
+            <li><b>홈페이지 전체 가져오기</b>: 주소만 넣으면 사이트맵을 따라 최대 300페이지를 한 번에 문서로 만듭니다.</li>
+            <li><b>페이지 하나 가져오기</b>: FAQ⁠·⁠이용안내 같은 공개 페이지를 주소로 가져와 검토 후 저장합니다.</li>
+            <li><b>문서 업로드</b>: 한글(HWP⁠·⁠HWPX), PDF, Word, 텍스트 등 10종을 폴더별로 올립니다.</li>
+            <li><b>Q&amp;A 엑셀</b>: 시트 이름이 폴더가 되고, 질문⁠·⁠질문상세 열을 한 번에 읽습니다.</li>
+          </ul>
+          <p>AI 챗봇은 질문과 관련된 문서를 먼저 찾아 그 내용으로만 답합니다. 모델은 GPT-4o mini⁠·⁠GPT-4o⁠·⁠GPT-4.1이나 Gemini 중에서 고르고, 고객사 API 키로 운영할 수도 있습니다.</p>
+        </div>
+        <figure>
+          <div class="shot"><img src="img/docs-import.jpg" alt="URL로 지식 가져오기와 사이트 전체 가져오기 입력 칸"></div>
+          <figcaption>챗봇 지식 문서 탭. 주소 한 줄로 홈페이지 내용을 가져옵니다.</figcaption>
+        </figure>
+      </div>
+    </div>
+    </section>
+
+    <section class="sec" id="proactive" aria-labelledby="proactive-h">
+      <header class="sec-summary"><span class="sum-text"><span class="label">먼저 말 거는 챗봇</span><span class="sum-title" id="proactive-h">버튼을 누르지 않는 방문자에게 먼저 묻습니다</span><span class="key">방문자가 읽는 내용에 맞춰 챗봇이 먼저 질문</span></span></header>
+      <div class="sec-body">
+      <p class="intro">대부분의 방문자는 채팅 버튼을 누르지 않고 떠납니다. 방문자가 읽는 구간을 보고, 등록된 자료로 답할 수 있을 때만 그 내용에 맞는 질문을 건넵니다.</p>
+      <div class="feature flip">
+        <div class="copy">
+          <h3>읽는 내용에 맞춘 한 줄 질문</h3>
+          <ul>
+            <li>방문자가 오래 머문 서비스 설명⁠·⁠가격 같은 구간을 찾습니다.</li>
+            <li>관련 문서⁠·⁠Q&amp;A가 있을 때만 질문을 만들고, 없으면 "제가 도와드릴까요?"로 가볍게 인사합니다.</li>
+            <li>방문 한 번에 한 번만 보여주고, 채팅 중이거나 상담 중이면 띄우지 않습니다.</li>
+            <li>입력값⁠·⁠연락처⁠·⁠화면은 수집하지 않고 로그인⁠·⁠결제 영역은 제외합니다.</li>
+          </ul>
+          <p class="for-agency"><b>에이전시 입장</b>"홈페이지에 상담 직원이 한 명 더 생긴다"는 설명이 고객사에게 가장 잘 통합니다.</p>
+        </div>
+        <figure class="narrow">
+          <div class="shot"><img src="img/proactive.jpg" alt="고객 응대 자동화 구간을 읽던 방문자에게 '고객 응대 자동화에 대해 어떤 업무를 해결하고 싶으신가요?' 말풍선이 뜬 화면"></div>
+          <figcaption>"고객 응대 자동화" 구간을 읽던 방문자에게 뜬 질문. (실제 검증 화면)</figcaption>
+        </figure>
+      </div>
+    </div>
+    </section>
+
+    <section class="sec" id="handoff" aria-labelledby="handoff-h">
+      <header class="sec-summary"><span class="sum-text"><span class="label">상담원 연결</span><span class="sum-title" id="handoff-h">챗봇이 부족하면 같은 대화창에서 사람이 이어받습니다</span><span class="key">챗봇이 부족하면 같은 대화창에서 상담원이 바로 이어받음</span></span></header>
+      <div class="sec-body">
+      <p class="intro">고객은 창을 옮기지 않고, 상담원은 고객사 상담함이나 Telegram에서 답합니다. 그동안의 대화와 AI 요약이 함께 넘어갑니다.</p>
+      <div class="trio">
+        <figure><div class="shot"><img src="img/handoff-1.jpg" alt="챗봇 답변 아래 상담원 연결 버튼"></div><figcaption>답변 아래 상담원 연결 버튼. 답을 못 찾을 때만 보이게도 할 수 있습니다.</figcaption></figure>
+        <figure><div class="shot"><img src="img/handoff-2.jpg" alt="상담 요청 접수 안내"></div><figcaption>요청이 접수되면 이후 메시지는 상담원에게 갑니다.</figcaption></figure>
+        <figure><div class="shot"><img src="img/handoff-3.jpg" alt="상담원 답변이 도착한 대화"></div><figcaption>상담원 답변이 고객 대화창에 바로 표시됩니다.</figcaption></figure>
+      </div>
+      <div class="why">
+        <div><h3>운영 시간</h3><p>요일과 시각을 정하면 그 외 시간에는 버튼을 숨기고 운영 시간을 안내합니다.</p></div>
+        <div><h3>즉시 무인 운영</h3><p>상담원이 자리를 비우면 스위치 하나로 챗봇 전용 운영으로 바꿉니다. 진행 중인 상담은 유지됩니다.</p></div>
+        <div><h3>Telegram 연결</h3><p>상담 1건마다 그룹에 전용 주제가 생기고, 이전 대화가 함께 올라옵니다.</p></div>
+      </div>
+    </div>
+    </section>
+
+    <section class="sec" id="desk" aria-labelledby="desk-h">
+      <header class="sec-summary"><span class="sum-text"><span class="label">고객사 상담함</span><span class="sum-title" id="desk-h">고객사 직원이 직접 상담하고 문의를 처리합니다</span><span class="key">고객사 직원이 직접 상담⁠·⁠견적을 처리, 초대 링크만으로 계정 생성</span></span></header>
+      <div class="sec-body">
+      <p class="intro">고객사 전용 주소로 로그인하는 별도 화면입니다. 다른 고객사의 대화와 문의는 보이지 않습니다.</p>
+      <div class="feature">
+        <div class="copy">
+          <h3>대화 맥락과 AI 요약을 보며 답변</h3>
+          <ul>
+            <li>대기⁠·⁠상담 중⁠·⁠종료 상담을 나눠 보고, 5초마다 목록이 새로 고쳐집니다.</li>
+            <li>고객과 챗봇이 나눈 대화, 요청 사유, 이전 대화 요약을 함께 보며 답합니다.</li>
+            <li>챗봇 지식 문서와 Q&amp;A도 고객사가 직접 고칩니다.</li>
+          </ul>
+        </div>
+        <figure>
+          <div class="shot"><img src="img/desk-support.jpg" alt="고객사 상담함. 대기 중인 상담과 이전 대화 요약, 고객·챗봇 대화, 답변 입력창"></div>
+          <figcaption>달빛 카페 상담함. 단체 예약 문의가 요약과 함께 대기 중입니다. (데모 데이터)</figcaption>
+        </figure>
+      </div>
+      <div class="feature flip">
+        <div class="copy">
+          <h3>견적⁠·⁠상담 신청 접수</h3>
+          <p>챗봇 대화 중에 견적과 상담 신청을 받습니다. 접수번호가 붙고, 접수⁠·⁠처리 중⁠·⁠답변 완료 상태와 처리 기록으로 관리합니다.</p>
+          <p class="for-agency"><b>에이전시 입장</b>고객사가 "챗봇으로 실제 문의가 들어온다"는 걸 숫자로 확인하는 화면입니다.</p>
+        </div>
+        <figure>
+          <div class="shot"><img src="img/desk-requests.jpg" alt="문의·견적 목록. 케이터링 견적, 매장 대관, 원두 납품 신청이 상태와 함께 표시"></div>
+          <figcaption>문의⁠·⁠견적 목록. 이름⁠·⁠내용⁠·⁠접수번호로 검색합니다. (데모 데이터)</figcaption>
+        </figure>
+      </div>
+      <div class="feature">
+        <div class="copy">
+          <h3>직원 초대와 권한</h3>
+          <ul>
+            <li>고객사 관리자와 상담 담당자를 이메일로 초대합니다. 초대 링크는 72시간 유효합니다.</li>
+            <li>퇴사자는 접근 해제하고, 필요하면 다시 초대합니다.</li>
+            <li>이메일 또는 구글 계정으로 로그인하고, 비밀번호는 직접 찾습니다.</li>
+          </ul>
+        </div>
+        <figure>
+          <div class="shot"><img src="img/desk-members.jpg" alt="담당자 초대·관리 화면. 상담 담당자 두 명과 고객사 관리자 한 명"></div>
+          <figcaption>담당자 초대⁠·⁠관리. (데모 데이터)</figcaption>
+        </figure>
+      </div>
+      <div class="invite" id="invite">
+        <div class="copy">
+          <h3>초대받은 직원이 보는 화면</h3>
+          <p>초대받은 사람은 링크를 열고 이메일로 본인 확인을 한 뒤, 이름과 비밀번호만 정하면 바로 상담함을 씁니다. 에이전시가 계정을 대신 만들어 줄 필요가 없습니다.</p>
+        </div>
+        <ol class="invite-steps">
+          <li><figure><div class="shot"><img src="img/invite-created.jpg" alt="담당자 관리에서 이메일과 역할을 넣고 초대 링크를 만든 화면. 최근 초대에 수락 대기 표시"></div><figcaption><b>초대 링크 만들기.</b> 이메일과 역할을 고르면 72시간짜리 링크가 생기고, 최근 초대에 수락 대기로 표시됩니다.</figcaption></figure></li>
+          <li><figure><div class="shot"><img src="img/invite-open.jpg" alt="달빛 카페 상담함에 초대되었습니다 화면. 초대한 곳, 역할, 가려진 초대 이메일과 본인 확인 버튼"></div><figcaption><b>초대 화면.</b> 초대한 곳과 역할이 보이고, 초대받은 이메일은 일부 가려집니다. 메일로 본인 확인 링크를 받습니다.</figcaption></figure></li>
+          <li><figure><div class="shot"><img src="img/activate-filled.jpg" alt="본인 확인 완료 후 달빛 카페 상담함 계정 만들기 화면. 이름과 비밀번호 입력"></div><figcaption><b>계정 만들기.</b> 메일 링크로 들어오면 이름과 8자 이상 비밀번호만 정합니다.</figcaption></figure></li>
+          <li><figure><div class="shot"><img src="img/activated.jpg" alt="계정 활성화 완료. 상담함을 이용할 준비가 됐어요"></div><figcaption><b>활성화 완료.</b> 로그인하면 초대받은 고객사의 상담만 보입니다.</figcaption></figure></li>
+        </ol>
+        <p class="note">검증 환경에서 찍은 화면이라 링크 주소가 테스트 주소로 보입니다.</p>
+      </div>
+    </div>
+    </section>
+
+    <section class="sec" id="analytics" aria-labelledby="analytics-h">
+      <header class="sec-summary"><span class="sum-text"><span class="label">운영 분석</span><span class="sum-title" id="analytics-h">고객이 무엇을 묻고, 챗봇이 어디서 막히는지</span><span class="key">문의 유형⁠·⁠답하지 못한 질문⁠·⁠AI 비용을 매달 확인</span></span></header>
+      <div class="sec-body">
+      <p class="intro">대화량, 응답 완료율, 문의 의도, 답하지 못한 질문, AI 사용량과 비용을 기간⁠·⁠챗봇별로 봅니다. 월 정기 보고의 근거로 씁니다.</p>
+      <figure>
+        <div class="shot"><img src="img/dashboard.jpg" alt="분석 대시보드. 전체 대화, 활성 세션, 응답 완료율, 거절률, 대화량 추이, 문의 의도 TOP 5"></div>
+        <figcaption>분석 대시보드 예시. 지표는 스크린샷용 데모 데이터입니다.</figcaption>
+      </figure>
+    </div>
+    </section>
+
+    <section class="sec" id="db" aria-labelledby="db-h">
+      <header class="sec-summary"><span class="sum-text"><span class="label">DB 연동</span><span class="sum-title" id="db-h">고객사 DB의 상품 정보로 찾아 주고 답합니다 <span class="pill soon">Beta 출시 예정</span></span><span class="key">상품 조건 검색⁠·⁠추천과 재고 같은 지금 값 조회 (Beta 출시 예정)</span></span></header>
+      <div class="sec-body">
+      <p class="intro">홈페이지에 없는 정보는 고객사 DB에 있습니다. 읽기 전용 DB 계정만 화면에서 연결하면 개발자 없이 챗봇이 그 데이터로 답합니다. PostgreSQL과 MySQL⁠·⁠MariaDB를 지원합니다.</p>
+      <div class="feature">
+        <div class="copy">
+          <h3>표를 챗봇 지식으로</h3>
+          <ul>
+            <li>상품⁠·⁠메뉴⁠·⁠지점 표를 고르면 행 하나가 문서 하나가 됩니다.</li>
+            <li>매일 새벽 바뀐 행만 다시 가져오고, 사라진 행은 답변에서 뺍니다.</li>
+            <li>"2만원 이하 선물세트"처럼 숫자 조건이 있는 질문도 알아듣습니다.</li>
+            <li>개인정보로 보이는 컬럼은 기본으로 제외합니다.</li>
+          </ul>
+        </div>
+        <figure>
+          <div class="shot"><img src="img/db-source.jpg" alt="DB에서 가져오기. menu 표, 매일 새벽 동기화, 반영·갱신·보관 결과"></div>
+          <figcaption>DB에서 가져오기. 동기화 주기와 마지막 결과가 표시됩니다.</figcaption>
+        </figure>
+      </div>
+      <div class="feature flip">
+        <div class="copy">
+          <h3>대화 중 실시간 조회</h3>
+          <p>"아메리카노 지금 몇 개 남았어요?"처럼 지금 값이 중요한 질문은 대화 중에 DB를 바로 확인합니다. 고객사가 미리 정한 조회만 실행하고, 실행은 5초로 제한합니다.</p>
+          <p>“제주도 스파 있는 호텔 찾아줘”처럼 조건에 맞는 상품을 찾는 질문에는 고객사가 정한 기준(평점순⁠·⁠가격순 등)으로 상위 몇 곳만 골라 상세 페이지 링크와 함께 답합니다.</p>
+          <p>“재고 전부 알려줘”처럼 한 번에 처리하기 너무 큰 요청은 실행하지 않고, 물어볼 수 있는 예시 질문을 버튼으로 보여줍니다. 버튼을 누르면 바로 다시 묻습니다.</p>
+        </div>
+        <figure>
+          <div class="shot"><img src="img/lookup-test.jpg" alt="실시간 조회 재고 조회 테스트. 아메리카노 레귤러 12개, 라지 7개"></div>
+          <figcaption>관리 화면에서 조회를 테스트한 결과. 챗봇은 이 값으로 답합니다.</figcaption>
+        </figure>
+      </div>
+      <div class="duo">
+        <figure class="narrow"><div class="shot"><img src="img/widget-chips.jpg" alt="'재고 전부 알려줘'에 범위가 너무 넓다는 안내와 예시 질문 버튼 두 개"></div><figcaption>넓은 요청에는 안내와 예시 질문 버튼을 보여줍니다.</figcaption></figure>
+        <figure class="narrow"><div class="shot"><img src="img/widget-answer.jpg" alt="예시 질문을 누르자 아메리카노 재고를 답한 대화와 출처 보기"></div><figcaption>버튼을 누르면 바로 조회해 답하고 출처를 남깁니다.</figcaption></figure>
+      </div>
+      <p class="note">위젯 화면은 출시 전 검증 환경에서 예시 답변으로 찍은 화면입니다.</p>
+    </div>
+    </section>
+
+    <section class="sec" id="trust" aria-labelledby="trust-h">
+      <header class="sec-summary"><span class="sum-text"><span class="label">보안</span><span class="sum-title" id="trust-h">고객사 데이터를 고객사 안에 둡니다</span><span class="key">고객사별 데이터 분리 ⁠·⁠ 등록된 홈페이지에서만 동작 ⁠·⁠ 연동 정보 암호화</span></span></header>
+      <div class="sec-body">
+      <dl class="trust">
+        <div><dt>고객사별 데이터 분리</dt><dd>챗봇⁠·⁠문서⁠·⁠대화⁠·⁠문의는 고객사 단위로 나뉘고, 직원마다 받은 권한 안에서만 보입니다.</dd></div>
+        <div><dt>등록된 홈페이지에서만 동작</dt><dd>홈페이지 주소를 등록하면 다른 사이트에 설치 코드를 붙여도 챗봇이 동작하지 않습니다.</dd></div>
+        <div><dt>연동 정보 암호화</dt><dd>AI API 키, Telegram 토큰, DB 접속 정보는 AES-256으로 암호화해 저장하고 다시 보여주지 않습니다.</dd></div>
+        <div><dt>읽기 전용 DB 접근</dt><dd>DB 연동은 읽기 전용 계정⁠·⁠읽기 전용 세션으로만 접속하고, 사내망 주소로는 연결하지 않습니다.</dd></div>
+        <div><dt>월 대화량 관리</dt><dd>요금제의 월 대화 세션 한도로 사용량과 비용을 관리합니다.</dd></div>
+        <div><dt>작업 기록</dt><dd>권한 변경, 연결 추가⁠·⁠삭제 같은 관리 작업은 감사 기록으로 남습니다.</dd></div>
+      </dl>
+    </div>
+    </section>
+
+    <section class="sec" id="plans" aria-labelledby="plans-h">
+      <header class="sec-summary"><span class="sum-text"><span class="label">요금제</span><span class="sum-title" id="plans-h">고객사 한 곳당 설치비만 받습니다</span><span class="key">고객사 1곳당 590,000원, DB 연동 포함 790,000원, 첫 1년 운영비 없음</span></span></header>
+      <div class="sec-body">
+      <p class="intro">월 이용료 없이 설치비 한 번으로 시작합니다. 첫 도입 1년 동안은 운영비가 없습니다.</p>
+      <div class="pkgs">
+        <article class="pkg">
+          <div class="pkg-head">
+            <h3>RAG AI 챗봇 설치</h3>
+            <p class="price">590,000<small>원 · 고객사 1곳당 · 최초 1회</small></p>
+          </div>
+          <ul>
+            <li>챗봇 방식 선택: <b>Q&amp;A 챗봇 + 상담원 연결</b> 또는 <b>Q&amp;A + AI 결합 + 상담원 연결</b></li>
+            <li>상담원 연결 운영 시간 설정</li>
+            <li>고객사 홈페이지에 직접 설치</li>
+            <li>초기 Q&amp;A 설정</li>
+            <li>홈페이지 주소로 고객사 정보를 가져와 지식으로 등록</li>
+            <li>그 밖에 고객사가 원하는 자료의 초기 지식 세팅</li>
+          </ul>
+        </article>
+        <article class="pkg pick">
+          <div class="pkg-head">
+            <h3>RAG AI 챗봇 + DB 연동 <span class="pill soon">Beta 출시 예정</span></h3>
+            <p class="price">790,000<small>원 · 고객사 1곳당 · 최초 1회</small></p>
+          </div>
+          <ul>
+            <li>왼쪽 RAG AI 챗봇 설치 내용 전부 포함</li>
+            <li>고객사의 상품⁠·⁠서비스 DB를 연동해, 방문자 조건에 맞는 상품을 찾아 추천하는 기능 탑재</li>
+            <li>예: 서비스 내 DB에서<br>호텔 서비스 → “제주도 갈 건데 스파 있는 호텔 찾아줘”<br>가구점 → “20만원 이하 3인용 소파 추천해줘”</li>
+            <li>조건에 맞는 결과가 많으면 평점순⁠·⁠가격순 같은 기준으로 상위 몇 곳만 골라 상세 페이지 링크와 함께 안내</li>
+            <li>“아메리카노 지금 몇 개 남았어요?”처럼 재고⁠·⁠잔여 수량 같은 지금 값도 바로 조회</li>
+            <li>고객사마다 DB 구조와 환경이 달라 고객사별 맞춤 설정이 필요합니다</li>
+          </ul>
+        </article>
+      </div>
+      <dl class="terms">
+        <div><dt>운영비</dt><dd>첫 도입 1년 동안 없음</dd></div>
+        <div><dt>AI 사용료</dt><dd>고객사 또는 에이전시의 OpenAI⁠·⁠Gemini 키로 직접 결제</dd></div>
+        <div><dt>파트너 조건</dt><dd>에이전시 공급 조건은 별도 협의</dd></div>
+      </dl>
+    </div>
+    </section>
+
+    <section class="sec" id="process" aria-labelledby="process-h">
+      <header class="sec-summary"><span class="sum-text"><span class="label">도입 절차</span><span class="sum-title" id="process-h">고객사 한 곳 기준, 이렇게 진행합니다</span><span class="key">데모 보여주기 → 챗봇 구성 → 설치와 연결 → 고객사에 넘기기</span></span></header>
+      <div class="sec-body">
+      <ol class="steps">
+        <li><h3>데모 보여주기</h3><p>고객사 홈페이지 주소로 데모 링크를 만들어 미팅에서 보여줍니다.</p></li>
+        <li><h3>챗봇 구성</h3><p>홈페이지 전체를 가져오고, 자주 묻는 질문과 문서를 더합니다.</p></li>
+        <li><h3>설치와 연결</h3><p>설치 코드를 붙이고, 상담원 연결 채널과 운영 시간을 정합니다.</p></li>
+        <li><h3>고객사에 넘기기</h3><p>고객사 관리자를 초대해 상담함과 문의 처리를 맡깁니다.</p></li>
+      </ol>
+    </div>
+    </section>
+
+    <section class="contact" aria-labelledby="contact-h">
+      <div>
+        <h2 id="contact-h">파트너 문의</h2>
+        <p class="note">데모와 설치 일정, 공급 조건을 안내해 드립니다.</p>
+      </div>
+      <span class="addr">eunseon@ideal-tech.co.kr</span>
+    </section>
+  </main>
+</div>
+
+
+</body></html>
