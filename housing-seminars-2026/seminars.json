@@ -1,0 +1,383 @@
+[
+  {
+    "id": "remodel",
+    "date": "2026-01-19",
+    "title": "공동주택 리모델링 국회 정책 세미나",
+    "organizers": "염태영·송기헌 의원, 한국리모델링융합학회",
+    "place": "국회도서관 대강당",
+    "theme": "노후 공동주택 리모델링과 주택공급·제도 개선. 재개발·재건축과 함께 검토할 정비 방식의 쟁점을 살펴볼 자료.",
+    "tags": [
+      "정비사업",
+      "리모델링",
+      "국토교통부"
+    ],
+    "material": "행사 일정·개최 보도",
+    "source": "https://www.aik.or.kr/main_schedule/data/month.jsp?smonth=01&syear=2026",
+    "category": "design",
+    "resources": [
+      {
+        "label": "개최 보도",
+        "url": "https://www.newspim.com/news/view/20260119000838",
+        "type": "news"
+      }
+    ],
+    "priority": false,
+    "time": "14:00",
+    "evidence": "공식 일정 및 개최 보도 확인"
+  },
+  {
+    "id": "senior",
+    "date": "2026-01-22",
+    "title": "제1회 K-시니어주거포럼",
+    "organizers": "LH, 한국주거학회, 한국경제신문, 한국주거서비스소사이어티",
+    "place": "LH 서울지역본부 대강당",
+    "theme": "공공 섹터의 시니어 주거생태계와 중산층 고령자를 위한 지속가능한 주거모델. 주택공급과 주거서비스 운영을 함께 다룸.",
+    "tags": [
+      "LH",
+      "고령친화",
+      "주거서비스"
+    ],
+    "material": "포스터 PDF·발표 주제",
+    "source": "https://www.khousing.or.kr/boards/notice/39460/detail/community/notice/",
+    "category": "policy",
+    "resources": [],
+    "priority": false,
+    "time": "14:00–17:00",
+    "evidence": "공식 안내·역대행사 기록 확인"
+  },
+  {
+    "id": "renewal",
+    "date": "2026-01-28",
+    "title": "제1회 수도권공사 도시정비협의회 공동포럼",
+    "organizers": "수도권공사 도시정비협의회 / 한국주거학회",
+    "place": "한국과학기술회관 중회의실 3",
+    "theme": "지속가능한 공공정비를 위한 공기업의 역할과 공공참여 활성화. 공공시행 정비사업의 개선 방향과 도심 주택공급 과제를 다룸.",
+    "tags": [
+      "SH",
+      "GH",
+      "iH",
+      "정비사업"
+    ],
+    "material": "행사 개요 PDF·포스터 PDF",
+    "source": "https://www.khousing.or.kr/boards/notice/39461/detail/community/notice/",
+    "category": "policy",
+    "resources": [],
+    "priority": true,
+    "time": "14:00–16:50",
+    "evidence": "공식 행사 안내 확인"
+  },
+  {
+    "id": "vulnerable",
+    "date": "2026-03-06",
+    "title": "주거취약계층의 주거실태와 정책 방향 모색을 위한 정책 세미나",
+    "organizers": "국토연구원, 한국주거학회, 한국주거서비스소사이어티",
+    "place": "스페이스쉐어 강남점 컨퍼런스 4룸",
+    "theme": "주거빈곤아동, 가족돌봄청년, 외국인 근로자 등 주거취약계층의 실태와 지원 방향. 공공임대주택의 대상별 주거 요구 연구에 참고.",
+    "tags": [
+      "국토연구원",
+      "주거복지",
+      "공공주택"
+    ],
+    "material": "행사 안내·발표 주제",
+    "source": "https://www.khservice.or.kr/boards/notice/39780/detail/reference-room/notice/",
+    "category": "policy",
+    "resources": [],
+    "priority": false,
+    "time": "14:00–16:30",
+    "evidence": "공식 안내·역대행사 기록 확인"
+  },
+  {
+    "id": "timber",
+    "date": "2026-03-12",
+    "title": "탄소중립 주거 실현을 위한 다층 목조 공동주택 심포지엄",
+    "organizers": "단국대 목조건축혁신연구소, LH토지주택연구원, 대한건축학회 목조건축위원회, 국립산림과학원 / SH 후원",
+    "place": "수원메쎄 제1세미나실",
+    "theme": "탄소중립 주거와 다층 목조 공동주택. 공동주택의 재료·구조·탄소저감 방향을 검토할 기술 주제.",
+    "tags": [
+      "LH",
+      "SH",
+      "탄소중립",
+      "목조 공동주택"
+    ],
+    "material": "공식 행사 안내·강연정보",
+    "source": "https://www.aik.or.kr/board/?_0000_method=view&ncode=a001&num=3211",
+    "category": "design",
+    "resources": [],
+    "priority": false,
+    "time": "13:00–17:00",
+    "evidence": "공식 행사 안내 확인"
+  },
+  {
+    "id": "aihousing",
+    "date": "2026-03-12",
+    "title": "AI시대 주거정책 혁신 전문가 포럼",
+    "organizers": "한국주거복지포럼, 한국주거서비스소사이어티, 한국주거학회",
+    "place": "페럼타워 페럼홀",
+    "theme": "초고령사회와 AI 기술 융합 시대의 주거복지 혁신. 돌봄 중심 운영모델과 커뮤니티 시설·주거서비스를 다룸.",
+    "tags": [
+      "고령친화",
+      "AI",
+      "주거서비스"
+    ],
+    "material": "행사 안내·발표 주제",
+    "source": "https://www.khservice.or.kr/boards/notice/39779/detail/reference-room/notice/",
+    "category": "policy",
+    "resources": [],
+    "priority": false,
+    "time": "14:00–17:00",
+    "evidence": "공식 안내·역대행사 기록 확인"
+  },
+  {
+    "id": "aidesign",
+    "date": "2026-04-29",
+    "title": "AI와 건축 설계: 창작의 확장과 프로세스의 전환",
+    "organizers": "대한건축학회 건축설계위원회",
+    "place": "aT센터 5층 그랜드홀",
+    "theme": "AI 기반 개념 생성, 설계 탐색과 MCP 기반 설계 자동화. 공동주택 설계 업무의 도구·프로세스 개선 관점에서 참고.",
+    "tags": [
+      "AI",
+      "설계 프로세스"
+    ],
+    "material": "세부 프로그램·발표자",
+    "source": "https://conf.aik.or.kr/2026s/pages/committee.vm",
+    "category": "design",
+    "resources": [],
+    "priority": false,
+    "time": "15:20–17:00",
+    "evidence": "공식 개최 후 설명 및 프로그램 확인"
+  },
+  {
+    "id": "mixed",
+    "date": "2026-04-29",
+    "title": "임차인 권익 보호와 갈등 해소를 위한 혼합주택단지 제도 개선 토론회",
+    "organizers": "국회의원 공동주최 / 국토교통부·SH·LH·GH 공동주관",
+    "place": "국회 의원회관",
+    "theme": "분양·임대 혼합단지의 갈등, 공동시설 이용과 관리 참여. 단지 내 사회적 혼합과 공용공간 운영을 검토할 정책 자료.",
+    "tags": [
+      "국토교통부",
+      "LH",
+      "SH",
+      "GH",
+      "소셜믹스"
+    ],
+    "material": "개최 보도·발제 내용",
+    "source": "https://www.inews24.com/view/wnrd/1964520",
+    "category": "policy",
+    "resources": [],
+    "priority": false,
+    "time": "10:00",
+    "evidence": "개최 보도 확인"
+  },
+  {
+    "id": "krihs",
+    "date": "2026-04-29",
+    "title": "2026년 국토연구원 연구성과발표 세미나",
+    "organizers": "국토연구원",
+    "place": "페럼타워 3층 페럼홀",
+    "theme": "다지역 거주, 에너지 빈곤, 건설산업 조기경보와 전기차 스마트 충전 인프라. 주거환경과 정책 연구의 참고 자료.",
+    "tags": [
+      "국토연구원",
+      "주거정책",
+      "에너지"
+    ],
+    "material": "세미나 자료집 원문 공개",
+    "source": "https://nkis.re.kr/subject_view2.do?otpId=OTP_0000000000017940&otpSeq=0",
+    "category": "policy",
+    "resources": [
+      {
+        "label": "자료집 PDF",
+        "url": "https://www.krihs.re.kr/boardDownload.es?bid=0018&list_no=398405&seq=2",
+        "type": "full"
+      }
+    ],
+    "priority": false,
+    "time": "14:00–16:15",
+    "evidence": "공식 행사 안내 확인"
+  },
+  {
+    "id": "zeb",
+    "date": "2026-04-30",
+    "title": "탄소중립 시대 제로에너지건축과 G-SEED 인증의 고도화 방향",
+    "organizers": "건축성능원, 대한건축학회 탄소중립건축원",
+    "place": "aT센터 4층 402호",
+    "theme": "제로에너지건축의 정책·기술 방향과 G-SEED 인증체계. 공동주택 에너지 성능과 녹색건축 인증의 연계 검토.",
+    "tags": [
+      "탄소중립",
+      "제로에너지",
+      "G-SEED"
+    ],
+    "material": "세부 프로그램·발표자",
+    "source": "https://conf.aik.or.kr/2026s/pages/committee.vm",
+    "category": "design",
+    "resources": [],
+    "priority": false,
+    "time": "09:00–10:30",
+    "evidence": "공식 개최 후 설명 및 프로그램 확인"
+  },
+  {
+    "id": "carbon",
+    "date": "2026-04-30",
+    "title": "탄소중립설계 및 인증 프로그램 소개 공청회",
+    "organizers": "대한건축학회 탄소중립건축원",
+    "place": "aT센터 4층 402호",
+    "theme": "내재탄소 기반 설계 전략과 외장재·설비배관 관련 설계지침. 공동주택 외피·재료 선정의 탄소저감 관점.",
+    "tags": [
+      "탄소중립",
+      "내재탄소",
+      "외장재"
+    ],
+    "material": "주요 내용·세부 프로그램",
+    "source": "https://conf.aik.or.kr/2026s/pages/committee.vm",
+    "category": "design",
+    "resources": [],
+    "priority": false,
+    "time": "10:50–12:30",
+    "evidence": "공식 개최 후 설명 및 프로그램 확인"
+  },
+  {
+    "id": "modular",
+    "date": "2026-04-30",
+    "title": "모듈러건축 특별법 제정 추진현황 발표회",
+    "organizers": "대한건축학회 건축생산시스템(OSC)위원회",
+    "place": "aT센터 4층 402호",
+    "theme": "모듈러·OSC 건축의 제도, 표준과 품질확보 방향. 발표 당시의 법 제정 추진 상황을 정리한 자료로 현재 법령과 구분해 활용.",
+    "tags": [
+      "모듈러",
+      "OSC",
+      "공동주택 기술"
+    ],
+    "material": "발표자료집 PDF 공개",
+    "source": "https://conf.aik.or.kr/2026s/pages/committee.vm",
+    "category": "design",
+    "resources": [
+      {
+        "label": "발표자료집 PDF",
+        "url": "https://drive.google.com/file/d/1NPIAGb29wvo-Kb9IzBzTr7aBnpKf1UvA/view",
+        "type": "full"
+      }
+    ],
+    "priority": true,
+    "time": "13:30–15:10",
+    "evidence": "공식 개최 후 설명 및 자료집 링크 확인"
+  },
+  {
+    "id": "lhri",
+    "date": "2026-06-25",
+    "title": "2026 LHRI 동행 콘서트: 모두의 집·도시·에너지",
+    "organizers": "LH토지주택연구원",
+    "place": "코엑스 3층 컨퍼런스룸(남) 307호",
+    "theme": "청년 주거지원, 공공부지 복합개발, 노후 영구임대 재정비, 모듈러주택과 에너지 자립 아파트. 국내 주거설계 보고서로 확장할 주제가 풍부함.",
+    "tags": [
+      "LH",
+      "정비사업",
+      "모듈러",
+      "에너지"
+    ],
+    "material": "세미나 PDF 142쪽·연구성과 자료집",
+    "source": "https://lhri.lh.or.kr/web/board.do?bbsIdx=1861&menuIdx=427",
+    "category": "policy",
+    "resources": [
+      {
+        "label": "세미나 PDF · 142쪽",
+        "url": "https://lhri.lh.or.kr/boardFileDown.do?file_idx=1058",
+        "type": "full"
+      },
+      {
+        "label": "상세 초청장",
+        "url": "https://lhri.lh.or.kr/boardFileDown.do?file_idx=1056",
+        "type": "poster"
+      }
+    ],
+    "priority": true,
+    "time": "10:00–16:00",
+    "evidence": "공식 안내·초청장·PDF 파일 확인"
+  },
+  {
+    "id": "supply",
+    "date": "2026-07-14",
+    "title": "국민 주거안정을 위한 주택공급 확대방안 경청토론회",
+    "organizers": "국토교통부",
+    "place": "서울",
+    "theme": "주택공급 확대와 규제 등 주거안정 정책 방향. 7월 14~16일 분야별 토론회 중 주택공급 분야 행사.",
+    "tags": [
+      "국토교통부",
+      "주택공급",
+      "주거정책"
+    ],
+    "material": "정부 공식 설명자료·행사 사진",
+    "source": "https://www.korea.kr/news/policyNewsView.do?call_from=openData&newsId=148968138",
+    "category": "policy",
+    "resources": [],
+    "priority": false,
+    "time": "",
+    "evidence": "정부 공식 행사 기록 확인"
+  },
+  {
+    "id": "pf",
+    "date": "2026-07-16",
+    "title": "주택공급 확대를 위한 부동산 PF 활성화 방안 세미나",
+    "organizers": "안도걸 의원, 대한건축학회 / 건축다시세우기포럼",
+    "place": "국회 의원회관 제3세미나실",
+    "theme": "공동주택 개발사업의 프로세스와 PF, 금융기관의 역할. 공간 설계보다는 공동주택 사업 추진 여건을 이해할 때 참고.",
+    "tags": [
+      "주택공급",
+      "사업성",
+      "국토교통부"
+    ],
+    "material": "포스터 PDF·발표 주제",
+    "source": "https://www.khba.or.kr/user/bbs_view.do?bbs_num=67401",
+    "category": "design",
+    "resources": [],
+    "priority": false,
+    "time": "14:00–17:30",
+    "evidence": "공식 행사 안내 확인"
+  },
+  {
+    "id": "aging",
+    "date": "2026-08-12",
+    "title": "고령자의 안전한 자립생활을 위한 주택환경 연구 방향",
+    "organizers": "한국주거학회 연구부",
+    "place": "연세대학교 삼성관 112호",
+    "theme": "고령친화 단위세대와 안전한 주택환경, 자립생활 지원. 국내 공동주택의 고령화 대응과 주거계획 연구에 참고.",
+    "tags": [
+      "고령친화",
+      "단위세대",
+      "주거환경"
+    ],
+    "material": "포스터 PDF·행사 안내",
+    "source": "https://www.khousing.or.kr/boards/notice/41461/detail/community/notice/",
+    "category": "design",
+    "resources": [],
+    "priority": false,
+    "time": "14:00–16:00",
+    "evidence": "공식 행사 안내 확인"
+  },
+  {
+    "id": "community",
+    "date": "2026-09-18",
+    "title": "2026 수도권공사 연구협의체 공동세미나: 공공주택 공급자를 넘어, 커뮤니티 디자이너로",
+    "organizers": "SH·GH·iH 공동주최 / 한국주거서비스소사이어티 주관",
+    "place": "페럼타워 3층 페럼홀",
+    "theme": "커뮤니티 활성화를 위한 공간구조, 지역사회 계속 거주, 육아·시니어 친화 주거모델. 단지배치와 공용공간·운영을 함께 검토.",
+    "tags": [
+      "SH",
+      "GH",
+      "iH",
+      "커뮤니티",
+      "고령친화"
+    ],
+    "material": "공식 안내·포스터·개최 보도",
+    "source": "https://www.khservice.or.kr/boards/notice/41886/detail/reference-room/notice/",
+    "category": "policy",
+    "resources": [
+      {
+        "label": "개최 결과 보도",
+        "url": "https://m.newspim.com/news/view/20260920000112",
+        "type": "news"
+      }
+    ],
+    "priority": true,
+    "time": "15:00–17:20",
+    "evidence": "공식 안내 및 개최 결과 보도 확인"
+  }
+]
