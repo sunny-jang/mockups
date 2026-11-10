@@ -308,14 +308,14 @@ footer .wrap { padding-block: 28px 40px; color: var(--sub); font-size: 14px; dis
       <div class="sec-head">
         <span class="eyebrow">시작하기</span>
         <h2>로그인</h2>
-        <p>비밀번호는 필요 없어요. 이메일로 받은 링크를 누르면 로그인돼요.</p>
+        <p>회사 관리자가 등록한 이메일로만 로그인할 수 있어요. 비밀번호는 필요 없고, 이메일로 받은 링크를 누르면 로그인돼요.</p>
       </div>
       <div class="steps">
         <div class="step">
           <div class="step-body">
             <ol style="margin:0;padding-left:1.2em;display:grid;gap:8px">
               <li><b>order.eunseon.com</b>에 들어가요.</li>
-              <li>이메일 칸에 회사 메일 주소를 넣고 <span class="ui">로그인 링크 받기</span>를 눌러요.</li>
+              <li>이메일 칸에 관리자에게 등록된 메일 주소를 넣고 <span class="ui">로그인 링크 받기</span>를 눌러요.</li>
               <li>메일함에 온 로그인 메일을 열고 링크를 눌러요. 다른 기기에서 열어도 그 기기에서 바로 로그인돼요.</li>
             </ol>
             <div class="tip warn"><b>링크는 한 번만 쓸 수 있어요</b>"이미 쓰였거나 만료됐어요"가 보이면 메일을 새로 받고, 가장 마지막에 온 메일의 링크를 눌러 주세요.</div>
@@ -516,6 +516,7 @@ footer .wrap { padding-block: 28px 40px; color: var(--sub); font-size: 14px; dis
         <details><summary>인터넷이 끊기면 어떻게 되나요?</summary><p>고친 내용은 기기에 잠깐 두었다가 다시 연결되면 서버에 올려요. 화면 위에 저장 안내가 보이면 연결을 확인해 주세요. 전표 읽기와 물어보기는 인터넷이 있어야 돼요.</p></details>
         <details><summary>거래처가 발주 메일에 답장하면 어디로 가나요?</summary><p>order@eunseon.com은 보내기 전용이라 답장을 받지 못해요. 회신은 전화나 회사 메일로 받아 주세요.</p></details>
         <details><summary>한 전표에 매입과 매출이 섞여 있어요</summary><p>전표 단위로만 구분돼요. 주된 쪽으로 저장해 주세요.</p></details>
+        <details><summary>"아직 등록되지 않았어요"라고 나와요</summary><p>회사 관리자가 그 이메일을 등록해야 쓸 수 있어요. 관리자에게 등록을 요청한 뒤, 로그인 링크를 새로 받아 주세요. 관리자는 홈 오른쪽 위 <b>계정 등록</b>에서 이메일을 등록하고, 처음 둘러볼 분께는 예시 데이터를 채워 줄 수 있어요.</p></details>
         <details><summary>로그인 메일이 오지 않아요</summary><p>스팸함을 확인하고, 몇 분 뒤 다시 요청해 주세요. 너무 자주 요청하면 잠시 막힐 수 있어요.</p></details>
       </div>
     </section>
@@ -571,7 +572,7 @@ footer .wrap { padding-block: 28px 40px; color: var(--sub); font-size: 14px; dis
       <p class="cap">화살표는 요청이 가는 방향이에요. 모든 API는 Supabase 로그인 토큰을 확인한 뒤에만 동작해요.</p>
       <div class="legend two">
         <div><b>Vercel</b><span>화면과 API를 서울 리전에서 실행해요. GitHub main 브랜치에 반영하면 자동으로 다시 배포돼요.</span></div>
-        <div><b>Supabase</b><span>이메일 링크 로그인, PostgreSQL 데이터베이스, 비공개 사진 보관함. 모든 표에 행 단위 보안(RLS)이 켜져 있어 다른 사람의 데이터는 읽을 수 없어요.</span></div>
+        <div><b>Supabase</b><span>이메일 링크 로그인, PostgreSQL 데이터베이스, 비공개 사진 보관함. 관리자가 등록한 이메일만 쓸 수 있고, 모든 표에 행 단위 보안(RLS)이 켜져 있어 다른 사람의 데이터는 읽을 수 없어요.</span></div>
         <div><b>OpenAI</b><span>전표 사진을 정해진 JSON 형식으로 읽고, 물어보기에 답해요. 30초가 넘으면 끊고, 키가 없으면 시험 응답으로 동작해요.</span></div>
         <div><b>Resend</b><span>발주 메일을 eunseon.com 도메인으로 보내요. DKIM·SPF 인증을 마쳤고, 미리 등록한 주소로만 보내도록 막아 두었어요.</span></div>
       </div>
