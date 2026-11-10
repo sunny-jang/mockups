@@ -206,7 +206,7 @@ footer .wrap { padding-block: 28px 40px; color: var(--sub); font-size: 14px; dis
       <p class="lead">거래명세서를 사진으로 찍으면 AI가 내용을 읽어 저장하고, 달별 매입 합계와 부족한 재고의 발주서까지 만들어 드려요. 이 안내서 하나로 처음부터 끝까지 따라 하실 수 있어요.</p>
       <div class="hero-actions">
         <a class="btn btn-primary" href="https://order.eunseon.com" target="_blank" rel="noopener">발주어때 열기</a>
-        <a class="btn btn-ghost" href="#video">1분 35초 영상으로 보기</a>
+        <a class="btn btn-ghost" href="#video">1분 30초 영상으로 보기</a>
       </div>
       <p class="url">주소 <code>order.eunseon.com</code> · 휴대폰과 PC 브라우저 모두 쓸 수 있어요</p>
     </div>
@@ -245,7 +245,7 @@ footer .wrap { padding-block: 28px 40px; color: var(--sub); font-size: 14px; dis
         <div class="menu"><span class="tab">물어보기</span><h3>말로 묻고 답 받기</h3><p>"이번 달 매입은 얼마야?"처럼 물으면 근거와 함께 답해요.</p></div>
       </div>
       <ol class="flow" aria-label="하루 흐름">
-        <li><span class="when">물건이 들어오면</span><span class="what">거래명세서를 찍어 저장</span></li>
+        <li><span class="when">물건이 들어오면</span><span class="what">거래명세서를 찍어 저장하고 재고에 더하기</span></li>
         <li><span class="when">마감할 때</span><span class="what">재고 목록에서 현재 재고 고치기</span></li>
         <li><span class="when">발주할 때</span><span class="what">부족한 품목을 거래처에 메일로</span></li>
         <li><span class="when">월말에</span><span class="what">집계 확인하고 엑셀 내려받기</span></li>
@@ -308,15 +308,29 @@ footer .wrap { padding-block: 28px 40px; color: var(--sub); font-size: 14px; dis
           <figure class="shots"><div class="phone"><img src="img/05a-scan-items.png" alt="품목별 수량, 단가, 공급가액, 세액 칸" loading="lazy" width="780" height="1688"></div><figcaption>품목별 칸</figcaption></figure>
         </div>
 
-        <div class="step duo">
+        <div class="step">
           <div class="step-body">
             <h3><span class="step-num">3</span>노란 칸 확인하고 저장하기</h3>
             <p>처음 보는 품목이나 거래처, 계산이 맞지 않는 숫자는 노란색으로 표시되고 이유가 적혀 있어요. 사진과 비교해 맞으면 <span class="ui">이대로 맞아요</span>를, 틀리면 칸을 고친 뒤 <span class="ui">이대로 맞아요</span>를 눌러요.</p>
             <p>노란 칸이 남아 있으면 아래 버튼이 "확인할 칸이 N건 남았어요"로 바뀌고 저장되지 않아요. 모두 확인하면 <span class="ui">맞아요, 저장할게요</span>로 저장해요.</p>
-            <div class="tip"><b>사진도 함께 보관돼요</b>저장한 전표의 원본 사진은 집계 화면에서 언제든 다시 볼 수 있어요. 이어서 찍을 전표가 있으면 <span class="ui">다음 전표 찍기</span>를 누르세요.</div>
+            <div class="tip"><b>사진도 함께 보관돼요</b>저장한 전표의 원본 사진은 집계 화면에서 언제든 다시 볼 수 있어요.</div>
           </div>
           <figure class="shots"><div class="phone"><img src="img/05b-scan-check.png" alt="노란색으로 표시된 품목. 처음 보는 품목이에요 안내와 이대로 맞아요 버튼" loading="lazy" width="780" height="1688"></div><figcaption>확인이 필요한 칸</figcaption></figure>
-          <figure class="shots"><div class="phone"><img src="img/06-scan-saved.png" alt="저장했어요 화면. 다음 전표 찍기, 홈으로 버튼" loading="lazy" width="780" height="1688"></div><figcaption>저장 완료</figcaption></figure>
+        </div>
+
+        <div class="step duo">
+          <div class="step-body">
+            <h3><span class="step-num">4</span>들어온 수량을 재고에 더하기</h3>
+            <p>매입 전표를 저장하면 "들어온 수량을 재고에 더할까요?"가 나오고, 품목마다 늘어날 수량(+11, +6…)이 보여요.</p>
+            <ul>
+              <li><span class="ui">재고에 더하기</span>: 재고 목록에 있는 품목은 수량이 늘고, 없던 품목은 새로 들어가요.</li>
+              <li><span class="ui">더하지 않기</span>: 합계에만 들어가고 재고는 그대로예요. 이미 재고에 반영한 물건이거나 수량이 의심스러울 때 고르세요.</li>
+            </ul>
+            <p>새로 들어간 품목은 필요한 양이 비어 있어서 발주 화면에 <b>필요량 미설정</b>으로 보여요. 이어서 찍을 전표가 있으면 <span class="ui">다음 전표 찍기</span>를 누르세요.</p>
+            <div class="tip warn"><b>자동으로 더하지 않는 이유</b>AI가 수량을 잘못 읽었는데 그대로 더하면 재고가 틀어져요. 그래서 저장할 때마다 한 번 확인받아요. 매출 전표는 묻지 않아요.</div>
+          </div>
+          <figure class="shots"><div class="phone"><img src="img/06-scan-saved.png" alt="저장했어요 화면 아래 들어온 수량을 재고에 더할까요 카드. 품목별 늘어날 수량과 재고에 더하기, 더하지 않기 버튼" loading="lazy" width="780" height="1688"></div><figcaption>재고에 더할지 묻기</figcaption></figure>
+          <figure class="shots"><div class="phone"><img src="img/06b-scan-stock-added.png" alt="재고에 더했어요 안내. 새 품목은 필요한 양이 비어 있다는 설명" loading="lazy" width="780" height="1688"></div><figcaption>재고에 더한 뒤</figcaption></figure>
         </div>
       </div>
     </section>
@@ -348,14 +362,14 @@ footer .wrap { padding-block: 28px 40px; color: var(--sub); font-size: 14px; dis
       <div class="sec-head">
         <span class="eyebrow">발주하기</span>
         <h2>발주</h2>
-        <p>재고 목록에 현재 재고와 필요한 양을 넣어 두면, 부족한 만큼을 거래처별 발주서로 묶어 메일로 보낼 수 있어요.</p>
+        <p>매입 전표로 채워진 재고 목록에 품목별 <b>필요한 양</b>만 정해 두면, 부족한 만큼을 거래처별 발주서로 묶어 메일로 보낼 수 있어요.</p>
       </div>
       <div class="steps">
         <div class="step duo">
           <div class="step-body">
-            <h3><span class="step-num">1</span>재고 목록 만들고 고치기</h3>
-            <p>처음에는 목록이 비어 있어요. <span class="ui">품목 추가</span>로 하나씩 넣거나, <span class="ui">전표에서 N개 가져오기</span>로 저장한 전표의 품목·거래처·단가를 한 번에 가져와요.</p>
-            <p>품목 줄에는 "현재 재고 / 필요한 양"이 나오고, 모자라면 빨간 숫자와 "N 부족"이 표시돼요. 줄을 누르면 칸이 펼쳐져요.</p>
+            <h3><span class="step-num">1</span>필요한 양 정하기</h3>
+            <p>전표를 저장하며 <span class="ui">재고에 더하기</span>를 누른 품목은 이미 재고 목록에 들어와 있어요. 전표에 없는 품목은 <span class="ui">품목 추가</span>로 넣고, 예전에 저장한 전표의 품목은 <span class="ui">전표에서 N개 가져오기</span>로 한 번에 가져와요.</p>
+            <p>품목 줄에는 "현재 재고 / 필요한 양"이 나와요. 필요한 양을 아직 안 정한 품목은 <b>필요량 미설정</b>으로 보이고 발주 대상에서 빠져요. 줄을 눌러 필요한 양을 넣으면, 모자랄 때 빨간 숫자와 "N 부족"이 표시돼요.</p>
             <div class="table-scroll">
               <table>
                 <thead><tr><th>칸</th><th>넣는 것</th></tr></thead>
@@ -371,11 +385,11 @@ footer .wrap { padding-block: 28px 40px; color: var(--sub); font-size: 14px; dis
             </div>
             <p class="muted">고친 내용은 바로 저장돼요. 아래쪽 <b>발주하는 가게 이름</b>을 한 번 넣어 두면 발주 메일 첫 줄에 들어가요.</p>
           </div>
-          <figure class="shots"><div class="phone"><img src="img/10-orders-stock.png" alt="재고 목록. 거래처별로 묶인 품목과 부족 표시" loading="lazy" width="780" height="1688"></div><figcaption>재고 목록</figcaption></figure>
+          <figure class="shots"><div class="phone"><img src="img/10-orders-stock.png" alt="재고 목록. 전표로 들어온 품목들이 필요량 미설정으로 표시됨" loading="lazy" width="780" height="1688"></div><figcaption>전표로 채워진 재고 목록</figcaption></figure>
           <figure class="shots"><div class="phone"><img src="img/11-orders-edit.png" alt="품목을 눌러 펼친 입력 칸. 현재 재고, 필요한 양, 단가, 거래처 이메일" loading="lazy" width="780" height="1688"></div><figcaption>품목 고치기</figcaption></figure>
         </div>
 
-        <div class="step">
+        <div class="step duo">
           <div class="step-body">
             <h3><span class="step-num">2</span>발주서 확인하고 보내기</h3>
             <p>맨 위 <b>부족한 품목</b>에 거래처별 카드가 나와요. <span class="ui">발주서 보기</span>를 누르면 받는 사람과 메일 내용이 보이고, 맞으면 <span class="ui">이 내용으로 보내기</span>를 눌러요.</p>
@@ -386,6 +400,7 @@ footer .wrap { padding-block: 28px 40px; color: var(--sub); font-size: 14px; dis
             </ul>
             <div class="tip warn"><b>새 거래처에 처음 보낼 때</b>발주 메일은 미리 등록된 주소로만 보낼 수 있어요. 새 거래처 주소는 발주어때 담당자에게 등록을 요청해 주세요.</div>
           </div>
+          <figure class="shots"><div class="phone"><img src="img/10b-orders-short.png" alt="필요한 양을 넣은 품목에 부족 표시" loading="lazy" width="780" height="1688"></div><figcaption>부족 표시</figcaption></figure>
           <figure class="shots"><div class="phone"><img src="img/12-orders-preview.png" alt="발주서 보기. 받는 사람, 메일 본문, 이 내용으로 보내기 버튼" loading="lazy" width="780" height="1688"></div><figcaption>발주서 보기</figcaption></figure>
         </div>
       </div>
@@ -418,17 +433,19 @@ footer .wrap { padding-block: 28px 40px; color: var(--sub); font-size: 14px; dis
     <section id="video">
       <div class="sec-head">
         <span class="eyebrow">시연 영상</span>
-        <h2>처음부터 끝까지 1분 35초</h2>
-        <p>전표 세 장을 찍어 저장하고, 집계를 보고, 발주서를 보내고, 물어보기까지 한 번에 보여 드려요. 예시 데이터로 찍었어요.</p>
+        <h2>처음부터 끝까지 1분 30초</h2>
+        <p>전표 세 장을 찍어 저장하고 재고에 더한 뒤, 집계를 보고, 필요한 양을 정해 발주서를 보내고, 물어보기까지 한 번에 보여 드려요. 예시 데이터로 찍었어요.</p>
       </div>
       <div class="video-card">
         <ol class="chapters" aria-label="영상 구간">
           <li><button type="button" data-t="0"><span class="t">0:00</span>홈 화면</button></li>
-          <li><button type="button" data-t="3"><span class="t">0:03</span>전표 사진 올리고 읽기</button></li>
-          <li><button type="button" data-t="13"><span class="t">0:13</span>읽은 내용 확인하고 저장</button></li>
-          <li><button type="button" data-t="41"><span class="t">0:41</span>홈과 집계</button></li>
-          <li><button type="button" data-t="52"><span class="t">0:52</span>재고 넣고 발주서 보내기</button></li>
-          <li><button type="button" data-t="74"><span class="t">1:14</span>물어보기</button></li>
+          <li><button type="button" data-t="4"><span class="t">0:04</span>전표 사진 올리고 읽기</button></li>
+          <li><button type="button" data-t="12"><span class="t">0:12</span>읽은 내용 확인하고 저장</button></li>
+          <li><button type="button" data-t="17"><span class="t">0:17</span>들어온 수량을 재고에 더하기</button></li>
+          <li><button type="button" data-t="48"><span class="t">0:48</span>홈과 집계</button></li>
+          <li><button type="button" data-t="56"><span class="t">0:56</span>재고 목록과 필요한 양</button></li>
+          <li><button type="button" data-t="67"><span class="t">1:07</span>발주서 확인하고 보내기</button></li>
+          <li><button type="button" data-t="75"><span class="t">1:15</span>물어보기</button></li>
         </ol>
         <video id="demo" src="balju-demo.mp4" poster="img/02-home-empty.png" controls playsinline preload="metadata" aria-label="발주어때 시연 영상"></video>
       </div>
@@ -440,6 +457,8 @@ footer .wrap { padding-block: 28px 40px; color: var(--sub); font-size: 14px; dis
         <h2>자주 묻는 것</h2>
       </div>
       <div class="faq">
+        <details><summary>재고에 더하기를 잘못 눌렀어요</summary><p>발주 화면의 재고 목록에서 그 품목을 눌러 현재 재고 숫자를 고쳐 주세요. 고친 내용은 바로 저장돼요.</p></details>
+        <details><summary>팔거나 쓴 만큼 재고가 줄어드나요?</summary><p>자동으로 줄지는 않아요. 마감할 때 재고 목록에서 현재 재고를 실제 남은 양으로 고쳐 주세요.</p></details>
         <details><summary>매출 전표를 매입으로 저장했어요</summary><p>집계 화면의 전표 목록에서 오른쪽 <b>매입</b> 버튼을 누르면 매출로 바뀌고 합계에서 빠져요. 내용 자체를 잘못 저장한 경우는 발주어때 담당자에게 알려 주세요.</p></details>
         <details><summary>단가 칸이 비어 있어요</summary><p>전표에 단가가 없거나 흐리면 빈칸으로 나와요. 사진을 보고 채우거나, 공급가액만 맞으면 그대로 저장해도 합계는 맞아요.</p></details>
         <details><summary>인터넷이 끊기면 어떻게 되나요?</summary><p>고친 내용은 기기에 잠깐 두었다가 다시 연결되면 서버에 올려요. 화면 위에 저장 안내가 보이면 연결을 확인해 주세요. 전표 읽기와 물어보기는 인터넷이 있어야 돼요.</p></details>
@@ -453,7 +472,7 @@ footer .wrap { padding-block: 28px 40px; color: var(--sub); font-size: 14px; dis
 
 <footer>
   <div class="wrap">
-    <span>발주어때 사용 안내 · 2026년 11월 기준</span>
+    <span>발주어때 사용 안내 · 2026년 11월 10일 기준</span>
     <span>화면은 예시 데이터로 찍었어요</span>
   </div>
 </footer>
