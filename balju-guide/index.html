@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="발주어때 사용 안내: 로그인부터 전표 찍기, 집계, 발주, 물어보기까지">
+<meta name="description" content="발주어때 사용 안내와 기술 구성: 전표 찍기, 집계, 발주, 물어보기, 아키텍처, ERD, TAG">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Crect width=%2264%22 height=%2264%22 rx=%2216%22 fill=%22%233182F6%22/%3E%3C/svg%3E">
 <title>발주어때 사용 안내</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -170,6 +170,50 @@ summary::after { content: "+"; color: var(--sub); font-weight: 500; font-size: 2
 details[open] summary::after { content: "−"; }
 details p { color: var(--sub); padding-bottom: 16px; font-size: 15px; }
 
+
+/* 기술 구성 */
+.part { display: grid; gap: 10px; padding-top: 24px; border-top: 1px solid var(--line); }
+.part .eyebrow { font-size: 14px; }
+.part h2 { font-size: clamp(26px, 3.8vw, 34px); font-weight: 900; }
+.part p { color: var(--sub); max-width: 40em; }
+.diagram { background: var(--card); border-radius: var(--r); padding: 24px; overflow-x: auto; }
+.diagram pre.mermaid { margin: 0; background: none; display: flex; justify-content: center; min-width: 560px; font-family: var(--font); }
+.cap { font-size: 14px; color: var(--sub); margin-top: -8px; }
+.legend { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.legend div { background: var(--card); border-radius: 16px; padding: 16px 18px; display: grid; gap: 4px; }
+.legend b { font-size: 15px; }
+.legend span { font-size: 14px; color: var(--sub); line-height: 1.6; }
+.spec { display: grid; gap: 16px; }
+.spec h3 { font-size: 17px; font-weight: 700; display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.spec h3 code, .spec td code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: .92em; }
+.spec h3 small { font-weight: 500; color: var(--sub); font-size: 14px; }
+.spec .table-scroll { background: var(--card); }
+.spec td:first-child { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-weight: 600; font-size: 13.5px; }
+.spec td:nth-child(2) { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 13px; color: var(--sub); white-space: nowrap; }
+.compare { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; }
+.compare > div { background: var(--card); border-radius: var(--r); padding: 22px; display: grid; gap: 10px; align-content: start; }
+.compare h3 { font-size: 18px; font-weight: 700; }
+.compare .badge { justify-self: start; font-size: 12.5px; font-weight: 700; padding: 3px 10px; border-radius: 999px; background: var(--ground); color: var(--sub); }
+.compare .badge.next { background: var(--brand-soft); color: var(--brand-ink); }
+.compare ol, .compare ul { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; font-size: 15px; }
+@media (max-width: 760px) { .compare { grid-template-columns: minmax(0,1fr); } }
+
+
+.arch { display: block; width: 100%; min-width: 760px; height: auto; font-family: var(--font); }
+.arch .g { fill: var(--ground); stroke: var(--line); }
+.arch .gt { fill: var(--sub); font-size: 13px; font-weight: 700; }
+.arch .n { fill: var(--card); stroke: var(--line); stroke-width: 1.2; }
+.arch .n.dash { stroke-dasharray: 5 4; }
+.arch .n.acc { stroke: var(--brand); }
+.arch .t { fill: var(--ink); font-size: 15px; font-weight: 700; text-anchor: middle; }
+.arch .s { fill: var(--sub); font-size: 12.5px; text-anchor: middle; }
+.arch .ar { fill: none; stroke: var(--brand); stroke-width: 1.8; }
+.arch .ahp { fill: var(--brand); }
+.arch .lb { fill: var(--brand-ink); font-size: 12.5px; font-weight: 700; text-anchor: middle; }
+.arch .lb.lbL { text-anchor: start; }
+.legend.two { grid-template-columns: repeat(2, minmax(0,1fr)); }
+@media (max-width: 640px) { .legend.two { grid-template-columns: minmax(0,1fr); } }
+
 footer { border-top: 1px solid var(--line); }
 footer .wrap { padding-block: 28px 40px; color: var(--sub); font-size: 14px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; }
 
@@ -228,6 +272,14 @@ footer .wrap { padding-block: 28px 40px; color: var(--sub); font-size: 14px; dis
       <li><a href="#ask">물어보기</a></li>
       <li><a href="#video">시연 영상</a></li>
       <li><a href="#faq">자주 묻는 것</a></li>
+    </ol>
+    <p style="margin-top:22px">기술 구성</p>
+    <ol>
+      <li><a href="#arch">시스템 아키텍처</a></li>
+      <li><a href="#workflow">데이터 흐름</a></li>
+      <li><a href="#erd">ERD</a></li>
+      <li><a href="#tables">테이블 명세</a></li>
+      <li><a href="#tag">AI 물어보기(TAG)</a></li>
     </ol>
   </nav>
 
@@ -467,6 +519,278 @@ footer .wrap { padding-block: 28px 40px; color: var(--sub); font-size: 14px; dis
         <details><summary>로그인 메일이 오지 않아요</summary><p>스팸함을 확인하고, 몇 분 뒤 다시 요청해 주세요. 너무 자주 요청하면 잠시 막힐 수 있어요.</p></details>
       </div>
     </section>
+
+    <div class="part" id="tech">
+      <span class="eyebrow">기술 구성</span>
+      <h2>발주어때는 이렇게 만들어졌어요</h2>
+      <p>여기부터는 도입 검토와 운영을 위한 기술 설명이에요. 서버 구성, 데이터가 흐르는 순서, 저장 구조, AI가 답을 만드는 방식을 정리했어요.</p>
+    </div>
+
+    <section id="arch">
+      <div class="sec-head">
+        <span class="eyebrow">기술 구성 1</span>
+        <h2>시스템 아키텍처</h2>
+        <p>별도 서버를 직접 운영하지 않고, 검증된 클라우드 서비스 네 곳을 묶어 만들었어요. 화면과 API는 Vercel 서울 리전에서 돌고, 데이터는 Supabase에, AI는 OpenAI에, 메일 발송은 Resend에 맡겨요.</p>
+      </div>
+      <div class="diagram">
+<svg class="arch" viewBox="0 0 1000 600" role="img" aria-label="발주어때 시스템 아키텍처: 사용자 기기, Vercel, Supabase, OpenAI, Resend의 연결">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ahp" d="M0,0 L10,5 L0,10 z"/></marker></defs>
+<rect class="g" x="20" y="150" width="210" height="270" rx="18"/><text class="gt" x="36" y="174">사용자 기기</text>
+<rect class="n" x="40" y="190" width="170" height="64" rx="12"/><text class="t" x="125.0" y="218.0">휴대폰 · PC 브라우저</text><text class="s" x="125.0" y="237.0">Next.js 화면</text>
+<rect class="n dash" x="40" y="320" width="170" height="64" rx="12"/><text class="t" x="125.0" y="348.0">기기 임시 저장</text><text class="s" x="125.0" y="367.0">오프라인일 때 보관</text>
+<rect class="g" x="300" y="110" width="300" height="330" rx="18"/><text class="gt" x="316" y="134">Vercel · 서울 리전</text>
+<rect class="n" x="320" y="148" width="260" height="52" rx="12"/><text class="t" x="450.0" y="170.0">웹 앱</text><text class="s" x="450.0" y="189.0">order.eunseon.com</text>
+<rect class="n" x="320" y="214" width="260" height="52" rx="12"/><text class="t" x="450.0" y="236.0">전표 읽기 API</text><text class="s" x="450.0" y="255.0">/api/invoices/extract</text>
+<rect class="n" x="320" y="280" width="260" height="52" rx="12"/><text class="t" x="450.0" y="302.0">물어보기 API</text><text class="s" x="450.0" y="321.0">/api/ask</text>
+<rect class="n" x="320" y="346" width="260" height="52" rx="12"/><text class="t" x="450.0" y="368.0">발주 메일 API</text><text class="s" x="450.0" y="387.0">/api/orders/send</text>
+<rect class="g" x="680" y="40" width="300" height="250" rx="18"/><text class="gt" x="696" y="64">Supabase</text>
+<rect class="n" x="700" y="78" width="260" height="52" rx="12"/><text class="t" x="830.0" y="100.0">로그인</text><text class="s" x="830.0" y="119.0">이메일 링크 · 토큰 발급</text>
+<rect class="n" x="700" y="144" width="260" height="52" rx="12"/><text class="t" x="830.0" y="166.0">PostgreSQL</text><text class="s" x="830.0" y="185.0">행 단위 보안(RLS)</text>
+<rect class="n" x="700" y="210" width="260" height="52" rx="12"/><text class="t" x="830.0" y="232.0">사진 보관함</text><text class="s" x="830.0" y="251.0">invoice-photos · 비공개</text>
+<rect class="n acc" x="700" y="322" width="260" height="56" rx="12"/><text class="t" x="830.0" y="346.0">OpenAI</text><text class="s" x="830.0" y="365.0">gpt-4o · JSON 형식 고정</text>
+<rect class="n acc" x="700" y="412" width="260" height="56" rx="12"/><text class="t" x="830.0" y="436.0">Resend</text><text class="s" x="830.0" y="455.0">order@eunseon.com · DKIM 인증</text>
+<rect class="n" x="700" y="512" width="260" height="48" rx="12"/><text class="t" x="830.0" y="541.0">거래처 메일함</text>
+<rect class="n" x="320" y="512" width="260" height="48" rx="12"/><text class="t" x="450.0" y="532.0">GitHub</text><text class="s" x="450.0" y="551.0">코드 저장소</text>
+<path class="ar" d="M125,254 V320" marker-end="url(#ah)" marker-start="url(#ah)"/>
+<path class="ar" d="M210,222 H300" marker-end="url(#ah)"/>
+<text class="lb" x="255" y="210">HTTPS</text>
+<path class="ar" d="M125,190 V70 H680" marker-end="url(#ah)" marker-start="url(#ah)"/>
+<text class="lb" x="400" y="60">로그인 · 전표·재고 동기화 · 사진 업로드 (RLS로 본인 데이터만)</text>
+<path class="ar" d="M600,128 H640 V104 H700" marker-end="url(#ah)"/>
+<text class="lb" x="640" y="96">API 토큰 확인</text>
+<path class="ar" d="M580,240 H650 V350 H700" marker-end="url(#ah)"/>
+<path class="ar" d="M580,306 H650"/>
+<text class="lb lbL" x="656" y="300">사진 → 전표</text><text class="lb lbL" x="656" y="316">집계표 → 답변</text>
+<path class="ar" d="M580,372 H640 V440 H700" marker-end="url(#ah)"/>
+<text class="lb" x="640" y="460">발주 메일</text>
+<path class="ar" d="M830,468 V512" marker-end="url(#ah)"/>
+<path class="ar" d="M450,512 V440" marker-end="url(#ah)"/>
+<text class="lb lbL" x="458" y="480">main에 머지하면 자동 배포</text>
+</svg>
+      </div>
+      <p class="cap">화살표는 요청이 가는 방향이에요. 모든 API는 Supabase 로그인 토큰을 확인한 뒤에만 동작해요.</p>
+      <div class="legend two">
+        <div><b>Vercel</b><span>화면과 API를 서울 리전에서 실행해요. GitHub main 브랜치에 반영하면 자동으로 다시 배포돼요.</span></div>
+        <div><b>Supabase</b><span>이메일 링크 로그인, PostgreSQL 데이터베이스, 비공개 사진 보관함. 모든 표에 행 단위 보안(RLS)이 켜져 있어 다른 사람의 데이터는 읽을 수 없어요.</span></div>
+        <div><b>OpenAI</b><span>전표 사진을 정해진 JSON 형식으로 읽고, 물어보기에 답해요. 30초가 넘으면 끊고, 키가 없으면 시험 응답으로 동작해요.</span></div>
+        <div><b>Resend</b><span>발주 메일을 eunseon.com 도메인으로 보내요. DKIM·SPF 인증을 마쳤고, 미리 등록한 주소로만 보내도록 막아 두었어요.</span></div>
+      </div>
+    </section>
+
+    <section id="workflow">
+      <div class="sec-head">
+        <span class="eyebrow">기술 구성 2</span>
+        <h2>데이터 흐름</h2>
+        <p>전표 사진 한 장이 저장되고, 재고와 발주, 물어보기로 이어지는 순서예요. 사람이 확인하는 단계를 두 번 거쳐서 AI가 잘못 읽은 값이 그대로 쌓이지 않게 했어요.</p>
+      </div>
+      <div class="diagram">
+<pre class="mermaid">
+flowchart TD
+  P["전표 사진 · PDF"] --> E["AI 전표 읽기<br/>gpt-4o · JSON 형식 고정"]
+  E --> C["자동 검사<br/>수량×단가 = 공급가액<br/>품목 합계 = 전표 합계<br/>처음 보는 거래처·품목"]
+  C --> H1{"사람 확인 1<br/>노란 칸 모두 확인?"}
+  H1 -->|고치거나 맞다고 표시| H1
+  H1 -->|모두 확인| SV["전표 저장<br/>invoices + 사진 보관함"]
+  SV --> SUM["홈 · 집계<br/>달별 · 거래처별 합계, 엑셀"]
+  SV --> H2{"사람 확인 2<br/>재고에 더할까요?"}
+  H2 -->|더하기| STK["재고 반영<br/>stock_items 수량 증가"]
+  H2 -->|더하지 않기| SUM
+  STK --> SH["부족분 계산<br/>필요한 양 − 현재 재고"]
+  SH --> ORD["거래처별 발주서"]
+  ORD --> MAIL["발주 메일 발송<br/>Resend · sent_orders 기록"]
+  SV --> ASK["물어보기<br/>집계표 + 근거 전표"]
+  STK --> ASK
+</pre>
+      </div>
+      <p class="cap">저장은 먼저 기기에 하고 곧바로 서버에 올려요. 인터넷이 끊기면 기기에 모아 두었다가 다시 연결될 때 올려요.</p>
+    </section>
+
+    <section id="erd">
+      <div class="sec-head">
+        <span class="eyebrow">기술 구성 3</span>
+        <h2>ERD</h2>
+        <p>모든 데이터는 로그인한 사용자(auth.users)에 묶여요. 전표와 재고의 세부 내용은 jsonb 한 칸에 담아, 전표 양식이 바뀌어도 표 구조를 고치지 않고 받을 수 있게 했어요.</p>
+      </div>
+      <div class="diagram">
+<pre class="mermaid">
+erDiagram
+  AUTH_USERS ||--o{ INVOICES : "저장"
+  AUTH_USERS ||--o{ STOCK_ITEMS : "관리"
+  AUTH_USERS ||--o{ SENT_ORDERS : "발송 기록"
+  AUTH_USERS ||--|| SETTINGS : "설정"
+  INVOICES ||--o| INVOICE_PHOTOS : "원본 사진"
+  AUTH_USERS {
+    uuid id PK
+    text email
+  }
+  INVOICES {
+    uuid user_id PK, FK
+    text id PK
+    jsonb data "전표 내용"
+    timestamptz updated_at
+  }
+  STOCK_ITEMS {
+    uuid user_id PK, FK
+    text id PK
+    jsonb data "품목 · 수량"
+    int position "화면 순서"
+    timestamptz updated_at
+  }
+  SENT_ORDERS {
+    uuid user_id PK, FK
+    text id PK "발주서 지문"
+    timestamptz sent_at
+  }
+  SETTINGS {
+    uuid user_id PK, FK
+    text buyer_name "우리 가게 이름"
+    timestamptz updated_at
+  }
+  INVOICE_PHOTOS {
+    text path PK "user_id/전표id.jpg"
+    text bucket "invoice-photos"
+  }
+</pre>
+      </div>
+      <p class="cap">INVOICE_PHOTOS는 표가 아니라 Supabase Storage의 비공개 보관함이에요. 경로 첫 폴더가 사용자 id와 같을 때만 읽고 쓸 수 있어요.</p>
+    </section>
+
+    <section id="tables">
+      <div class="sec-head">
+        <span class="eyebrow">기술 구성 4</span>
+        <h2>테이블 명세</h2>
+        <p>표 네 개와 사진 보관함 하나로 이루어져 있어요. 모든 표의 기본키는 (user_id, id)이고, 로그인하지 않은 요청에는 아무 권한도 없어요.</p>
+      </div>
+      <div class="spec">
+        <h3><code>invoices</code><small>저장한 전표</small></h3>
+        <div class="table-scroll"><table>
+          <thead><tr><th>칸</th><th>형식</th><th>설명</th></tr></thead>
+          <tbody>
+            <tr><td>user_id</td><td>uuid · PK, FK</td><td>저장한 사용자. 기본값 auth.uid()</td></tr>
+            <tr><td>id</td><td>text · PK</td><td>전표 id</td></tr>
+            <tr><td>data</td><td>jsonb</td><td>전표 전체(아래 data 구조)</td></tr>
+            <tr><td>updated_at</td><td>timestamptz</td><td>마지막 저장 시각</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3><code>invoices.data</code><small>전표 JSON 구조</small></h3>
+        <div class="table-scroll"><table>
+          <thead><tr><th>칸</th><th>형식</th><th>설명</th></tr></thead>
+          <tbody>
+            <tr><td>savedAt · fileName · imagePath</td><td>string</td><td>저장 시각, 원본 파일 이름, 사진 보관함 경로</td></tr>
+            <tr><td>invoice.docType</td><td>purchase | sales | unknown</td><td>매입·매출 구분. 매출이 아니면 매입으로 집계</td></tr>
+            <tr><td>invoice.supplierName · supplierBizNo</td><td>string | null</td><td>공급자 상호, 사업자등록번호</td></tr>
+            <tr><td>invoice.buyerName · issueDate</td><td>string | null</td><td>공급받는자, 전표 날짜(YYYY-MM-DD)</td></tr>
+            <tr><td>invoice.totalAmount</td><td>number | null</td><td>전표에 적힌 합계금액(VAT 포함)</td></tr>
+            <tr><td>invoice.items[]</td><td>array</td><td>name, spec, quantity, unitPrice, supplyAmount, tax, needsCheck, checkReason</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3><code>stock_items</code><small>재고 품목</small></h3>
+        <div class="table-scroll"><table>
+          <thead><tr><th>칸</th><th>형식</th><th>설명</th></tr></thead>
+          <tbody>
+            <tr><td>user_id · id</td><td>uuid · text · PK</td><td>사용자와 품목 id</td></tr>
+            <tr><td>data</td><td>jsonb</td><td>name, spec, unit, stock(현재 재고), target(필요한 양), unitPrice, supplier, supplierEmail</td></tr>
+            <tr><td>position</td><td>integer</td><td>화면에 보이는 순서</td></tr>
+            <tr><td>updated_at</td><td>timestamptz</td><td>마지막 저장 시각</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3><code>sent_orders</code><small>보낸 발주서 기록</small></h3>
+        <div class="table-scroll"><table>
+          <thead><tr><th>칸</th><th>형식</th><th>설명</th></tr></thead>
+          <tbody>
+            <tr><td>user_id · id</td><td>uuid · text · PK</td><td>id는 받는 주소와 메일 내용으로 만든 지문. 같은 발주서를 두 번 보내지 않게 해요</td></tr>
+            <tr><td>sent_at</td><td>timestamptz</td><td>보낸 시각</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3><code>settings</code><small>사용자 설정</small></h3>
+        <div class="table-scroll"><table>
+          <thead><tr><th>칸</th><th>형식</th><th>설명</th></tr></thead>
+          <tbody>
+            <tr><td>user_id</td><td>uuid · PK, FK</td><td>사용자</td></tr>
+            <tr><td>buyer_name</td><td>text</td><td>우리 가게 이름. 매입·매출 판단과 발주 메일 첫 줄에 쓰여요</td></tr>
+            <tr><td>updated_at</td><td>timestamptz</td><td>마지막 저장 시각</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3><code>storage: invoice-photos</code><small>전표 원본 사진</small></h3>
+        <div class="table-scroll"><table>
+          <thead><tr><th>항목</th><th>값</th><th>설명</th></tr></thead>
+          <tbody>
+            <tr><td>공개 여부</td><td>private</td><td>10분짜리 서명 링크로만 열려요</td></tr>
+            <tr><td>경로</td><td>{user_id}/{전표 id}.jpg</td><td>첫 폴더가 본인 id일 때만 읽고 쓸 수 있어요</td></tr>
+            <tr><td>제한</td><td>10MB · jpg, png, webp, pdf</td><td>사진은 올리기 전에 긴 변 1600px로 줄여요</td></tr>
+          </tbody>
+        </table></div>
+        <div class="tip"><b>다음 단계: 회사 단위 분리</b>여러 회사가 각자 쓰도록 companies, memberships, invites, join_requests 표를 추가하고, 위 표들의 기준을 user_id에서 company_id로 옮길 예정이에요. 같은 회사 직원은 데이터를 함께 보고, 다른 회사 데이터는 RLS로 막혀요.</div>
+      </div>
+    </section>
+
+    <section id="tag">
+      <div class="sec-head">
+        <span class="eyebrow">기술 구성 5</span>
+        <h2>AI 물어보기: TAG 방식</h2>
+        <p>TAG(Table-Augmented Generation)는 AI가 기억이나 추측으로 답하지 않고, 데이터베이스에서 꺼낸 표를 근거로 답하게 하는 방식이에요. 발주어때는 "AI는 계산하지 않는다"를 원칙으로, 숫자는 코드가 계산하고 AI는 그 표를 읽어 문장으로 옮겨요.</p>
+      </div>
+
+      <div class="compare">
+        <div>
+          <span class="badge">현재 적용</span>
+          <h3>집계표를 붙여 묻기</h3>
+          <ol>
+            <li>질문이 오면 서버가 로그인 토큰을 확인해요.</li>
+            <li>코드가 달별·거래처별 합계, 품목별 부족분을 미리 계산해요.</li>
+            <li>집계표와 최근 전표 150장, 재고 목록을 정해진 형식으로 AI에 넘겨요.</li>
+            <li>AI는 답변과 근거로 쓴 전표·품목 id를 JSON으로 돌려줘요.</li>
+            <li>서버는 실제로 있는 id만 남겨 "근거 보기"로 보여 줘요.</li>
+          </ol>
+          <p class="muted">데이터가 수백 장일 때 가장 단순하고 정확해요. 150장보다 오래된 전표의 세부 내용은 AI가 직접 보지 못해요.</p>
+        </div>
+        <div>
+          <span class="badge next">다음 단계</span>
+          <h3>필요한 표만 조회해서 묻기</h3>
+          <ol>
+            <li>AI가 질문을 보고 필요한 조회를 고르고 조건을 채워요. 예: 기간 매입 합계(2026-03, 한밭농산)</li>
+            <li>서버가 미리 만들어 둔 안전한 조회 함수(Supabase RPC)만 실행해요. AI가 SQL을 직접 쓰지 않아요.</li>
+            <li>조회는 RLS 안에서 돌아서 우리 회사 데이터만 나와요.</li>
+            <li>조회 결과 표를 AI에 넘겨 답변과 근거 id를 받아요.</li>
+            <li>근거 id를 검증하고, 숫자가 결과 표와 다르면 다시 묻거나 표를 그대로 보여 줘요.</li>
+          </ol>
+          <p class="muted">전표가 수만 장이어도 필요한 부분만 꺼내 쓰므로 빠르고, 기간·거래처·품목을 자유롭게 섞어 물을 수 있어요.</p>
+        </div>
+      </div>
+
+      <div class="diagram">
+<pre class="mermaid">
+sequenceDiagram
+  autonumber
+  participant U as 사용자
+  participant API as 물어보기 API
+  participant AI as OpenAI
+  participant DB as Supabase RPC
+  U->>API: 지난달 한밭농산 배추 단가 얼마였어?
+  API->>AI: 질문 + 사용할 수 있는 조회 목록
+  AI-->>API: 조회 선택: 품목 단가 이력(배추, 한밭농산, 2026-10)
+  API->>DB: 정해진 조회 함수 실행 (RLS · 우리 회사만)
+  DB-->>API: 결과 표: 날짜 · 단가 · 전표 id
+  API->>AI: 질문 + 결과 표
+  AI-->>API: 답변 + 근거 전표 id
+  API->>API: 근거 id · 숫자 검증
+  API-->>U: 답변 + 근거 보기
+</pre>
+      </div>
+      <p class="cap">다음 단계 구조의 흐름이에요. 준비할 조회 함수는 기간 매입 합계, 거래처별 순위, 품목 단가 이력, 재고 부족 목록, 전표 검색 다섯 가지부터 시작해요.</p>
+
+      <div class="legend two">
+        <div><b>숫자는 코드가</b><span>합계·부족분·단가 변화는 서버 코드와 DB가 계산하고, AI는 결과를 옮겨 적기만 해요.</span></div>
+        <div><b>근거는 항상 함께</b><span>답마다 근거 전표·품목 id를 받아 실제로 있는지 확인한 뒤 보여 줘요.</span></div>
+        <div><b>모르면 모른다고</b><span>데이터에 없는 내용은 found=false로 받아 "저장된 내용에 없어요"라고 답해요.</span></div>
+        <div><b>질문 속 지시는 무시</b><span>전표 내용이나 질문에 들어 있는 명령문은 데이터로만 다루도록 막아 두었어요.</span></div>
+      </div>
+    </section>
   </main>
 </div>
 
@@ -502,5 +826,7 @@ footer .wrap { padding-block: 28px 40px; color: var(--sub); font-size: 14px; dis
 })();
 </script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.1/mermaid.min.js"></script>
+<script>(function(){var d=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;mermaid.initialize({startOnLoad:true,theme:d?"dark":"neutral",fontFamily:"Noto Sans KR, Apple SD Gothic Neo, sans-serif"});})();</script>
 </body>
 </html>
