@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="발주어때 사용 안내와 기술 구성: 전표 찍기, 집계, 발주, 물어보기, 아키텍처, ERD, TAG">
+<meta name="description" content="발주어때 사용 안내와 기술 구성: 전표 찍기, 집계, 발주, 물어보기, 다음 버전, 아키텍처, ERD, TAG">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Crect width=%2264%22 height=%2264%22 rx=%2216%22 fill=%22%233182F6%22/%3E%3C/svg%3E">
 <title>발주어때 사용 안내</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -214,6 +214,22 @@ details p { color: var(--sub); padding-bottom: 16px; font-size: 15px; }
 .legend.two { grid-template-columns: repeat(2, minmax(0,1fr)); }
 @media (max-width: 640px) { .legend.two { grid-template-columns: minmax(0,1fr); } }
 
+
+/* 다음 버전 */
+.diff { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; }
+.diff div { background: var(--card); border-radius: var(--r); padding: 20px; display: grid; gap: 6px; align-content: start; }
+.diff b { font-size: 16px; }
+.diff span { font-size: 14.5px; color: var(--sub); line-height: 1.6; }
+.roadmap { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.roadmap li { background: var(--card); border-radius: 18px; padding: 18px 20px; display: grid; grid-template-columns: 34px minmax(0,1fr); gap: 4px 14px; align-items: start; }
+.roadmap .no { grid-row: span 3; width: 30px; height: 30px; border-radius: 50%; background: var(--brand-soft); color: var(--brand-ink); display: grid; place-items: center; font-weight: 700; font-size: 14px; font-variant-numeric: tabular-nums; }
+.roadmap h3 { font-size: 16.5px; font-weight: 700; }
+.roadmap p { font-size: 14.5px; color: var(--ink); }
+.roadmap .ref { font-size: 13px; color: var(--sub); }
+.later { display: flex; flex-wrap: wrap; gap: 8px; }
+.later span { background: var(--card); border: 1px dashed var(--line); border-radius: 999px; padding: 6px 14px; font-size: 14px; color: var(--sub); }
+@media (max-width: 760px) { .diff { grid-template-columns: minmax(0,1fr); } }
+
 footer { border-top: 1px solid var(--line); }
 footer .wrap { padding-block: 28px 40px; color: var(--sub); font-size: 14px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; }
 
@@ -272,6 +288,7 @@ footer .wrap { padding-block: 28px 40px; color: var(--sub); font-size: 14px; dis
       <li><a href="#ask">물어보기</a></li>
       <li><a href="#video">시연 영상</a></li>
       <li><a href="#faq">자주 묻는 것</a></li>
+      <li><a href="#next">다음 버전</a></li>
     </ol>
     <p style="margin-top:22px">기술 구성</p>
     <ol>
@@ -518,6 +535,51 @@ footer .wrap { padding-block: 28px 40px; color: var(--sub); font-size: 14px; dis
         <details><summary>한 전표에 매입과 매출이 섞여 있어요</summary><p>전표 단위로만 구분돼요. 주된 쪽으로 저장해 주세요.</p></details>
         <details><summary>"아직 등록되지 않았어요"라고 나와요</summary><p>회사 관리자가 그 이메일을 등록해야 쓸 수 있어요. 관리자에게 등록을 요청한 뒤, 로그인 링크를 새로 받아 주세요. 관리자는 홈 오른쪽 위 <b>계정 등록</b>에서 이메일을 등록하고, 처음 둘러볼 분께는 예시 데이터를 채워 줄 수 있어요.</p></details>
         <details><summary>로그인 메일이 오지 않아요</summary><p>스팸함을 확인하고, 몇 분 뒤 다시 요청해 주세요. 너무 자주 요청하면 잠시 막힐 수 있어요.</p></details>
+      </div>
+    </section>
+
+    <section id="next">
+      <div class="sec-head">
+        <span class="eyebrow">다음 버전</span>
+        <h2>비슷한 서비스와 비교하고, 2차에 넣을 기능</h2>
+        <p>매입·발주를 돕는 서비스는 이미 여럿 있어요. 그 서비스들이 주로 하는 일과 발주어때가 다른 점을 정리하고, 그중 도매·식자재 유통에 꼭 필요한 기능을 2차에 넣으려고 해요.</p>
+      </div>
+
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>분야</th><th>주로 하는 일</th><th>발주어때와 다른 점</th></tr></thead>
+          <tbody>
+            <tr><td>유통사 발주 앱</td><td>점주가 유통사의 상품과 가격을 앱에서 보고 주문하고, 출고 상태를 확인해요. 결제·외상을 함께 다루기도 해요.</td><td>유통사가 먼저 가입해 상품을 올려야 돌아가요. 발주어때는 거래처가 아무것도 가입하지 않아도 메일로 발주해요.</td></tr>
+            <tr><td>회계·ERP + 전표 인식</td><td>받은 거래명세표를 인식해 회계·ERP에 입력해요. 세금계산서, 장부와 이어져요.</td><td>장부 정리가 중심이라 재고와 다음 발주로 이어지지는 않아요. 발주어때는 매입 → 재고 → 발주가 한 흐름이에요.</td></tr>
+            <tr><td>해외 외식업 원가 관리</td><td>전표를 사진·이메일·유통사 연동(EDI)으로 받아 재고, 레시피 원가, POS 매출과 묶어 마진을 보여 줘요.</td><td>식당 메뉴 원가가 중심이고 매장당 월 구독료가 높은 편이에요. 발주어때는 한국 거래명세서 양식과 도매·유통 흐름에 맞췄어요.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="cap">각 분야 대표 서비스의 공개 자료를 기준으로 정리했어요. 서비스마다 기능은 다를 수 있어요.</p>
+
+      <div class="diff">
+        <div><b>종이 전표 사진 한 장이면 시작</b><span>거래처 시스템 연동이나 가입 없이, 지금 받는 종이 거래명세서를 그대로 써요.</span></div>
+        <div><b>AI가 읽고, 사람이 두 번 확인</b><span>노란 칸 확인과 재고 반영 확인을 거쳐서, 잘못 읽은 값이 합계와 재고에 쌓이지 않아요.</span></div>
+        <div><b>말로 묻고 근거로 확인</b><span>"이번 달 매입 얼마야?"에 답할 때 근거 전표를 함께 보여 줘서 숫자를 바로 검증할 수 있어요.</span></div>
+      </div>
+
+      <h3 style="font-size:20px;font-weight:700;margin-top:8px">2차에 넣을 기능</h3>
+      <ol class="roadmap">
+        <li><span class="no">1</span><h3>단가 변동 알림</h3><p>같은 품목이 지난번보다 비싸면 확인 화면에서 "지난번보다 8% 올랐어요"처럼 알려 줘요. 품목별 단가 그래프도 볼 수 있어요.</p><span class="ref">참고: 해외 원가 관리 서비스의 가격 추적·알림</span></li>
+        <li><span class="no">2</span><h3>입고 검수</h3><p>보낸 발주서와 실제로 들어온 전표를 맞춰 "10박스 주문, 8박스 입고"처럼 차이를 보여 주고, 발주 이력 화면을 만들어요.</p><span class="ref">참고: 수발주 통합 서비스의 발주·입고 관리</span></li>
+        <li><span class="no">3</span><h3>이메일·메신저로 전표 받기</h3><p>거래처가 메일로 보낸 PDF나 메신저로 받은 사진을 전용 주소로 넘기면 자동으로 읽어 확인 대기 목록에 올려요.</p><span class="ref">참고: 해외 서비스의 이메일 전표 수신</span></li>
+        <li><span class="no">4</span><h3>회사별 분리와 직원 권한</h3><p>회사마다 데이터를 나누고, 관리자·직원 권한을 두어 같은 회사 직원끼리 전표와 재고를 함께 봐요. 지금의 관리자 등록제를 확장해요.</p><span class="ref">참고: 프랜차이즈·다매장 관리 서비스</span></li>
+        <li><span class="no">5</span><h3>자동 발주 추천</h3><p>지난 매입과 재고 변화를 보고 "이번 주 배추 12망이 필요해요"처럼 필요한 양을 먼저 제안해요. 필요한 양을 직접 정하는 수고가 줄어요.</p><span class="ref">참고: 해외 서비스의 스마트 발주</span></li>
+        <li><span class="no">6</span><h3>회계 내보내기와 미지급 관리</h3><p>회계 프로그램에 바로 올릴 수 있는 엑셀 양식으로 내보내고, 거래처별 미지급금과 결제 예정일을 표시해요.</p><span class="ref">참고: 회계·ERP 연동 서비스, 유통사 앱의 외상 관리</span></li>
+        <li><span class="no">7</span><h3>물어보기 2단계(조회형 TAG)</h3><p>전표가 수천 장이 되어도 필요한 표만 조회해서 답해요. "작년 3월 배추 단가"처럼 오래된 내용도 물을 수 있어요. 구조는 기술 구성의 TAG 항목에 정리했어요.</p><span class="ref">발주어때 고유 기능의 확장</span></li>
+      </ol>
+
+      <p style="margin-top:4px"><b>3차 이후 검토</b>: 고객과 쓰임새에 따라 필요하면 넣을 기능이에요.</p>
+      <div class="later">
+        <span>POS 매출 연동과 메뉴 원가</span>
+        <span>여러 지점 한 화면 관리</span>
+        <span>거래처(공급자)용 주문 접수 화면</span>
+        <span>결제 연동</span>
       </div>
     </section>
 
