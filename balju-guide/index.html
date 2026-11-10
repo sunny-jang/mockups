@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="발주어때 사용 안내: 로그인부터 전표 찍기, 집계, 발주, 물어보기까지">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Crect width=%2264%22 height=%2264%22 rx=%2216%22 fill=%22%233182F6%22/%3E%3C/svg%3E">
+<title>발주어때 사용 안내</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
+<style>
+/* 레이아웃: 왼쪽 목차(넓은 화면에서 고정) + 본문. 각 단계는 설명과 휴대폰 화면을 나란히, 좁은 화면에서는 위아래로. */
+:root {
+  --ground: #f2f4f6;
+  --card: #ffffff;
+  --ink: #191f28;
+  --sub: #6b7684;
+  --line: #e5e8eb;
+  --brand: #3182f6;
+  --brand-ink: #1b64da;
+  --brand-soft: #e8f3ff;
+  --warn: #b77400;
+  --warn-soft: #fff4d6;
+  --ok: #03a364;
+  --phone: #191f28;
+  --shadow: 0 1px 2px rgba(25,31,40,.06), 0 8px 24px rgba(25,31,40,.08);
+  --font: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  --r: 20px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground: #17181c; --card: #22242a; --ink: #f2f4f6; --sub: #9aa3af; --line: #2e3138;
+    --brand: #4593fc; --brand-ink: #7db3ff; --brand-soft: #1c2a3f; --warn: #ffc342; --warn-soft: #3a3118;
+    --ok: #1ec98a; --phone: #0c0d10; --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --ground: #17181c; --card: #22242a; --ink: #f2f4f6; --sub: #9aa3af; --line: #2e3138;
+  --brand: #4593fc; --brand-ink: #7db3ff; --brand-soft: #1c2a3f; --warn: #ffc342; --warn-soft: #3a3118;
+  --ok: #1ec98a; --phone: #0c0d10; --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; }
+img { max-width: 100%; }
+
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  background: var(--ground); color: var(--ink);
+  font-family: var(--font); font-size: 16px; line-height: 1.7;
+  letter-spacing: -0.01em; word-break: keep-all; overflow-wrap: anywhere;
+}
+a { color: var(--brand-ink); }
+a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; border-radius: 6px; }
+h1, h2, h3 { text-wrap: balance; line-height: 1.3; margin: 0; letter-spacing: -0.02em; }
+p { margin: 0; }
+b, strong { font-weight: 700; }
+
+.wrap {
+  max-width: 1120px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+/* 머리말 */
+.hero { background: var(--card); border-bottom: 1px solid var(--line); }
+.hero .wrap { padding-block: 56px 48px; display: grid; gap: 40px; grid-template-columns: minmax(0,1fr) auto; align-items: center; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 900; font-size: 18px; }
+.brand svg { width: 34px; height: 34px; flex: none; }
+.hero h1 { font-size: clamp(30px, 5vw, 44px); font-weight: 900; margin-top: 22px; }
+.hero h1 em { font-style: normal; color: var(--brand); }
+.hero .lead { color: var(--sub); font-size: 17px; margin-top: 14px; max-width: 34em; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+.btn {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 0 20px;
+  border-radius: 14px; font-weight: 700; text-decoration: none; font-size: 15px;
+}
+.btn-primary { background: var(--brand); color: #fff; }
+.btn-ghost { background: var(--ground); color: var(--ink); }
+.url { font-size: 14px; color: var(--sub); margin-top: 18px; }
+.url code { font-family: inherit; font-weight: 700; color: var(--ink); background: var(--ground); padding: 3px 8px; border-radius: 8px; }
+.hero-phone { width: 230px; }
+
+/* 휴대폰 틀 */
+.phone {
+  background: var(--phone); padding: 7px; border-radius: 30px; box-shadow: var(--shadow);
+  width: 100%; max-width: 260px;
+}
+.phone img { display: block; width: 100%; height: auto; border-radius: 24px; background: var(--ground); }
+figure { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+figcaption { font-size: 13px; color: var(--sub); text-align: center; }
+
+/* 본문 배치 */
+.layout { display: grid; grid-template-columns: 200px minmax(0,1fr); gap: 48px; padding-block: 48px 80px; }
+.toc { position: sticky; top: calc(24px + env(safe-area-inset-top, 0px)); align-self: start; }
+.toc p { font-size: 12px; font-weight: 700; letter-spacing: .08em; color: var(--sub); margin-bottom: 10px; }
+.toc ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.toc a { display: block; padding: 7px 12px; border-radius: 10px; color: var(--sub); text-decoration: none; font-size: 15px; font-weight: 500; }
+.toc a:hover { background: var(--card); color: var(--ink); }
+.toc a.on { background: var(--brand-soft); color: var(--brand-ink); font-weight: 700; }
+main { display: grid; gap: 72px; min-width: 0; }
+
+section { scroll-margin-top: 24px; display: grid; gap: 28px; }
+.sec-head { display: grid; gap: 10px; max-width: 40em; }
+.eyebrow { font-size: 13px; font-weight: 700; color: var(--brand-ink); letter-spacing: .04em; }
+.sec-head h2 { font-size: clamp(24px, 3.4vw, 30px); font-weight: 900; }
+.sec-head p { color: var(--sub); font-size: 16.5px; }
+
+/* 메뉴 네 개 */
+.menus { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 12px; }
+.menu { background: var(--card); border-radius: var(--r); padding: 20px; display: grid; gap: 8px; align-content: start; }
+.menu .tab { font-size: 13px; font-weight: 700; color: var(--brand-ink); background: var(--brand-soft); border-radius: 999px; padding: 2px 10px; justify-self: start; }
+.menu h3 { font-size: 17px; font-weight: 700; }
+.menu p { font-size: 14.5px; color: var(--sub); line-height: 1.6; }
+
+/* 하루 흐름 */
+.flow { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 0; background: var(--card); border-radius: var(--r); overflow: hidden; }
+.flow li { padding: 20px; display: grid; gap: 6px; align-content: start; border-left: 1px solid var(--line); }
+.flow li:first-child { border-left: 0; }
+.flow .when { font-size: 13px; font-weight: 700; color: var(--sub); }
+.flow .what { font-weight: 700; font-size: 15.5px; line-height: 1.5; }
+
+/* 단계 */
+.steps { display: grid; gap: 20px; }
+.step {
+  background: var(--card); border-radius: var(--r); padding: 28px;
+  display: grid; grid-template-columns: minmax(0,1fr) 260px; gap: 32px; align-items: start;
+}
+.step.duo { grid-template-columns: minmax(0,1fr) 220px 220px; }
+.step-body { display: grid; gap: 12px; min-width: 0; }
+.step-num { display: inline-grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--brand); color: #fff; font-weight: 700; font-size: 15px; font-variant-numeric: tabular-nums; }
+.step h3 { font-size: 20px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+.step p, .step li { color: var(--ink); font-size: 15.5px; }
+.step .muted { color: var(--sub); font-size: 14.5px; }
+.step ul { margin: 0; padding-left: 1.1em; display: grid; gap: 6px; }
+.ui { font-weight: 700; color: var(--brand-ink); white-space: nowrap; }
+.tip { background: var(--brand-soft); border-radius: 14px; padding: 14px 16px; font-size: 14.5px; display: grid; gap: 4px; }
+.tip b { color: var(--brand-ink); }
+.tip.warn { background: var(--warn-soft); }
+.tip.warn b { color: var(--warn); }
+
+/* 표 */
+.table-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 14px; }
+table { border-collapse: collapse; width: 100%; font-size: 14.5px; }
+th, td { text-align: left; padding: 11px 14px; border-top: 1px solid var(--line); vertical-align: top; }
+thead th { border-top: 0; background: var(--ground); font-size: 13px; color: var(--sub); font-weight: 700; }
+td:first-child { font-weight: 700; white-space: nowrap; }
+
+/* 영상 */
+.video-card { background: var(--card); border-radius: var(--r); padding: 28px; display: grid; grid-template-columns: minmax(0,1fr) 300px; gap: 32px; align-items: center; }
+.video-card video { width: 100%; max-width: 300px; border-radius: 24px; background: var(--phone); border: 7px solid var(--phone); box-shadow: var(--shadow); display: block; }
+.chapters { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.chapters button {
+  width: 100%; display: flex; gap: 12px; align-items: baseline; text-align: left; font: inherit; font-size: 15px;
+  color: var(--ink); background: none; border: 0; padding: 8px 10px; border-radius: 10px; cursor: pointer;
+}
+.chapters button:hover { background: var(--ground); }
+.chapters .t { font-variant-numeric: tabular-nums; color: var(--brand-ink); font-weight: 700; font-size: 14px; min-width: 3.2em; }
+
+/* 자주 묻는 것 */
+.faq { display: grid; gap: 10px; }
+details { background: var(--card); border-radius: 16px; padding: 4px 20px; }
+summary { cursor: pointer; font-weight: 700; padding: 14px 0; list-style: none; display: flex; justify-content: space-between; gap: 12px; }
+summary::-webkit-details-marker { display: none; }
+summary::after { content: "+"; color: var(--sub); font-weight: 500; font-size: 20px; line-height: 1; }
+details[open] summary::after { content: "−"; }
+details p { color: var(--sub); padding-bottom: 16px; font-size: 15px; }
+
+footer { border-top: 1px solid var(--line); }
+footer .wrap { padding-block: 28px 40px; color: var(--sub); font-size: 14px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; }
+
+@media (max-width: 960px) {
+  .layout { grid-template-columns: minmax(0,1fr); gap: 0; }
+  .toc { display: none; }
+  .menus { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .step, .step.duo, .video-card { grid-template-columns: minmax(0,1fr); }
+  .shots { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+  .step.duo .shots { justify-content: center; }
+}
+@media (max-width: 640px) {
+  .hero .wrap { grid-template-columns: minmax(0,1fr); padding-block: 36px 32px; gap: 28px; }
+  .hero-phone { width: 200px; justify-self: center; }
+  .flow { grid-template-columns: minmax(0,1fr); }
+  .flow li { border-left: 0; border-top: 1px solid var(--line); }
+  .flow li:first-child { border-top: 0; }
+  .step, .video-card { padding: 20px; }
+  .menus { grid-template-columns: minmax(0,1fr);</head>
+<body>
+ }
+  .phone { max-width: 240px; }
+}
+</style>
+
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <div class="brand">
+        <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#3182F6"/><path d="M18 17h28a6 6 0 0 1 6 6v15a6 6 0 0 1-6 6H31l-9 7v-7h-4a6 6 0 0 1-6-6V23a6 6 0 0 1 6-6z" fill="#fff"/><path d="M23 30l6 6 12-12" fill="none" stroke="#3182F6" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        발주어때
+      </div>
+      <h1>전표를 찍으면<br><em>정리는 끝나요</em></h1>
+      <p class="lead">거래명세서를 사진으로 찍으면 AI가 내용을 읽어 저장하고, 달별 매입 합계와 부족한 재고의 발주서까지 만들어 드려요. 이 안내서 하나로 처음부터 끝까지 따라 하실 수 있어요.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="https://order.eunseon.com" target="_blank" rel="noopener">발주어때 열기</a>
+        <a class="btn btn-ghost" href="#video">1분 35초 영상으로 보기</a>
+      </div>
+      <p class="url">주소 <code>order.eunseon.com</code> · 휴대폰과 PC 브라우저 모두 쓸 수 있어요</p>
+    </div>
+    <figure class="hero-phone">
+      <div class="phone"><img src="img/07-home-summary.png" alt="발주어때 홈 화면. 11월 매입 합계 7,657,090원, 저장한 전표 3장" width="780" height="1688"></div>
+    </figure>
+  </div>
+</header>
+
+<div class="wrap layout">
+  <nav class="toc" aria-label="목차">
+    <p>목차</p>
+    <ol>
+      <li><a href="#overview">한눈에 보기</a></li>
+      <li><a href="#login">로그인</a></li>
+      <li><a href="#scan">전표 찍기</a></li>
+      <li><a href="#summary">홈과 집계</a></li>
+      <li><a href="#orders">발주</a></li>
+      <li><a href="#ask">물어보기</a></li>
+      <li><a href="#video">시연 영상</a></li>
+      <li><a href="#faq">자주 묻는 것</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <section id="overview">
+      <div class="sec-head">
+        <span class="eyebrow">한눈에 보기</span>
+        <h2>메뉴 네 개로 매입 정리와 발주를 끝내요</h2>
+        <p>휴대폰에서는 화면 아래, PC에서는 화면 위에 메뉴가 있어요.</p>
+      </div>
+      <div class="menus">
+        <div class="menu"><span class="tab">홈</span><h3>이번 달 합계</h3><p>이번 달 매입 합계와 저장한 전표 수를 보고, 전표 촬영을 시작해요.</p></div>
+        <div class="menu"><span class="tab">집계</span><h3>달별·거래처별 정리</h3><p>거래처별 합계와 전표 목록을 보고 엑셀로 내려받아요.</p></div>
+        <div class="menu"><span class="tab">발주</span><h3>재고와 발주서</h3><p>부족한 품목을 거래처별 발주서로 묶어 메일로 보내요.</p></div>
+        <div class="menu"><span class="tab">물어보기</span><h3>말로 묻고 답 받기</h3><p>"이번 달 매입은 얼마야?"처럼 물으면 근거와 함께 답해요.</p></div>
+      </div>
+      <ol class="flow" aria-label="하루 흐름">
+        <li><span class="when">물건이 들어오면</span><span class="what">거래명세서를 찍어 저장</span></li>
+        <li><span class="when">마감할 때</span><span class="what">재고 목록에서 현재 재고 고치기</span></li>
+        <li><span class="when">발주할 때</span><span class="what">부족한 품목을 거래처에 메일로</span></li>
+        <li><span class="when">월말에</span><span class="what">집계 확인하고 엑셀 내려받기</span></li>
+      </ol>
+    </section>
+
+    <section id="login">
+      <div class="sec-head">
+        <span class="eyebrow">시작하기</span>
+        <h2>로그인</h2>
+        <p>비밀번호는 필요 없어요. 이메일로 받은 링크를 누르면 로그인돼요.</p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-body">
+            <ol style="margin:0;padding-left:1.2em;display:grid;gap:8px">
+              <li><b>order.eunseon.com</b>에 들어가요.</li>
+              <li>이메일 칸에 회사 메일 주소를 넣고 <span class="ui">로그인 링크 받기</span>를 눌러요.</li>
+              <li>메일함에 온 로그인 메일을 열고 링크를 눌러요. 다른 기기에서 열어도 그 기기에서 바로 로그인돼요.</li>
+            </ol>
+            <div class="tip warn"><b>링크는 한 번만 쓸 수 있어요</b>"이미 쓰였거나 만료됐어요"가 보이면 메일을 새로 받고, 가장 마지막에 온 메일의 링크를 눌러 주세요.</div>
+            <p class="muted">메일이 안 보이면 스팸함도 확인해 주세요. 로그아웃은 홈 화면 오른쪽 위에서 할 수 있어요.</p>
+          </div>
+          <figure class="shots"><div class="phone"><img src="img/01b-login-filled.png" alt="로그인 화면. 이메일 칸과 로그인 링크 받기 버튼" loading="lazy" width="780" height="1688"></div></figure>
+        </div>
+      </div>
+    </section>
+
+    <section id="scan">
+      <div class="sec-head">
+        <span class="eyebrow">가장 자주 쓰는 기능</span>
+        <h2>전표 찍기</h2>
+        <p>한 장을 찍어 저장하기까지 보통 30초 안쪽이에요. AI가 읽은 내용을 한 번 확인해야 저장돼요.</p>
+      </div>
+      <div class="steps">
+        <div class="step duo">
+          <div class="step-body">
+            <h3><span class="step-num">1</span>사진 찍고 올리기</h3>
+            <p>홈에서 <span class="ui">전표 촬영하기</span>를 눌러요. 휴대폰은 <span class="ui">사진 찍기</span>로 카메라가 바로 열리고, 찍어 둔 사진이나 PDF는 <span class="ui">사진이나 PDF 올리기</span>로 골라요.</p>
+            <p>올리면 AI가 거래처, 날짜, 품목, 수량, 단가, 금액을 읽어요. 10~20초쯤 걸려요.</p>
+            <div class="tip"><b>잘 읽히는 사진</b>전표 네 모서리가 다 나오고, 글자가 흔들리지 않고, 그림자나 빛 반사가 적은 사진이에요. JPG·PNG·WEBP·PDF를 10MB까지 올릴 수 있어요.</div>
+          </div>
+          <figure class="shots"><div class="phone"><img src="img/03-scan-start.png" alt="전표를 찍어 주세요 화면. 사진 찍기, 사진이나 PDF 올리기 버튼" loading="lazy" width="780" height="1688"></div><figcaption>시작 화면</figcaption></figure>
+          <figure class="shots"><div class="phone"><img src="img/04-scan-reading.png" alt="전표를 읽고 있어요 화면" loading="lazy" width="780" height="1688"></div><figcaption>읽는 중</figcaption></figure>
+        </div>
+
+        <div class="step duo">
+          <div class="step-body">
+            <h3><span class="step-num">2</span>읽은 내용 확인하기</h3>
+            <p>위에는 올린 사진이, 아래에는 읽은 내용이 나와요. 사진을 누르면 크게 볼 수 있고, 틀린 칸은 눌러서 바로 고치면 돼요.</p>
+            <ul>
+              <li><b>거래처(공급자)</b>: 물건을 보낸 곳</li>
+              <li><b>전표 날짜</b>: 날짜가 없으면 저장한 날로 집계돼요</li>
+              <li><b>이 전표는</b>: 우리가 산 것은 매입, 판 것은 매출. 매입만 합계에 들어가요</li>
+              <li><b>품목별 칸</b>: 품목, 규격, 수량, 단가, 공급가액, 세액</li>
+              <li><b>전표 합계금액</b>: 품목 합계와 다르면 차이를 알려 드려요</li>
+            </ul>
+          </div>
+          <figure class="shots"><div class="phone"><img src="img/05-scan-review.png" alt="전표 내용이 맞는지 확인해 주세요 화면. 거래처 신탄진청과, 날짜 2026-11-03" loading="lazy" width="780" height="1688"></div><figcaption>사진과 기본 정보</figcaption></figure>
+          <figure class="shots"><div class="phone"><img src="img/05a-scan-items.png" alt="품목별 수량, 단가, 공급가액, 세액 칸" loading="lazy" width="780" height="1688"></div><figcaption>품목별 칸</figcaption></figure>
+        </div>
+
+        <div class="step duo">
+          <div class="step-body">
+            <h3><span class="step-num">3</span>노란 칸 확인하고 저장하기</h3>
+            <p>처음 보는 품목이나 거래처, 계산이 맞지 않는 숫자는 노란색으로 표시되고 이유가 적혀 있어요. 사진과 비교해 맞으면 <span class="ui">이대로 맞아요</span>를, 틀리면 칸을 고친 뒤 <span class="ui">이대로 맞아요</span>를 눌러요.</p>
+            <p>노란 칸이 남아 있으면 아래 버튼이 "확인할 칸이 N건 남았어요"로 바뀌고 저장되지 않아요. 모두 확인하면 <span class="ui">맞아요, 저장할게요</span>로 저장해요.</p>
+            <div class="tip"><b>사진도 함께 보관돼요</b>저장한 전표의 원본 사진은 집계 화면에서 언제든 다시 볼 수 있어요. 이어서 찍을 전표가 있으면 <span class="ui">다음 전표 찍기</span>를 누르세요.</div>
+          </div>
+          <figure class="shots"><div class="phone"><img src="img/05b-scan-check.png" alt="노란색으로 표시된 품목. 처음 보는 품목이에요 안내와 이대로 맞아요 버튼" loading="lazy" width="780" height="1688"></div><figcaption>확인이 필요한 칸</figcaption></figure>
+          <figure class="shots"><div class="phone"><img src="img/06-scan-saved.png" alt="저장했어요 화면. 다음 전표 찍기, 홈으로 버튼" loading="lazy" width="780" height="1688"></div><figcaption>저장 완료</figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <section id="summary">
+      <div class="sec-head">
+        <span class="eyebrow">확인하기</span>
+        <h2>홈과 집계</h2>
+        <p>저장한 전표는 바로 합계에 들어가요. 홈에서는 이번 달 합계를, 집계에서는 달별·거래처별 내역을 봐요.</p>
+      </div>
+      <div class="steps">
+        <div class="step duo">
+          <div class="step-body">
+            <ul>
+              <li><b>달 고르기</b>: 집계 화면 위쪽 달 버튼으로 볼 달을 바꿔요.</li>
+              <li><b>거래처별</b>: 거래처마다 전표 수와 매입 합계가 큰 순서로 나와요.</li>
+              <li><b>이 달 전표</b>: 전표마다 날짜와 금액이 나오고, <span class="ui">사진</span>을 누르면 원본을 볼 수 있어요.</li>
+              <li><b>매입/매출 바꾸기</b>: 전표 오른쪽 <span class="ui">매입</span>을 누르면 <span class="ui">매출</span>로 바뀌고 합계에서 빠져요. 다시 누르면 돌아와요.</li>
+              <li><b>엑셀로 내보내기</b>: 첫 시트는 집계표, 이어서 전표마다 거래명세서 모양의 시트(공급받는자용·공급자용)가 들어가요.</li>
+            </ul>
+          </div>
+          <figure class="shots"><div class="phone"><img src="img/07-home-summary.png" alt="홈 화면. 11월 매입 합계와 저장한 전표 3장" loading="lazy" width="780" height="1688"></div><figcaption>홈</figcaption></figure>
+          <figure class="shots"><div class="phone"><img src="img/08b-summary-list.png" alt="집계 화면. 거래처별 합계와 이 달 전표 목록, 엑셀로 내보내기 버튼" loading="lazy" width="780" height="1688"></div><figcaption>집계</figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <section id="orders">
+      <div class="sec-head">
+        <span class="eyebrow">발주하기</span>
+        <h2>발주</h2>
+        <p>재고 목록에 현재 재고와 필요한 양을 넣어 두면, 부족한 만큼을 거래처별 발주서로 묶어 메일로 보낼 수 있어요.</p>
+      </div>
+      <div class="steps">
+        <div class="step duo">
+          <div class="step-body">
+            <h3><span class="step-num">1</span>재고 목록 만들고 고치기</h3>
+            <p>처음에는 목록이 비어 있어요. <span class="ui">품목 추가</span>로 하나씩 넣거나, <span class="ui">전표에서 N개 가져오기</span>로 저장한 전표의 품목·거래처·단가를 한 번에 가져와요.</p>
+            <p>품목 줄에는 "현재 재고 / 필요한 양"이 나오고, 모자라면 빨간 숫자와 "N 부족"이 표시돼요. 줄을 누르면 칸이 펼쳐져요.</p>
+            <div class="table-scroll">
+              <table>
+                <thead><tr><th>칸</th><th>넣는 것</th></tr></thead>
+                <tbody>
+                  <tr><td>현재 재고</td><td>지금 가게에 있는 양</td></tr>
+                  <tr><td>필요한 양</td><td>항상 두고 싶은 양. 부족분 = 필요한 양 − 현재 재고</td></tr>
+                  <tr><td>단위</td><td>개, kg, 박스, 묶음 등 발주서에 적힐 단위</td></tr>
+                  <tr><td>단가(원)</td><td>예상 금액 계산에 쓰여요</td></tr>
+                  <tr><td>거래처</td><td>같은 거래처 품목끼리 발주서 한 장으로 묶여요</td></tr>
+                  <tr><td>거래처 이메일</td><td>발주 메일을 받을 주소</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="muted">고친 내용은 바로 저장돼요. 아래쪽 <b>발주하는 가게 이름</b>을 한 번 넣어 두면 발주 메일 첫 줄에 들어가요.</p>
+          </div>
+          <figure class="shots"><div class="phone"><img src="img/10-orders-stock.png" alt="재고 목록. 거래처별로 묶인 품목과 부족 표시" loading="lazy" width="780" height="1688"></div><figcaption>재고 목록</figcaption></figure>
+          <figure class="shots"><div class="phone"><img src="img/11-orders-edit.png" alt="품목을 눌러 펼친 입력 칸. 현재 재고, 필요한 양, 단가, 거래처 이메일" loading="lazy" width="780" height="1688"></div><figcaption>품목 고치기</figcaption></figure>
+        </div>
+
+        <div class="step">
+          <div class="step-body">
+            <h3><span class="step-num">2</span>발주서 확인하고 보내기</h3>
+            <p>맨 위 <b>부족한 품목</b>에 거래처별 카드가 나와요. <span class="ui">발주서 보기</span>를 누르면 받는 사람과 메일 내용이 보이고, 맞으면 <span class="ui">이 내용으로 보내기</span>를 눌러요.</p>
+            <ul>
+              <li>메일은 <b>발주어때 &lt;order@eunseon.com&gt;</b> 이름으로 나가요.</li>
+              <li>보낸 뒤에는 버튼이 <span class="ui">보냈어요</span>로 바뀌어 같은 내용이 두 번 가지 않아요. 수량이나 내용을 바꾸면 다시 보낼 수 있어요.</li>
+              <li>거래처 이메일이 비어 있으면 보내기 버튼이 꺼져 있어요.</li>
+            </ul>
+            <div class="tip warn"><b>새 거래처에 처음 보낼 때</b>발주 메일은 미리 등록된 주소로만 보낼 수 있어요. 새 거래처 주소는 발주어때 담당자에게 등록을 요청해 주세요.</div>
+          </div>
+          <figure class="shots"><div class="phone"><img src="img/12-orders-preview.png" alt="발주서 보기. 받는 사람, 메일 본문, 이 내용으로 보내기 버튼" loading="lazy" width="780" height="1688"></div><figcaption>발주서 보기</figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <section id="ask">
+      <div class="sec-head">
+        <span class="eyebrow">찾아보기</span>
+        <h2>물어보기</h2>
+        <p>저장한 전표와 재고에 대해 말로 물어보면 AI가 답해요. 합계와 부족분은 앱이 먼저 계산해 두고 AI는 그 숫자를 옮겨 적기만 해서, 계산이 틀리지 않아요.</p>
+      </div>
+      <div class="steps">
+        <div class="step duo">
+          <div class="step-body">
+            <p>처음 화면의 예시 질문을 누르거나, 아래 칸에 직접 적고 <span class="ui">묻기</span>를 눌러요.</p>
+            <ul>
+              <li>이번 달 매입은 얼마야?</li>
+              <li>부족한 품목 알려줘</li>
+              <li>가장 많이 산 거래처는 어디야?</li>
+            </ul>
+            <p>답 아래 <span class="ui">근거 보기</span>를 누르면 답에 쓰인 전표나 재고 품목이 나와요. 숫자가 이상하면 여기서 확인하세요.</p>
+            <p class="muted">저장하지 않은 내용은 모른다고 답해요. 최근 전표 150장까지 보고, 질문은 300자까지 적을 수 있어요.</p>
+          </div>
+          <figure class="shots"><div class="phone"><img src="img/13-ask-start.png" alt="물어보기 시작 화면과 예시 질문" loading="lazy" width="780" height="1688"></div><figcaption>예시 질문</figcaption></figure>
+          <figure class="shots"><div class="phone"><img src="img/15-ask-stock.png" alt="물어보기 답. 이번 달 매입 합계 7,657,090원과 근거 전표 3장, 부족한 품목 6가지" loading="lazy" width="780" height="1688"></div><figcaption>답과 근거</figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <section id="video">
+      <div class="sec-head">
+        <span class="eyebrow">시연 영상</span>
+        <h2>처음부터 끝까지 1분 35초</h2>
+        <p>전표 세 장을 찍어 저장하고, 집계를 보고, 발주서를 보내고, 물어보기까지 한 번에 보여 드려요. 예시 데이터로 찍었어요.</p>
+      </div>
+      <div class="video-card">
+        <ol class="chapters" aria-label="영상 구간">
+          <li><button type="button" data-t="0"><span class="t">0:00</span>홈 화면</button></li>
+          <li><button type="button" data-t="3"><span class="t">0:03</span>전표 사진 올리고 읽기</button></li>
+          <li><button type="button" data-t="13"><span class="t">0:13</span>읽은 내용 확인하고 저장</button></li>
+          <li><button type="button" data-t="41"><span class="t">0:41</span>홈과 집계</button></li>
+          <li><button type="button" data-t="52"><span class="t">0:52</span>재고 넣고 발주서 보내기</button></li>
+          <li><button type="button" data-t="74"><span class="t">1:14</span>물어보기</button></li>
+        </ol>
+        <video id="demo" src="balju-demo.mp4" poster="img/02-home-empty.png" controls playsinline preload="metadata" aria-label="발주어때 시연 영상"></video>
+      </div>
+    </section>
+
+    <section id="faq">
+      <div class="sec-head">
+        <span class="eyebrow">도움말</span>
+        <h2>자주 묻는 것</h2>
+      </div>
+      <div class="faq">
+        <details><summary>매출 전표를 매입으로 저장했어요</summary><p>집계 화면의 전표 목록에서 오른쪽 <b>매입</b> 버튼을 누르면 매출로 바뀌고 합계에서 빠져요. 내용 자체를 잘못 저장한 경우는 발주어때 담당자에게 알려 주세요.</p></details>
+        <details><summary>단가 칸이 비어 있어요</summary><p>전표에 단가가 없거나 흐리면 빈칸으로 나와요. 사진을 보고 채우거나, 공급가액만 맞으면 그대로 저장해도 합계는 맞아요.</p></details>
+        <details><summary>인터넷이 끊기면 어떻게 되나요?</summary><p>고친 내용은 기기에 잠깐 두었다가 다시 연결되면 서버에 올려요. 화면 위에 저장 안내가 보이면 연결을 확인해 주세요. 전표 읽기와 물어보기는 인터넷이 있어야 돼요.</p></details>
+        <details><summary>거래처가 발주 메일에 답장하면 어디로 가나요?</summary><p>order@eunseon.com은 보내기 전용이라 답장을 받지 못해요. 회신은 전화나 회사 메일로 받아 주세요.</p></details>
+        <details><summary>한 전표에 매입과 매출이 섞여 있어요</summary><p>전표 단위로만 구분돼요. 주된 쪽으로 저장해 주세요.</p></details>
+        <details><summary>로그인 메일이 오지 않아요</summary><p>스팸함을 확인하고, 몇 분 뒤 다시 요청해 주세요. 너무 자주 요청하면 잠시 막힐 수 있어요.</p></details>
+      </div>
+    </section>
+  </main>
+</div>
+
+<footer>
+  <div class="wrap">
+    <span>발주어때 사용 안내 · 2026년 11월 기준</span>
+    <span>화면은 예시 데이터로 찍었어요</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var v = document.getElementById('demo');
+  document.querySelectorAll('.chapters button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      try { v.currentTime = Number(b.dataset.t); var p = v.play(); if (p && p.catch) p.catch(function () {}); } catch (e) {}
+    });
+  });
+  var links = Array.prototype.slice.call(document.querySelectorAll('.toc a'));
+  var map = {};
+  links.forEach(function (a) { map[a.getAttribute('href').slice(1)] = a; });
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (e.isIntersecting) {
+          links.forEach(function (a) { a.classList.remove('on'); });
+          var a = map[e.target.id]; if (a) a.classList.add('on');
+        }
+      });
+    }, { rootMargin: '-30% 0px -60% 0px' });
+    document.querySelectorAll('main section').forEach(function (s) { io.observe(s); });
+  }
+})();
+</script>
+
+</body>
+</html>
