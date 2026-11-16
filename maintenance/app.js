@@ -18,15 +18,39 @@
   const result = document.querySelector('#quote-result');
   const slot = document.querySelector('#submit-slot');
   form.querySelector('[name=date]').min = new Date().toLocaleDateString('en-CA');
+  const taskControls = new Map();
+  function setSelected(id, on) {
+    const {button,input,minus,plus,wrapper}=taskControls.get(id);
+    on ? selected.add(id) : selected.delete(id);
+    button.classList.toggle('selected',on); wrapper.classList.toggle('is-selected',on);
+    button.setAttribute('aria-pressed',String(on));
+    button.querySelector('.check').textContent=on?'✓':'';
+    input.disabled=!on;minus.disabled=!on||quantities[id]<=1;plus.disabled=!on||quantities[id]>=100;
+    quoted=false;error.textContent='';render();
+  }
   document.querySelectorAll('[data-task]').forEach(button => {
-    button.addEventListener('click', () => {
-      const id = button.dataset.task;
-      selected.has(id) ? selected.delete(id) : selected.add(id);
-      button.classList.toggle('selected', selected.has(id));
-      button.setAttribute('aria-pressed', String(selected.has(id)));
-      button.querySelector('.check').textContent = selected.has(id) ? '✓' : '';
-      quoted = false; error.textContent = ''; render();
-    });
+    const task=tasks.find(t=>t.id===button.dataset.task);
+    const wrapper=document.createElement('div');wrapper.className='task-card';
+    button.replaceWith(wrapper);wrapper.append(button);
+    const row=document.createElement('div');row.className='card-quantity';
+    const label=document.createElement('label');label.textContent='수량';label.htmlFor=`qty-${task.id}`;
+    const minus=document.createElement('button');minus.type='button';minus.textContent='−';minus.setAttribute('aria-label',`${task.title} 수량 줄이기`);
+    const input=document.createElement('input');input.type='number';input.min='1';input.max='100';input.value='1';input.id=`qty-${task.id}`;input.dataset.quantity=task.id;input.setAttribute('aria-label',`${task.title} 수량`);
+    const plus=document.createElement('button');plus.type='button';plus.textContent='+';plus.setAttribute('aria-label',`${task.title} 수량 늘리기`);
+    const unit=document.createElement('span');unit.textContent=task.unit;unit.className='quantity-unit';
+    row.append(label,minus,input,plus,unit);wrapper.append(row);
+    input.disabled=true;minus.disabled=true;plus.disabled=true;
+    taskControls.set(task.id,{button,input,minus,plus,wrapper});
+    button.addEventListener('click',()=>setSelected(task.id,!selected.has(task.id)));
+    function update(){
+      const value=Number(input.value);
+      if(Number.isInteger(value)&&value>=1&&value<=100)quantities[task.id]=value;
+      minus.disabled=quantities[task.id]<=1;plus.disabled=quantities[task.id]>=100;
+      quoted=false;error.textContent='';render();
+    }
+    input.addEventListener('input',update);
+    minus.addEventListener('click',()=>{input.value=String(Math.max(1,(Number(input.value)||1)-1));update();});
+    plus.addEventListener('click',()=>{input.value=String(Math.min(100,(Number(input.value)||1)+1));update();});
   });
   document.querySelectorAll('.segmented button').forEach((button,index) => {
     button.setAttribute('aria-pressed', String(index === 0));
@@ -53,16 +77,7 @@
       const list = document.createElement('ul');
       items.forEach(t=>{
         const li=document.createElement('li');const check=document.createElement('span');check.textContent='✓';li.append(check,document.createTextNode(t.title));
-        const quantityRow=document.createElement('label');quantityRow.className='quantity-row';quantityRow.append(document.createTextNode('수량'));
-        const input=document.createElement('input');input.type='number';input.min='1';input.max='100';input.value=String(quantities[t.id]);input.setAttribute('aria-label',`${t.title} 수량`);
-        input.dataset.quantity=t.id;
-        input.addEventListener('input',()=>{
-          const value=Number(input.value);if(Number.isInteger(value)&&value>=1&&value<=100)quantities[t.id]=value;
-          quoted=false;error.textContent='';result.replaceChildren();slot.replaceChildren();
-          document.querySelector('.quote-badge').textContent='수량 변경 · 견적을 다시 확인해 주세요';
-          quoteButtons.forEach(b=>{b.innerHTML='예상견적 받기 <span>↗</span>';b.classList.remove('secondary');});
-        });
-        quantityRow.append(input,document.createTextNode(`${t.unit} × ${money(t.rate)}원`));li.append(quantityRow);list.append(li);
+        const detail=document.createElement('small');detail.className='summary-quantity';detail.textContent=`${quantities[t.id]}${t.unit} × ${money(t.rate)}원 = ${money(quantities[t.id]*t.rate)}원`;li.append(detail);list.append(li);
       });
       summary.append(list);
     } else {const p=document.createElement('p');p.textContent='왼쪽에서 필요한 작업을 선택하면 이곳에 요청 내역이 표시됩니다.';summary.append(p);}
@@ -88,7 +103,7 @@
   }
   function calculate(){
     if(!selected.size){error.textContent='요청하실 작업을 하나 이상 선택해 주세요.';document.querySelector('[data-task]').focus();return;}
-    for(const input of document.querySelectorAll('[data-quantity]')){
+    for(const input of document.querySelectorAll('[data-quantity]:not(:disabled)')){
       const value=Number(input.value);
       if(!Number.isInteger(value)||value<1||value>100){error.textContent='작업 수량은 1~100 사이의 정수로 입력해 주세요.';input.focus();return;}
       quantities[input.dataset.quantity]=value;
